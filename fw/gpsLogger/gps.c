@@ -17,13 +17,13 @@
 #include "hal.h"
 
 
-
+#define GPS_BUFFER_SIZE 256
 
 
 volatile uint8_t* gps_current_buffer;
 volatile uint8_t* gps_full_buffer;
-volatile uint8_t gps_rx_bufferA[128];
-volatile uint8_t gps_rx_bufferB[128];
+volatile uint8_t gps_rx_bufferA[GPS_BUFFER_SIZE];
+volatile uint8_t gps_rx_bufferB[GPS_BUFFER_SIZE];
 volatile uint8_t gps_rx_idx;
 volatile uint8_t gps_got_line;
 
@@ -102,6 +102,7 @@ void GPS_deinit()
 
 uint8_t file_date[10];
 uint8_t file_time[10];
+uint8_t gps_time_invalid = 0;
 
 void gps_do()
 {
@@ -109,7 +110,7 @@ void gps_do()
 	if(gps_got_line) /* process the data. */
 	{
 
-		uint16_t bytes_in_buffer = sizeof(gps_rx_bufferA);
+		uint16_t bytes_in_buffer = GPS_BUFFER_SIZE;
 		uint8_t *c = (uint8_t*)gps_full_buffer;
 		do{
 
@@ -123,10 +124,12 @@ void gps_do()
 					if( gps_util_fix_valid(gps_line) )
 					{
 						hal_led_b(GREEN);
-						if(!file_date[0])
+						if(gps_time_invalid)
 						{
 							gps_util_extract_date(gps_line, file_date);
 							gps_util_extract_time(gps_line, file_time);
+
+							gps_time_invalid = 0;
 
 							gps_create_kml_file(file_date, file_time);
 						}
@@ -147,19 +150,11 @@ void gps_do()
 
 		FRESULT rc;
 		uint16_t bw;
-		rc = f_open(&gps_log, nmea_file_name, FA_WRITE | FA_OPEN_ALWAYS);
+		rc = f_write(&gps_log, (const void*)gps_full_buffer, GPS_BUFFER_SIZE, (unsigned int*)&bw);	/* Write data to the file */
 		if( rc )
 			hal_led_a(YELLOW);
 
-		rc = f_lseek(&gps_log, gps_log.fsize);
-		if( rc )
-			hal_led_a(YELLOW);
-
-		rc = f_write(&gps_log, (const void*)gps_full_buffer, 128, (unsigned int*)&bw);	/* Write data to the file */
-		if( rc )
-			hal_led_a(YELLOW);
-
-		rc = f_close(&gps_log);
+		rc = f_sync(&gps_log);
 		if( rc )
 			hal_led_a(YELLOW);
 
@@ -200,12 +195,16 @@ void gps_start()
 
 	}
 
+	rc = f_open(&gps_log, nmea_file_name, FA_WRITE | FA_OPEN_ALWAYS);
+	if( rc )
+		hal_led_a(YELLOW);
 
 	hal_led_b(RED);
 
 	hal_gps_pwr_on(); /* calls gps_init() */
 
-	gps_got_line = 0; // clear flag
+	gps_got_line = 0; // clear flags
+	gps_time_invalid = 1;
 
 	USCI_A_UART_clearInterrupt(USCI_A0_BASE, USCI_A_UART_RECEIVE_INTERRUPT);
 
@@ -378,6 +377,8 @@ void gps_stop()
 
 	uint16_t bw;
 	FRESULT rc;
+	f_close(&gps_log);
+
 
 	f_write(&kml_file, xml_f, sizeof(xml_f) - 1, &bw);
 	if( rc )
@@ -419,7 +420,7 @@ void USCI_A0_ISR(void)
 	 c = UCA0RXBUF;
 	 gps_current_buffer[gps_rx_idx++] = c;
 
-	 if(gps_rx_idx == 128) /* switch buffers */
+	 if(gps_rx_idx == GPS_BUFFER_SIZE) /* switch buffers */
 	 {
 		 gps_rx_idx = 0;
 		 gps_full_buffer = gps_current_buffer;
