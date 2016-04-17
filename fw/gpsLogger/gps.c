@@ -129,6 +129,7 @@ void gps_do()
 							gps_util_extract_date(gps_line, file_date);
 							gps_util_extract_time(gps_line, file_time);
 
+							gps_util_update_timezone(file_date, file_time);
 							gps_time_invalid = 0;
 
 							gps_create_kml_file(file_date, file_time);
@@ -287,47 +288,53 @@ void gps_convert_NMEA2coords(char* gps_line)
 }
 
 
+extern uint16_t gps_year;
+extern uint8_t gps_day,gps_month;
+extern uint8_t gps_hour,gps_minute,gps_second;
+
+
 void pretty_time(char* in, char* out)
 {
 	/* convert 072323 into 0723hours */
-	memcpy(out, in, 4);
-	out[4] = 'h';
-	out[5] = 0;
+	_IQ2toa(out, "%02.00f", _IQ2(gps_hour));
+	out[2] = '_';
+	_IQ2toa(&out[3], "%02.00f", _IQ2(gps_minute));
+	out[5] = 'h';
+	out[6] = 0;
 }
 
 void pretty_date(char* in, char* out)
 {
 	static const char const_months[] = "JanFebMarAprMayJunJulAugSepOctNovDec";
 	/* convert ddmmyy into dd mmm yy */
-	memcpy(out, in, 2);
+	_IQ2toa(out, "%02.00f", _IQ2(gps_day));
 	out[2] = ' ';
 
-	uint8_t month_dec = ((in[2] - '0') * 10) + (in[3] - '0') - 1;
-	memcpy(&out[3], &const_months[month_dec*3], 3);
+	memcpy(&out[3], &const_months[gps_month*3], 3);
 
 	out[6] = ' ';
 
-	memcpy(&out[7], &in[4], 2);
-	out[9] = 0;
+	_IQ2toa(&out[7], "%04.00f", _IQ2(gps_year));
+	out[11] = 0;
 }
 
 void gps_create_kml_file(char* date, char* time)
 {
 
-	uint8_t time_string[11];
-	uint8_t date_string[10];
-	uint8_t long_filename[25];
+	uint8_t time_string[15];
+	uint8_t date_string[15];
+	uint8_t long_filename[32];
 	uint8_t *ptr = long_filename;
 
 	pretty_date(date, date_string);
 	pretty_time(time, time_string);
 
 	strcpy(ptr, date_string);
-	ptr+=9;
+	ptr = long_filename + strlen(long_filename);
 	strcpy(ptr, " ");
-	ptr+=1;
+	ptr = long_filename + strlen(long_filename);
 	strcpy(ptr, time_string);
-	ptr+=5;
+	ptr = long_filename + strlen(long_filename);
 	strcpy(ptr, ".kml");
 
 	uint16_t bw;

@@ -421,13 +421,13 @@ uint8_t isLeap(uint16_t y)
 void gps_util_update_timezone (char* file_date, char* file_time)
 {
 
-    uint8_t day = ((file_date[0] - '0') * 10) + (file_date[1] - '0');
-	uint8_t month = ((file_date[2] - '0') * 10) + (file_date[3] - '0');
-    uint16_t year = ((file_date[4] - '0') * 10) + (file_date[5] - '0') + 2000;
+    gps_day = ((file_date[0] - '0') * 10) + (file_date[1] - '0');
+    gps_month = ((file_date[2] - '0') * 10) + (file_date[3] - '0');
+    gps_year = ((file_date[4] - '0') * 10) + (file_date[5] - '0') + 2000;
 
-    uint8_t hour = ((file_time[0] - '0') * 10) + (file_time[1] - '0');
-    uint8_t minute = ((file_time[2] - '0') * 10) + (file_time[3] - '0');
-    uint8_t second = ((file_time[4] - '0') * 10) + (file_time[5] - '0');
+    gps_hour = ((file_time[0] - '0') * 10) + (file_time[1] - '0');
+    gps_minute = ((file_time[2] - '0') * 10) + (file_time[3] - '0');
+    gps_second = ((file_time[4] - '0') * 10) + (file_time[5] - '0');
 
 
     /* apply simple timezone formating */
