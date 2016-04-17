@@ -245,6 +245,11 @@ int main (void)
 
     	case sUSB:
 
+    			if(!(USB_getConnectionInformation() & USB_VBUS_PRESENT))
+				{
+    				state = sIDLE;
+    				break;
+				}
     					/* check state of chareger? */
     			if( hal_charge_status())
     				hal_led_b(RED);
@@ -280,7 +285,8 @@ int main (void)
     						case ST_PHYS_DISCONNECTED:
     						case ST_ENUM_SUSPENDED:
     						case ST_PHYS_CONNECTED_NOENUM_SUSP:
-    							state = sIDLE;
+    							hal_led_a(BLUE);
+    							//state = sIDLE;
     							break;
 
     						// The default is executed for the momentary state
