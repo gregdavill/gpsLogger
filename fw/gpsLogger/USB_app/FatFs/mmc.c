@@ -51,6 +51,15 @@ uint8_t INS = 1;                                                           //KLQ
 #endif
 extern uint8_t file_date[10];
 extern uint8_t file_time[10];
+
+const char days_of_month[] = {0,31,29,31,30,31,30,31,31,30,31,30,31};
+uint8_t isLeap(uint16_t y)
+{
+	if( y % 4 == 0 && y % 100 != 0 && y % 400 == 0)
+		return 1;
+	return 0;
+}
+
 uint32_t get_fattime (void)
 {
     uint32_t tmr;
@@ -65,6 +74,30 @@ uint32_t get_fattime (void)
     uint8_t minute = ((file_time[2] - '0') * 10) + (file_time[3] - '0');
     uint8_t second = ((file_time[4] - '0') * 10) + (file_time[5] - '0');
 
+
+    /* apply simple timezone formating */
+    minute += 30;
+    if( minute >= 60)
+    {
+    	minute -= 60;
+    	hour++;
+    }
+
+    hour += 9;
+    if(hour >= 24)
+    {
+    	hour -= 24;
+    	day++;
+    	if((day > days_of_month[month]) || (!isLeap(year) && month == 2 && day == 29))
+    	{
+    		day = 1;
+    		if(++month > 12)
+    		{
+    			month = 1;
+    			year++;
+    		}
+    	}
+    }
 
     /* Pack date and time into a uint32_t variable */
     tmr =     (((uint32_t)year - 60) << 25)                                //rtcYear
