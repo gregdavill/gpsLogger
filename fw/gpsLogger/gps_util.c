@@ -406,4 +406,51 @@ uint8_t gps_util_time_is_larger(uint8_t* a, uint8_t* b)
 }
 
 
+uint16_t gps_year;
+uint8_t gps_day,gps_month;
+uint8_t gps_hour,gps_minute,gps_second;
 
+const char days_of_month[] = {0,31,29,31,30,31,30,31,31,30,31,30,31};
+uint8_t isLeap(uint16_t y)
+{
+	if( y % 4 == 0 && y % 100 != 0 && y % 400 == 0)
+		return 1;
+	return 0;
+}
+
+void gps_util_update_timezone (char* file_date, char* file_time)
+{
+
+    uint8_t day = ((file_date[0] - '0') * 10) + (file_date[1] - '0');
+	uint8_t month = ((file_date[2] - '0') * 10) + (file_date[3] - '0');
+    uint16_t year = ((file_date[4] - '0') * 10) + (file_date[5] - '0') + 2000;
+
+    uint8_t hour = ((file_time[0] - '0') * 10) + (file_time[1] - '0');
+    uint8_t minute = ((file_time[2] - '0') * 10) + (file_time[3] - '0');
+    uint8_t second = ((file_time[4] - '0') * 10) + (file_time[5] - '0');
+
+
+    /* apply simple timezone formating */
+    gps_minute += 30;
+    if( gps_minute >= 60)
+    {
+    	gps_minute -= 60;
+    	gps_hour++;
+    }
+
+    gps_hour += 9;
+    if(gps_hour >= 24)
+    {
+    	gps_hour -= 24;
+    	gps_day++;
+    	if((gps_day > days_of_month[gps_month]) || (!isLeap(gps_year) && gps_month == 2 && gps_day == 29))
+    	{
+    		gps_day = 1;
+    		if(++gps_month > 12)
+    		{
+    			gps_month = 1;
+    			gps_year++;
+    		}
+    	}
+    }
+}

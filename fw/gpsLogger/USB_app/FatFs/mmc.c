@@ -49,63 +49,21 @@ uint8_t INS = 1;                                                           //KLQ
 #ifdef __IAR_SYSTEMS_ICC__
 #pragma diag_suppress=Pe061
 #endif
-extern uint8_t file_date[10];
-extern uint8_t file_time[10];
-
-const char days_of_month[] = {0,31,29,31,30,31,30,31,31,30,31,30,31};
-uint8_t isLeap(uint16_t y)
-{
-	if( y % 4 == 0 && y % 100 != 0 && y % 400 == 0)
-		return 1;
-	return 0;
-}
+extern uint16_t gps_year;
+extern uint8_t gps_day,gps_month;
+extern uint8_t gps_hour,gps_minute,gps_second;
 
 uint32_t get_fattime (void)
 {
     uint32_t tmr;
 
-    //TODO: Customize to use the MSP430 RTC
-
-    uint8_t day = ((file_date[0] - '0') * 10) + (file_date[1] - '0');
-	uint8_t month = ((file_date[2] - '0') * 10) + (file_date[3] - '0');
-    uint16_t year = ((file_date[4] - '0') * 10) + (file_date[5] - '0') + 2000;
-
-    uint8_t hour = ((file_time[0] - '0') * 10) + (file_time[1] - '0');
-    uint8_t minute = ((file_time[2] - '0') * 10) + (file_time[3] - '0');
-    uint8_t second = ((file_time[4] - '0') * 10) + (file_time[5] - '0');
-
-
-    /* apply simple timezone formating */
-    minute += 30;
-    if( minute >= 60)
-    {
-    	minute -= 60;
-    	hour++;
-    }
-
-    hour += 9;
-    if(hour >= 24)
-    {
-    	hour -= 24;
-    	day++;
-    	if((day > days_of_month[month]) || (!isLeap(year) && month == 2 && day == 29))
-    	{
-    		day = 1;
-    		if(++month > 12)
-    		{
-    			month = 1;
-    			year++;
-    		}
-    	}
-    }
-
     /* Pack date and time into a uint32_t variable */
-    tmr =     (((uint32_t)year - 60) << 25)                                //rtcYear
-          | ((uint32_t)month << 21)                                            //rtcMon
-          | ((uint32_t)day << 16)                                           //rtcMday
-          | (uint16_t)(hour << 11)                                             //rtcHour
-          | (uint16_t)(minute << 5)                                             //rtcMin
-          | (uint16_t)(second >> 1);                                             //rtcSec
+    tmr =     (((uint32_t)gps_year - 60) << 25)                                //rtcYear
+          | ((uint32_t)gps_month << 21)                                            //rtcMon
+          | ((uint32_t)gps_day << 16)                                           //rtcMday
+          | (uint16_t)(gps_hour << 11)                                             //rtcHour
+          | (uint16_t)(gps_minute << 5)                                             //rtcMin
+          | (uint16_t)(gps_second >> 1);                                             //rtcSec
 
     return (tmr);
 }

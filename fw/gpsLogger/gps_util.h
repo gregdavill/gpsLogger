@@ -22,5 +22,7 @@ uint8_t gps_util_extract_west(uint8_t* in);
 
 uint8_t gps_util_extract_time(uint8_t* in, uint8_t* out);
 uint8_t gps_util_extract_elevation(uint8_t* in, uint8_t* out);
+void gps_util_update_timezone (char* file_date, char* file_time);
+
 
 #endif
