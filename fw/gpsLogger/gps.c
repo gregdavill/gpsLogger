@@ -28,7 +28,7 @@ volatile uint8_t gps_rx_idx;
 volatile uint8_t gps_got_line;
 
 
-char nmea_file_name[] = "log000.txt";
+char nmea_file_name[] = "nmea/log000.txt";
 
 
 const char xml_a[] = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<kml xmlns=\"http://earth.google.com/kml/2.1\">\r\n\t<Document>\r\n\t<name>";//17-02-2016_18-58-42
@@ -79,6 +79,7 @@ void GPS_init()
 
 	    gps_current_buffer = gps_rx_bufferA;
 	    gps_full_buffer = 0;
+	    gps_rx_idx = 0;
 	    bActive = 0;
 
 
@@ -119,10 +120,8 @@ void gps_do()
 
 				if( gps_util_is_RMC(gps_line) )
 				{
-					hal_led_b(CYAN);
 					if( gps_util_fix_valid(gps_line) )
 					{
-						hal_led_b(GREEN);
 						hal_led_b(GREEN);
 						if(!file_date[0])
 						{
@@ -177,15 +176,18 @@ void gps_start()
 
 	f_mount(&FatFs, "", 0);		/* Give a work area to the default drive */
 
-
-
 	FRESULT rc;
+	/* we want to store logs into nma folder, ensure it exists */
+	rc = f_mkdir("nmea");
+    if (rc != FR_EXIST || rc != FR_OK)
+    	hal_led_a(RED);
+
 	/* determine the next log file number. */
 	for( uint16_t file_number = 0 ; file_number < 999 ; file_number++ )
 	{
-		nmea_file_name[5] = file_number % 10 + '0';
-		nmea_file_name[4] = file_number /10 % 10 + '0';
-		nmea_file_name[3] = file_number /100 % 10 + '0';
+		nmea_file_name[10] = file_number % 10 + '0';
+		nmea_file_name[9] = file_number /10 % 10 + '0';
+		nmea_file_name[8] = file_number /100 % 10 + '0';
 
 
 		// this call will fail if the file does exist.
@@ -199,14 +201,16 @@ void gps_start()
 	}
 
 
-	hal_led_b(YELLOW);
+	hal_led_b(RED);
 
-	hal_gps_pwr_on();
+	hal_gps_pwr_on(); /* calls gps_init() */
+
+	gps_got_line = 0; // clear flag
 
 	USCI_A_UART_clearInterrupt(USCI_A0_BASE, USCI_A_UART_RECEIVE_INTERRUPT);
 
-		// Enable USCI_A0 RX interrupt
-		USCI_A_UART_enableInterrupt(USCI_A0_BASE, USCI_A_UART_RECEIVE_INTERRUPT); // Enable interrupt
+	// Enable USCI_A0 RX interrupt
+	USCI_A_UART_enableInterrupt(USCI_A0_BASE, USCI_A_UART_RECEIVE_INTERRUPT); // Enable interrupt
 
 
 
@@ -226,11 +230,13 @@ void gps_minute2degree(uint8_t* minute_string, uint8_t* output)
 extern uint8_t RWbuf[512]; // make use of USB memory when USB isn't in use
 
 void gps_convert_NMEA2coords(char* gps_line)
-{/* get lattiude */
-	uint8_t degree_string[4];
-	uint8_t minute_string[8];
-	uint8_t degrees_fraction[12];
-	uint8_t buff[64];
+{
+
+	/* recycle USB RAM for more buffer space */
+	uint8_t* degree_string = RWbuf;
+	uint8_t* minute_string = &RWbuf[4];
+	uint8_t* degrees_fraction = &RWbuf[12];
+	uint8_t* buff = &RWbuf[24];
 	uint8_t negate;
 
 	gps_util_extract_long_degrees(gps_line, degree_string);
