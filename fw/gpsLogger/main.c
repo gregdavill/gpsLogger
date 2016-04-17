@@ -212,7 +212,6 @@ int main (void)
 					{
 						hal_led_a(RED);
 						shortDelay();
-						gps_do();
 						hal_led_a(RED);
 					}
 					hal_led_a(0);
