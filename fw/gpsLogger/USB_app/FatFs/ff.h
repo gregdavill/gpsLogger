@@ -152,11 +152,11 @@ typedef struct {
 #if _FS_LOCK
 	UINT	lockid;			/* File lock ID (index of file semaphore table Files[]) */
 #endif
-#if _USE_LFN
+
 	WCHAR*	lfn;			/* Pointer to the LFN working buffer */
 	WORD	lfn_idx;		/* Last matched LFN index number (0xFFFF:No LFN) */
-#endif
-#if _USE_FIND
+
+	#if _USE_FIND
 	const TCHAR*	pat;	/* Pointer to the name matching pattern */
 #endif
 } FS_DIR;

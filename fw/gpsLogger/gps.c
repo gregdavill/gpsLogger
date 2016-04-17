@@ -30,13 +30,17 @@ volatile uint8_t gps_got_line;
 char nmea_file_name[13] = "log000.txt";
 
 
+const char xml_a[] = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<kml xmlns=\"http://earth.google.com/kml/2.1\">\r\n\t<Document>\r\n\t<name>aaa";//17-02-2016_18-58-42
+const char xml_b[] = "</name>\r\n\t\t<visibility>1</visibility>\r\n\t\t<Folder>\r\n\t\t\t<name>Track";
+const char xml_c[] = "</name>\r\n\t\t\t<Placemark>\r\n\t\t\t\t<name>Track information";
+const char xml_d[] = "</name>\r\n\t\t\t\t<Style>\r\n\t\t\t\t\t<LineStyle>\r\n\t\t\t\t\t\t<color>C80000FF";
+const char xml_e[] = "</color>\r\n\t\t\t\t\t\t<width>3</width>\r\n\t\t\t\t\t</LineStyle>\r\n\t\t\t\t</Style>\r\n\t\t\t\t<LineString>\r\n\t\t\t\t\t<tessellate>1</tessellate>\r\n\t\t\t\t\t<coordinates>\r\n";
 
-
-
+const char xml_f[] = "\t\t\t\t\t</coordinates>\r\n\t\t\t\t</LineString>\r\n\t\t\t\t<description>\r\n\t\t\t\t\t<![CDATA[Total time 00:34:34<br/>Distance 2.231Km<br/>Speed 3.873Km/h<br/>]]>\r\n\t\t\t\t</description>\r\n\t\t\t</Placemark>\r\n\t\t</Folder>\r\n\t</Document>\r\n</kml>\r\n";
 
 FATFS FatFs;		/* FatFs work area needed for each volume */
 FIL gps_log;			/* File object needed for each open file */
-
+FIL kml_file;
 
 
 uint8_t bActive;
@@ -292,6 +296,128 @@ void gps_minute2degree(uint8_t* minute_string, uint8_t* output)
 
 extern uint8_t RWbuf[512];
 
+void gps_convert_NMEA2coords(char* gps_line)
+{/* get lattiude */
+	uint8_t degree_string[4];
+	uint8_t minute_string[8];
+	uint8_t degrees_fraction[12];
+	uint8_t buff[64];
+	uint8_t negate;
+
+	gps_util_extract_long_degrees(gps_line, degree_string);
+	gps_util_extract_long_minutes(gps_line, minute_string);
+	gps_minute2degree(minute_string, degrees_fraction);
+
+	negate = gps_util_extract_west(gps_line);
+
+	/* format back into a ascii string */
+	uint8_t* buff_ptr = buff;
+
+	strcpy(buff_ptr, "\t\t\t\t\t");
+	buff_ptr += strlen("\t\t\t\t\t");
+
+
+
+	if(negate)
+		*buff_ptr++ = '-';
+
+	strcpy(buff_ptr, degree_string);
+	buff_ptr += strlen(degree_string);
+
+	strcpy(buff_ptr, degrees_fraction);
+	buff_ptr += strlen(degrees_fraction);
+
+	*buff_ptr++ = ',';
+
+	// repeat for long
+	gps_util_extract_lat_degrees(gps_line, degree_string);
+	gps_util_extract_lat_minutes(gps_line, minute_string);
+	gps_minute2degree(minute_string, degrees_fraction);
+
+	negate = gps_util_extract_north(gps_line);
+
+	if(negate)
+		*buff_ptr++ = '-';
+
+	strcpy(buff_ptr, degree_string);
+	buff_ptr += strlen(degree_string);
+
+	strcpy(buff_ptr, degrees_fraction);
+	buff_ptr += strlen(degrees_fraction);
+
+	strcpy(buff_ptr, ",0.0\r\n");
+
+	uint16_t bw;
+
+	f_write(&kml_file, buff, strlen(buff), &bw);
+	hal_led_b(0);
+}
+
+
+void pretty_time(char* in, char* out)
+{
+	/* convert 072323 into 0723hours */
+	memcpy(out, in, 4);
+	out[4] = 'h';
+	out[5] = 0;
+}
+
+void pretty_date(char* in, char* out)
+{
+	static const char const_months[] = "JanFebMarAprMayJunJulAugSepOctNovDec";
+	/* convert ddmmyy into dd mmm yy */
+	memcpy(out, in, 2);
+	out[2] = ' ';
+
+	uint8_t month_dec = ((in[2] - '0') * 10) + (in[3] - '0') - 1;
+	memcpy(&out[3], &const_months[month_dec*3], 3);
+
+	out[6] = ' ';
+
+	memcpy(&out[7], &in[4], 2);
+	out[9] = 0;
+}
+
+void gps_create_kml_file(char* date, char* time)
+{
+
+	uint8_t time_string[11];
+	uint8_t date_string[10];
+	uint8_t long_filename[25];
+	uint8_t *ptr = long_filename;
+
+	pretty_date(date, date_string);
+	pretty_time(time, time_string);
+
+	strcpy(ptr, date_string);
+	ptr+=9;
+	strcpy(ptr, " ");
+	ptr+=1;
+	strcpy(ptr, time_string);
+	ptr+=5;
+	strcpy(ptr, ".kml");
+
+	uint16_t bw;
+	FRESULT rc = f_open(&kml_file, long_filename, FA_WRITE | FA_OPEN_ALWAYS);
+	if( rc )
+		hal_led_a(YELLOW);
+
+	f_write(&kml_file, xml_a, sizeof(xml_a) - 1, &bw);
+	if( rc )
+			hal_led_a(YELLOW);
+	f_write(&kml_file, xml_b, sizeof(xml_b) - 1, &bw);
+	if( rc )
+			hal_led_a(YELLOW);
+	f_write(&kml_file, xml_c, sizeof(xml_c) - 1, &bw);
+	if( rc )
+			hal_led_a(YELLOW);
+	f_write(&kml_file, xml_d, sizeof(xml_d) - 1, &bw);
+	if( rc )
+			hal_led_a(YELLOW);
+	f_write(&kml_file, xml_e, sizeof(xml_e) - 1, &bw);
+	if( rc )
+			hal_led_a(YELLOW);
+}
 
 void gps_stop()
 {
@@ -314,10 +440,9 @@ void gps_stop()
 		hal_led_a(YELLOW);
 
 
-	FIL kml_file;
-	rc = f_open(&kml_file, "kml.txt", FA_WRITE | FA_OPEN_ALWAYS);
-	if( rc )
-		hal_led_a(YELLOW);
+
+
+
 
 	while(1){
 		uint8_t* c = RWbuf;
@@ -342,65 +467,24 @@ void gps_stop()
 					{
 						hal_led_b(GREEN);
 						if(!file_date[0])
+						{
 							gps_util_extract_date(gps_line, file_date);
-						if(!file_time[0])
 							gps_util_extract_time(gps_line, file_time);
 
-						/* get lattiude */
-						uint8_t degree_string[4];
-						uint8_t minute_string[8];
-						uint8_t degrees_fraction[12];
-						uint8_t elevation[10];
-						uint8_t buff[64];
-						uint8_t negate;
+							gps_create_kml_file(file_date, file_time);
+						}
 
-						gps_util_extract_lat_degrees(gps_line, degree_string);
-						gps_util_extract_lat_minutes(gps_line, minute_string);
-						gps_minute2degree(minute_string, degrees_fraction);
-
-						negate = gps_util_extract_north(gps_line);
-
-						/* format back into a ascii string */
-						uint8_t* buff_ptr = buff;
-
-						if(negate)
-							*buff_ptr++ = '-';
-
-						strcpy(buff_ptr, degree_string);
-						buff_ptr += strlen(degree_string);
-
-						strcpy(buff_ptr, degrees_fraction);
-						buff_ptr += strlen(degrees_fraction);
-
-						*buff_ptr++ = ',';
-
-						// repeat for long
-						gps_util_extract_long_degrees(gps_line, degree_string);
-						gps_util_extract_long_minutes(gps_line, minute_string);
-						gps_minute2degree(minute_string, degrees_fraction);
-
-						negate = gps_util_extract_west(gps_line);
-
-						if(negate)
-							*buff_ptr++ = '-';
-
-						strcpy(buff_ptr, degree_string);
-						buff_ptr += strlen(degree_string);
-
-						strcpy(buff_ptr, degrees_fraction);
-						buff_ptr += strlen(degrees_fraction);
-
-						strcpy(buff_ptr, ",0.0\r\n");
-
-						f_write(&kml_file, buff, strlen(buff), &bw);
-						hal_led_b(0);
-
+						gps_convert_NMEA2coords(gps_line);
 					}
 				}
 			}
 
 		}
 	}
+
+	f_write(&kml_file, xml_f, sizeof(xml_f) - 1, &bw);
+	if( rc )
+			hal_led_a(YELLOW);
 
 	f_close(&kml_file);
 

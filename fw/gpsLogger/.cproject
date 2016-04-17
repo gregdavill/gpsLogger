@@ -258,7 +258,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="msp430f5513.ld|lnk_msp430f5513.cmd|USB_app/FatFs/option/ccsbcs.c|USB_app/FatFs/option/cc950.c|USB_app/FatFs/option/cc949.c|USB_app/FatFs/option/cc936.c|USB_app/FatFs/option/cc932.c|msp430f5529.ld" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="USB_app/FatFs/option/ccsbcs.c|msp430f5513.ld|lnk_msp430f5513.cmd|USB_app/FatFs/option/cc950.c|USB_app/FatFs/option/cc949.c|USB_app/FatFs/option/cc936.c|USB_app/FatFs/option/cc932.c|msp430f5529.ld" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

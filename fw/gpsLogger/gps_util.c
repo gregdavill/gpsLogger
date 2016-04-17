@@ -248,8 +248,8 @@ uint8_t gps_util_extract_north(uint8_t* in)
 	}
 
 	if (*s_ptr == 'N')
-		return 1;
-	return 0;
+		return 0;
+	return 1;
 }
 
 
