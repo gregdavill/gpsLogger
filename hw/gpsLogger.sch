@@ -10,14 +10,14 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
-Title ""
-Date ""
-Rev ""
-Comp ""
+Title "gpsLogger"
+Date "2016-01-17"
+Rev "Rev 1.0"
+Comp "Gregory S Davill"
 Comment1 ""
 Comment2 ""
 Comment3 ""
-Comment4 ""
+Comment4 "Simple GPS logger with low power features"
 $EndDescr
 $Comp
 L GPS GP1
