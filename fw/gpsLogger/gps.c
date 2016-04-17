@@ -284,7 +284,6 @@ void gps_convert_NMEA2coords(char* gps_line)
 	uint16_t bw;
 
 	f_write(&kml_file, buff, strlen(buff), &bw);
-	hal_led_b(0);
 }
 
 
