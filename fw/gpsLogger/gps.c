@@ -7,6 +7,7 @@
 
 #include <msp430.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include "IQmathLib.h"
 #include "driverlib.h"
 
@@ -21,19 +22,19 @@
 
 volatile uint8_t* gps_current_buffer;
 volatile uint8_t* gps_full_buffer;
-volatile uint8_t gps_rx_bufferA[256];
-volatile uint8_t gps_rx_bufferB[256];
+volatile uint8_t gps_rx_bufferA[128];
+volatile uint8_t gps_rx_bufferB[128];
 volatile uint8_t gps_rx_idx;
 volatile uint8_t gps_got_line;
 
 
-char nmea_file_name[13] = "log000.txt";
+char nmea_file_name[] = "log000.txt";
 
 
-const char xml_a[] = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<kml xmlns=\"http://earth.google.com/kml/2.1\">\r\n\t<Document>\r\n\t<name>aaa";//17-02-2016_18-58-42
+const char xml_a[] = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<kml xmlns=\"http://earth.google.com/kml/2.1\">\r\n\t<Document>\r\n\t<name>";//17-02-2016_18-58-42
 const char xml_b[] = "</name>\r\n\t\t<visibility>1</visibility>\r\n\t\t<Folder>\r\n\t\t\t<name>Track";
 const char xml_c[] = "</name>\r\n\t\t\t<Placemark>\r\n\t\t\t\t<name>Track information";
-const char xml_d[] = "</name>\r\n\t\t\t\t<Style>\r\n\t\t\t\t\t<LineStyle>\r\n\t\t\t\t\t\t<color>C80000FF";
+const char xml_d[] = "</name>\r\n\t\t\t\t<Style>\r\n\t\t\t\t\t<LineStyle>\r\n\t\t\t\t\t\t<color>12F429FF";
 const char xml_e[] = "</color>\r\n\t\t\t\t\t\t<width>3</width>\r\n\t\t\t\t\t</LineStyle>\r\n\t\t\t\t</Style>\r\n\t\t\t\t<LineString>\r\n\t\t\t\t\t<tessellate>1</tessellate>\r\n\t\t\t\t\t<coordinates>\r\n";
 
 const char xml_f[] = "\t\t\t\t\t</coordinates>\r\n\t\t\t\t</LineString>\r\n\t\t\t\t<description>\r\n\t\t\t\t\t<![CDATA[Total time 00:34:34<br/>Distance 2.231Km<br/>Speed 3.873Km/h<br/>]]>\r\n\t\t\t\t</description>\r\n\t\t\t</Placemark>\r\n\t\t</Folder>\r\n\t</Document>\r\n</kml>\r\n";
@@ -228,7 +229,7 @@ void gps_do()
 		if( rc )
 			hal_led_a(YELLOW);
 
-		rc = f_write(&gps_log, (const void*)gps_full_buffer, 256, (unsigned int*)&bw);	/* Write data to the file */
+		rc = f_write(&gps_log, (const void*)gps_full_buffer, 128, (unsigned int*)&bw);	/* Write data to the file */
 		if( rc )
 			hal_led_a(YELLOW);
 
@@ -253,10 +254,11 @@ void gps_start()
 
 	FRESULT rc;
 	/* determine the next log file number. */
-	for( uint8_t file_number = 0 ; file_number < 99 ; file_number++ )
+	for( uint16_t file_number = 0 ; file_number < 999 ; file_number++ )
 	{
 		nmea_file_name[5] = file_number % 10 + '0';
 		nmea_file_name[4] = file_number /10 % 10 + '0';
+		nmea_file_name[3] = file_number /100 % 10 + '0';
 
 
 		// this call will fail if the file does exist.
@@ -294,7 +296,7 @@ void gps_minute2degree(uint8_t* minute_string, uint8_t* output)
 
 
 
-extern uint8_t RWbuf[512];
+extern uint8_t RWbuf[512]; // make use of USB memory when USB isn't in use
 
 void gps_convert_NMEA2coords(char* gps_line)
 {/* get lattiude */
@@ -402,19 +404,35 @@ void gps_create_kml_file(char* date, char* time)
 	if( rc )
 		hal_led_a(YELLOW);
 
-	f_write(&kml_file, xml_a, sizeof(xml_a) - 1, &bw);
+	rc = f_write(&kml_file, xml_a, sizeof(xml_a) - 1, &bw);
 	if( rc )
 			hal_led_a(YELLOW);
-	f_write(&kml_file, xml_b, sizeof(xml_b) - 1, &bw);
+
+	// name
+	rc = f_write(&kml_file, long_filename, strlen(long_filename), &bw);
 	if( rc )
 			hal_led_a(YELLOW);
-	f_write(&kml_file, xml_c, sizeof(xml_c) - 1, &bw);
+
+
+	rc = f_write(&kml_file, xml_b, sizeof(xml_b) - 1, &bw);
 	if( rc )
 			hal_led_a(YELLOW);
-	f_write(&kml_file, xml_d, sizeof(xml_d) - 1, &bw);
+
+	// track
+
+
+	rc = f_write(&kml_file, xml_c, sizeof(xml_c) - 1, &bw);
 	if( rc )
 			hal_led_a(YELLOW);
-	f_write(&kml_file, xml_e, sizeof(xml_e) - 1, &bw);
+
+	// info
+
+	rc = f_write(&kml_file, xml_d, sizeof(xml_d) - 1, &bw);
+	if( rc )
+			hal_led_a(YELLOW);
+
+
+	rc = f_write(&kml_file, xml_e, sizeof(xml_e) - 1, &bw);
 	if( rc )
 			hal_led_a(YELLOW);
 }
@@ -525,8 +543,9 @@ void USCI_A0_ISR(void)
 	 c = UCA0RXBUF;
 	 gps_current_buffer[gps_rx_idx++] = c;
 
-	 if(gps_rx_idx == 0) /* switch buffers */
+	 if(gps_rx_idx == 128) /* switch buffers */
 	 {
+		 gps_rx_idx = 0;
 		 gps_full_buffer = gps_current_buffer;
 		 gps_got_line = 1;
 
@@ -538,9 +557,12 @@ void USCI_A0_ISR(void)
 	 }
 
 	 /* visual indication of data */
-	 if( c == '$')
-		 hal_led_a(GREEN);
-	 if( c == '\n')
-		 hal_led_a(0);
+	 if(!hal_button_status())
+	 {
+		 if( c == '$')
+			 hal_led_a(GREEN);
+		 if( c == '\n')
+			 hal_led_a(0);
+	 }
 }
 
