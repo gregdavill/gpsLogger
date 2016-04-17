@@ -24,7 +24,7 @@ volatile uint8_t* gps_current_buffer;
 volatile uint8_t* gps_full_buffer;
 volatile uint8_t gps_rx_bufferA[GPS_BUFFER_SIZE];
 volatile uint8_t gps_rx_bufferB[GPS_BUFFER_SIZE];
-volatile uint8_t gps_rx_idx;
+volatile uint16_t gps_rx_idx;
 volatile uint8_t gps_got_line;
 
 
