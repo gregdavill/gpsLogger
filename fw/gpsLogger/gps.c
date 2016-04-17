@@ -85,6 +85,21 @@ void GPS_init()
 
 }
 
+void gps_putc(uint8_t c)
+{
+	UCA0TXBUF = c;
+
+	while(UCA0STAT & UCBUSY);
+}
+
+void gps_puts(uint8_t* s)
+{
+	while(*s)
+	{
+		gps_putc(*s++);
+	}
+}
+
 void GPS_deinit()
 {
 	 // set both as pull down to remove possiblity of bus contention.
@@ -103,13 +118,19 @@ void GPS_deinit()
 uint8_t file_date[10];
 uint8_t file_time[10];
 uint8_t gps_time_invalid = 0;
+uint8_t init_gps;
 
 void gps_do()
 {
 	//re_format();
 	if(gps_got_line) /* process the data. */
 	{
-
+		if(init_gps)
+		{
+			gps_puts("$PMTK300,200,0,0,0,0*2F\r\n");
+			gps_puts("$PMTK220,200*2C\r\n");
+			init_gps = 0;
+		}
 		uint16_t bytes_in_buffer = GPS_BUFFER_SIZE;
 		uint8_t *c = (uint8_t*)gps_full_buffer;
 		do{
@@ -206,14 +227,12 @@ void gps_start()
 
 	gps_got_line = 0; // clear flags
 	gps_time_invalid = 1;
+	init_gps = 1;
 
 	USCI_A_UART_clearInterrupt(USCI_A0_BASE, USCI_A_UART_RECEIVE_INTERRUPT);
 
 	// Enable USCI_A0 RX interrupt
 	USCI_A_UART_enableInterrupt(USCI_A0_BASE, USCI_A_UART_RECEIVE_INTERRUPT); // Enable interrupt
-
-
-
 
 }
 
