@@ -56,35 +56,34 @@
  */
 void USBHAL_initPorts(void)
 {
-#ifdef __MSP430_HAS_PORT1_R__
-    GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_ALL);
-    GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_ALL);
-#endif
+    GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN2|GPIO_PIN3|GPIO_PIN4|GPIO_PIN5|GPIO_PIN6|GPIO_PIN7);
+    GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P1,GPIO_PIN0|GPIO_PIN1); // pullups for Buttons 1 and 2.
+    GPIO_selectInterruptEdge(GPIO_PORT_P1,GPIO_PIN0, GPIO_HIGH_TO_LOW_TRANSITION );
+    GPIO_clearInterrupt(GPIO_PORT_P1,GPIO_PIN0);
+    GPIO_enableInterrupt(GPIO_PORT_P1,GPIO_PIN0);
 
-#ifdef __MSP430_HAS_PORT2_R__
-    GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_ALL);
-    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_ALL);
-#endif
+    GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN2|GPIO_PIN3|GPIO_PIN4|GPIO_PIN5|GPIO_PIN6|GPIO_PIN7);
 
-#ifdef __MSP430_HAS_PORT3_R__
-    GPIO_setOutputLowOnPin(GPIO_PORT_P3, GPIO_ALL);
-    GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_ALL);
-#endif
+    GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN0|GPIO_PIN1|GPIO_PIN2|GPIO_PIN3|GPIO_PIN4);
+    GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN5);
+    GPIO_setAsInputPinWithPullDownResistor(GPIO_PORT_P2, GPIO_PIN6|GPIO_PIN7);
+    GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN0|GPIO_PIN1|GPIO_PIN2|GPIO_PIN3|GPIO_PIN4|GPIO_PIN5);
 
-#ifdef __MSP430_HAS_PORT4_R__
-    GPIO_setOutputLowOnPin(GPIO_PORT_P4, GPIO_ALL);
-    GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_ALL);
-#endif
+    GPIO_setOutputLowOnPin(GPIO_PORT_P3, GPIO_PIN0|GPIO_PIN1|GPIO_PIN2|GPIO_PIN3|GPIO_PIN5|GPIO_PIN6|GPIO_PIN7);
+    GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P3, GPIO_PIN4); // GPS RX.
+    GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN0|GPIO_PIN1|GPIO_PIN2|GPIO_PIN3|GPIO_PIN5|GPIO_PIN6|GPIO_PIN7);
 
-#ifdef __MSP430_HAS_PORT5_R__
-    GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_ALL);
-    GPIO_setAsOutputPin(GPIO_PORT_P5, GPIO_ALL);
-#endif
+    GPIO_setOutputLowOnPin(GPIO_PORT_P4, GPIO_PIN1|GPIO_PIN2|GPIO_PIN6|GPIO_PIN7);
+    GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN1|GPIO_PIN2|GPIO_PIN6|GPIO_PIN7);
 
-#ifdef __MSP430_HAS_PORT6_R__
-    GPIO_setOutputLowOnPin(GPIO_PORT_P6, GPIO_ALL);
-    GPIO_setAsOutputPin(GPIO_PORT_P6, GPIO_ALL);
-#endif
+    GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN4|GPIO_PIN5);
+    GPIO_setOutputHighOnPin(GPIO_PORT_P5, GPIO_PIN0|GPIO_PIN1); // disable LEDS
+    GPIO_setAsOutputPin(GPIO_PORT_P5, GPIO_PIN0|GPIO_PIN1|GPIO_PIN4|GPIO_PIN5);
+
+    GPIO_setOutputLowOnPin(GPIO_PORT_P6, GPIO_PIN1|GPIO_PIN2|GPIO_PIN4);
+    GPIO_setAsInputPinWithPullDownResistor(GPIO_PORT_P6, GPIO_PIN0);
+    GPIO_setOutputHighOnPin(GPIO_PORT_P6, GPIO_PIN3|GPIO_PIN5|GPIO_PIN6|GPIO_PIN7);
+    GPIO_setAsOutputPin(GPIO_PORT_P6, GPIO_PIN1|GPIO_PIN2|GPIO_PIN3|GPIO_PIN5|GPIO_PIN6|GPIO_PIN7);
 
 #ifdef __MSP430_HAS_PORT7_R__
     GPIO_setOutputLowOnPin(GPIO_PORT_P7, GPIO_ALL);
@@ -96,15 +95,12 @@ void USBHAL_initPorts(void)
     GPIO_setAsOutputPin(GPIO_PORT_P8, GPIO_ALL);
 #endif
 
-#ifdef __MSP430_HAS_PORT9_R__
-    GPIO_setOutputLowOnPin(GPIO_PORT_P9, GPIO_ALL);
-    GPIO_setAsOutputPin(GPIO_PORT_P9, GPIO_ALL);
-#endif
 
-#ifdef __MSP430_HAS_PORTJ_R__
+
+
     GPIO_setOutputLowOnPin(GPIO_PORT_PJ, GPIO_ALL);
     GPIO_setAsOutputPin(GPIO_PORT_PJ, GPIO_ALL);
-#endif
+
 }
 
 /* Configures the system clocks:
@@ -134,4 +130,168 @@ void USBHAL_initClocks(uint32_t mclkFreq)
         mclkFreq/1000,
         mclkFreq/32768);
 }
-//Released_Version_5_00_01
+
+
+
+void hal_sd_pwr_on()
+{
+	 GPIO_setOutputHighOnPin(GPIO_PORT_P4, GPIO_PIN1);
+	 GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN1);
+
+	 /* enable IO pins and spi module */
+	 SDCard_init();
+	 disk_initialize(0);     //Attempt to initialize it
+}
+
+void hal_sd_pwr_off()
+{
+	/* assume we've properly shut everything down */
+	/* Set all connected IO pins to pull-down (low outputs?) */
+	SDCard_deinit();
+
+	 GPIO_setOutputLowOnPin(GPIO_PORT_P4, GPIO_PIN1);
+	 GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN1);
+}
+
+void hal_gps_pwr_on()
+{
+	 GPIO_setOutputHighOnPin(GPIO_PORT_P3, GPIO_PIN0);
+	 GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN0);
+
+	 GPS_init();
+}
+
+void hal_gps_pwr_off()
+{
+	/* turn off high side switch */
+	GPIO_setOutputLowOnPin(GPIO_PORT_P3, GPIO_PIN0);
+	GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN0);
+
+	GPS_deinit();
+
+	/* disable any high ports to remove leakage. */
+	GPIO_setAsInputPinWithPullDownResistor(GPIO_PORT_P2, GPIO_PIN6 + GPIO_PIN7);
+}
+
+
+void hal_gps_rtc_on()
+{
+	 GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN5);
+	 GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN5);
+}
+
+void hal_gps_rtc_off()
+{
+	 GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN5);
+	 GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN5);
+}
+
+
+
+void hal_led_a( uint8_t c )
+{
+	if(c & 2)
+	{
+		GPIO_setOutputLowOnPin(GPIO_PORT_P6, GPIO_PIN3);
+	}
+	else
+	{
+		GPIO_setOutputHighOnPin(GPIO_PORT_P6, GPIO_PIN3);
+	}
+
+	if(c & 1)
+	{
+		GPIO_setOutputLowOnPin(GPIO_PORT_P6, GPIO_PIN5);
+	}
+	else
+	{
+		GPIO_setOutputHighOnPin(GPIO_PORT_P6, GPIO_PIN5);
+	}
+
+	if(c & 4)
+	{
+		GPIO_setOutputLowOnPin(GPIO_PORT_P6, GPIO_PIN6);
+	}
+	else
+	{
+		GPIO_setOutputHighOnPin(GPIO_PORT_P6, GPIO_PIN6);
+	}
+}
+
+
+void hal_led_b( uint8_t c )
+{
+	if(c & 2)
+	{
+		GPIO_setOutputLowOnPin(GPIO_PORT_P6, GPIO_PIN7);
+	}
+	else
+	{
+		GPIO_setOutputHighOnPin(GPIO_PORT_P6, GPIO_PIN7);
+	}
+
+	if(c & 1)
+	{
+		GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN0);
+	}
+	else
+	{
+		GPIO_setOutputHighOnPin(GPIO_PORT_P5, GPIO_PIN0);
+	}
+
+	if(c & 4)
+	{
+		GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN1);
+	}
+	else
+	{
+		GPIO_setOutputHighOnPin(GPIO_PORT_P5, GPIO_PIN1);
+	}
+}
+
+static uint8_t button = 0;
+
+uint8_t hal_button_event()
+{
+	uint8_t ret_val = button;
+
+	button = 0;
+	return ret_val;
+}
+
+uint8_t hal_button_status()
+{
+	if(GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN0) == GPIO_INPUT_PIN_LOW)
+		return 1;
+	return 0;
+}
+
+
+uint8_t hal_charge_status()
+{
+	if(GPIO_getInputPinValue(GPIO_PORT_P1, GPIO_PIN1) == GPIO_INPUT_PIN_LOW)
+		return 1;
+	return 0;
+}
+
+
+/*
+ * ======== Button_ISR ========
+ */
+#if defined(__TI_COMPILER_VERSION__) || (__IAR_SYSTEMS_ICC__)
+#pragma vector=PORT1_VECTOR
+__interrupt void PORT1_ISR (void)
+#elif defined(__GNUC__) && (__MSP430__)
+void __attribute__ ((interrupt(PORT1_VECTOR))) PORT0_ISR (void)
+#else
+#error Compiler not found!
+#endif
+{
+	button |= 1;
+
+	 GPIO_clearInterrupt(GPIO_PORT_P1,GPIO_PIN0);
+	 GPIO_enableInterrupt(GPIO_PORT_P1,GPIO_PIN0);
+
+    //Wake from ISR, if sleeping
+   __bic_SR_register_on_exit(LPM4_bits);
+}

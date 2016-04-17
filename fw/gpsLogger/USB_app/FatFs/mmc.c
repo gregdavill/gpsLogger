@@ -111,9 +111,9 @@ uint8_t CardType;                                                          /* b0
 static
 BYTE xchg_spi (BYTE dat)
 {
-	UCA0TXBUF = dat;
-	while (UCA0STAT & UCBUSY) ;
-	return UCA0RXBUF;
+	UCA1TXBUF = dat;
+	while (UCA1STAT & UCBUSY) ;
+	return UCA1RXBUF;
 }
 
 
@@ -140,22 +140,22 @@ void xmit_mmc (
 
 	do{
 		//Wait while not ready for TX
-		UCA0TXBUF = *buff++;
-		while (UCA0STAT & UCBUSY) ;
-		//UCA0RXBUF;
+		UCA1TXBUF = *buff++;
+		while (UCA1STAT & UCBUSY) ;
+		//UCA1RXBUF;
 		//Wait while not ready for TX
-		UCA0TXBUF = *buff++;    					//Write byte
-		while (UCA0STAT & UCBUSY) ;
-		//UCA0RXBUF;
+		UCA1TXBUF = *buff++;    					//Write byte
+		while (UCA1STAT & UCBUSY) ;
+		//UCA1RXBUF;
 
 		//Wait while not ready for TX
-		UCA0TXBUF = *buff++;
-		while (UCA0STAT & UCBUSY) ;
-		//UCA0RXBUF;
+		UCA1TXBUF = *buff++;
+		while (UCA1STAT & UCBUSY) ;
+		//UCA1RXBUF;
 		//Wait while not ready for TX
-		UCA0TXBUF = *buff++;    					//Write byte
-		while (UCA0STAT & UCBUSY) ;
-		//UCA0RXBUF;
+		UCA1TXBUF = *buff++;    					//Write byte
+		while (UCA1STAT & UCBUSY) ;
+		//UCA1RXBUF;
 
 
 	}while( bc -=4 );
@@ -163,7 +163,7 @@ void xmit_mmc (
 
 
 
-	//   UCA0RXBUF;                                              //Dummy read to empty RX buffer
+	//   UCA1RXBUF;                                              //Dummy read to empty RX buffer
 									//and clear any overrun conditions
 	//SDCard_sendFrame((uint8_t *)buff, bc);
 }
@@ -190,27 +190,27 @@ void rcvr_mmc (
 
 
 	do{
-		//while (!(UCA0IFG & UCTXIFG)) ;                      //Wait while not ready for TX
-		UCA0TXBUF = 0xff;                                   //Write dummy byte
-		while (!(UCA0IFG & UCRXIFG)) ;                      //Wait for RX buffer (full)
-		*buff++ = UCA0RXBUF;
+		//while (!(UCA1IFG & UCTXIFG)) ;                      //Wait while not ready for TX
+		UCA1TXBUF = 0xff;                                   //Write dummy byte
+		while (!(UCA1IFG & UCRXIFG)) ;                      //Wait for RX buffer (full)
+		*buff++ = UCA1RXBUF;
 
 
-		while (!(UCA0IFG & UCTXIFG)) ;                      //Wait while not ready for TX
-		UCA0TXBUF = 0xff;                                   //Write dummy byte
-		while (!(UCA0IFG & UCRXIFG)) ;                      //Wait for RX buffer (full)
-		*buff++ = UCA0RXBUF;
+		while (!(UCA1IFG & UCTXIFG)) ;                      //Wait while not ready for TX
+		UCA1TXBUF = 0xff;                                   //Write dummy byte
+		while (!(UCA1IFG & UCRXIFG)) ;                      //Wait for RX buffer (full)
+		*buff++ = UCA1RXBUF;
 
-		//while (!(UCA0IFG & UCTXIFG)) ;                      //Wait while not ready for TX
-		UCA0TXBUF = 0xff;                                   //Write dummy byte
-		while (!(UCA0IFG & UCRXIFG)) ;                      //Wait for RX buffer (full)
-		*buff++ = UCA0RXBUF;
+		//while (!(UCA1IFG & UCTXIFG)) ;                      //Wait while not ready for TX
+		UCA1TXBUF = 0xff;                                   //Write dummy byte
+		while (!(UCA1IFG & UCRXIFG)) ;                      //Wait for RX buffer (full)
+		*buff++ = UCA1RXBUF;
 
 
-		while (!(UCA0IFG & UCTXIFG)) ;                      //Wait while not ready for TX
-		UCA0TXBUF = 0xff;                                   //Write dummy byte
-		while (!(UCA0IFG & UCRXIFG)) ;                      //Wait for RX buffer (full)
-		*buff++ = UCA0RXBUF;
+		while (!(UCA1IFG & UCTXIFG)) ;                      //Wait while not ready for TX
+		UCA1TXBUF = 0xff;                                   //Write dummy byte
+		while (!(UCA1IFG & UCRXIFG)) ;                      //Wait for RX buffer (full)
+		*buff++ = UCA1RXBUF;
 	}while( bc -=4 );
 
 

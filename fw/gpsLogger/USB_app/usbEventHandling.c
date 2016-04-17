@@ -78,13 +78,13 @@ uint8_t USB_handleVbusOnEvent ()
 {
     //TO DO: You can place your code here
 
-	gps_stop();
+	//gps_stop();
 
     //We switch on USB and connect to the BUS
-    if (USB_enable() == USB_SUCCEED){
-        USB_reset();
-        USB_connect();  //generate rising edge on DP -> the host enumerates our device as full speed device
-    }
+    //if (USB_enable() == USB_SUCCEED){
+    //    USB_reset();
+    //    USB_connect();  //generate rising edge on DP -> the host enumerates our device as full speed device
+    //}
     return (TRUE);      //return TRUE to wake the main loop (in the case the CPU slept before interrupt)
 }
 
@@ -96,7 +96,7 @@ uint8_t USB_handleVbusOffEvent ()
 {
 	UCS_turnOffXT2();
 
-	gps_start();
+	//gps_start();
 
     return (TRUE);      //return TRUE to wake the main loop (in the case the CPU slept before interrupt)
 }

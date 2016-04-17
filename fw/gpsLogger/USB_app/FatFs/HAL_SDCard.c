@@ -40,23 +40,24 @@
  ******************************************************************************/
 #include "msp430.h"
 #include "HAL_SDCard.h"
+#include "hal.h"
 
 //Pins from MSP430 connected to the SD Card
-#define SPI_SIMO        BIT3 // P3
-#define SPI_SOMI        BIT4 // P3
-#define SPI_CLK         BIT7 // P2
-#define SD_CS           BIT2 // P3
+#define SPI_SIMO        BIT4 // P4
+#define SPI_SOMI        BIT5 // P4
+#define SPI_CLK         BIT0 // P4
+#define SD_CS           BIT3 // P4
 
 //Ports
-#define SPI_SEL         P3SEL
-#define SPI_DIR         P3DIR
-#define SD_CS_SEL       P3SEL
-#define SD_CS_OUT       P3OUT
-#define SD_CS_DIR       P3DIR
+#define SPI_SEL         P4SEL
+#define SPI_DIR         P4DIR
+#define SD_CS_SEL       P4SEL
+#define SD_CS_OUT       P4OUT
+#define SD_CS_DIR       P4DIR
 
 //KLQ
-#define SPI_REN         P3REN
-#define SPI_OUT         P3OUT
+#define SPI_REN         P4REN
+#define SPI_OUT         P4OUT
 //KLQ
 
 /***************************************************************************//**
@@ -67,11 +68,8 @@
 void SDCard_init (void)
 {
     //Port initialization for SD Card operation
-	P2SEL |= SPI_CLK;
-	P2DIR |= SPI_CLK;
-
-    SPI_SEL |= SPI_SOMI | SPI_SIMO;
-    SPI_DIR |= SPI_SIMO;
+    SPI_SEL |= SPI_SOMI | SPI_SIMO | SPI_CLK;
+    SPI_DIR |= SPI_SIMO | SPI_CLK;
     SD_CS_SEL &= ~SD_CS;
     SD_CS_OUT |= SD_CS;
     SD_CS_DIR |= SD_CS;
@@ -81,16 +79,49 @@ void SDCard_init (void)
     SPI_OUT |= SPI_SOMI | SPI_SIMO;
     //KLQ
 
+
+    /* Enable power to SD card */
+   // hal_sd_pwr_on();
+
     //Initialize USCI_B1 for SPI Master operation
-    UCA0CTL1 |= UCSWRST;                                    //Put state machine in reset
-    UCA0CTL0 = UCCKPL | UCMSB | UCMST | UCMODE_0 | UCSYNC;  //3-pin, 8-bit SPI master
+    UCA1CTL1 |= UCSWRST;                                    //Put state machine in reset
+    UCA1CTL0 = UCCKPL | UCMSB | UCMST | UCMODE_0 | UCSYNC;  //3-pin, 8-bit SPI master
     //Clock polarity select - The inactive state is high
     //MSB first
-    UCA0CTL1 = UCSWRST | UCSSEL__SMCLK;                          //Use SMCLK, keep RESET
-    UCA0BR0 = 63;                                           //Initial SPI clock must be <400kHz
-    UCA0BR1 = 0;                                            //f_UCxCLK = 25MHz/63 = 397kHz
-    UCA0CTL1 &= ~UCSWRST;                                   //Release USCI state machine
-    UCA0IFG &= ~UCRXIFG;
+    UCA1CTL1 = UCSWRST | UCSSEL__SMCLK;                          //Use SMCLK, keep RESET
+    UCA1BR0 = 63;                                           //Initial SPI clock must be <400kHz
+    UCA1BR1 = 0;                                            //f_UCxCLK = 25MHz/63 = 397kHz
+    UCA1CTL1 &= ~UCSWRST;                                   //Release USCI state machine
+    UCA1IFG &= ~UCRXIFG;
+}
+
+/***************************************************************************//**
+ * @brief   deInitialize SD Card
+ * @param   None
+ * @return  None
+ ******************************************************************************/
+void SDCard_deinit (void)
+{
+    //Port initialization for SD Card operation
+    SPI_SEL &= ~(SPI_SOMI | SPI_SIMO | SPI_CLK);
+    SPI_DIR &= ~(SPI_SIMO | SPI_CLK); // output low
+    SD_CS_SEL &= ~SD_CS;
+    SD_CS_OUT &= ~SD_CS; // output low
+    SD_CS_DIR |= SD_CS;
+
+    //KLQ
+    SPI_REN |= SPI_SOMI | SPI_SIMO;
+    SPI_OUT &= ~(SPI_SOMI | SPI_SIMO); // pull down on both? data lines
+    //KLQ
+
+
+    /* Enable power to SD card */
+   // hal_sd_pwr_on();
+
+    //Initialize USCI_B1 for SPI Master operation
+    UCA1CTL1 |= UCSWRST;                                    //Put state machine in reset
+    UCA1CTL0 = 0;  //3-pin, 8-bit SPI master
+
 }
 
 /***************************************************************************//**
@@ -102,10 +133,10 @@ void SDCard_init (void)
  ******************************************************************************/
 void SDCard_fastMode (void)
 {
-    UCA0CTL1 |= UCSWRST;                                    //Put state machine in reset
-    UCA0BR0 = 2;                                            //f_UCxCLK = 25MHz/2 = 12.5MHz
-    UCA0BR1 = 0;
-    UCA0CTL1 &= ~UCSWRST;                                   //Release USCI state machine
+    UCA1CTL1 |= UCSWRST;                                    //Put state machine in reset
+    UCA1BR0 = 2;                                            //f_UCxCLK = 25MHz/2 = 12.5MHz
+    UCA1BR1 = 0;
+    UCA1CTL1 &= ~UCSWRST;                                   //Release USCI state machine
 }
 
 /***************************************************************************//**
@@ -120,14 +151,14 @@ void SDCard_readFrame (uint8_t *pBuffer, uint16_t size)
 
     __disable_interrupt();                                  //Make this operation atomic
 
-    UCA0IFG &= ~UCRXIFG;                                    //Ensure RXIFG is clear
+    UCA1IFG &= ~UCRXIFG;                                    //Ensure RXIFG is clear
 
     //Clock the actual data transfer and receive the bytes
     while (size--){
-        while (!(UCA0IFG & UCTXIFG)) ;                      //Wait while not ready for TX
-        UCA0TXBUF = 0xff;                                   //Write dummy byte
-        while (!(UCA0IFG & UCRXIFG)) ;                      //Wait for RX buffer (full)
-        *pBuffer++ = UCA0RXBUF;
+        while (!(UCA1IFG & UCTXIFG)) ;                      //Wait while not ready for TX
+        UCA1TXBUF = 0xff;                                   //Write dummy byte
+        while (!(UCA1IFG & UCRXIFG)) ;                      //Wait for RX buffer (full)
+        *pBuffer++ = UCA1RXBUF;
     }
 
     __bis_SR_register(gie);                                 //Restore original GIE state
@@ -150,12 +181,12 @@ void SDCard_sendFrame (uint8_t *pBuffer, uint16_t size)
     //in order to optimize transfer speed, however we need to take care of the
     //resulting overrun condition.
     while (size--){
-        while (!(UCA0IFG & UCTXIFG)) ;                      //Wait while not ready for TX
-        UCA0TXBUF = *pBuffer++;                             //Write byte
+        while (!(UCA1IFG & UCTXIFG)) ;                      //Wait while not ready for TX
+        UCA1TXBUF = *pBuffer++;                             //Write byte
     }
-    while (UCA0STAT & UCBUSY) ;                             //Wait for all TX/RX to finish
+    while (UCA1STAT & UCBUSY) ;                             //Wait for all TX/RX to finish
 
-    UCA0RXBUF;                                              //Dummy read to empty RX buffer
+    UCA1RXBUF;                                              //Dummy read to empty RX buffer
                                                             //and clear any overrun conditions
 
     __bis_SR_register(gie);                                 //Restore original GIE state

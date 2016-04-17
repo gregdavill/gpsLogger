@@ -47,7 +47,23 @@
 #define   initClocks      USBHAL_initClocks
 #endif
 
- 
+
+enum colours{RED = 1, GREEN = 2, BLUE = 4, YELLOW = 3, CYAN = 6, MAGENTA = 5, WHITE = 7};
+
 void USBHAL_initPorts(void);
 void USBHAL_initClocks(uint32_t mclkFreq);
+
+void hal_led_a( uint8_t c );
+void hal_led_b( uint8_t c );
+
+
+void hal_gps_pwr_on(void);
+void hal_gps_pwr_off(void);
+
+void hal_sd_pwr_on(void);
+void hal_sd_pwr_off(void);
+
+uint8_t hal_button_event(void);
+
+
 //Released_Version_5_00_01

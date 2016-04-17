@@ -45,6 +45,8 @@
 #include "FatFs/diskio.h"
 #include "FatFs/mmc.h"
 #include "USB_app/msc.h"
+
+#include "hal.h"
 const uint16_t BYTES_PER_BLOCK = 512;
 
 /*
@@ -163,7 +165,7 @@ void USBMSC_processMSCBuffer(void)
 
 		while (RWbuf_info->operation == USBMSC_READ)
 		{
-			GPIO_setOutputHighOnPin(GPIO_PORT_P1, GPIO_PIN7);
+			hal_led_a(GREEN);
 			//A READ operation is underway, and the app has been requested to access
 			//the medium.  So, call file system to read
 			//to do so.  Note this is a low level FatFs call -- we are not
@@ -174,7 +176,7 @@ void USBMSC_processMSCBuffer(void)
 				RWbuf_info->lba,           //First LBA of this buffer operation
 				RWbuf_info->lbCount);      //The number of blocks being requested
 											//as part of this operation
-			GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN7);
+			hal_led_a(0);
 
 			//The result of the file system call needs to be communicated to the
 			//host.  Different file system software uses
@@ -205,20 +207,22 @@ void USBMSC_processMSCBuffer(void)
 					RWbuf_info->returnCode = USBMSC_RW_LBA_OUT_OF_RANGE;
 					break;
 			}
+			hal_led_a(RED);
 			USBMSC_processBuffer();
+			hal_led_a(0);
 		}
 
 		//Everything in this section is analogous to READs.  Reference the
 		//comments above.
 		while (RWbuf_info->operation == USBMSC_WRITE)
 		{
-			GPIO_setOutputHighOnPin(GPIO_PORT_P1, GPIO_PIN7);
+			hal_led_a(GREEN);
 			DRESULT dresult = disk_write(0, //Physical drive number (0)
 				RWbuf_info->bufferAddr,    //Pointer to the user buffer
 				RWbuf_info->lba,           //First LBA of this buffer operation
 				RWbuf_info->lbCount);      //The number of blocks being requested
 											//as part of this operation
-			GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN7);
+			hal_led_a(0);
 
 			switch (dresult)
 			{
@@ -241,7 +245,9 @@ void USBMSC_processMSCBuffer(void)
 					RWbuf_info->returnCode = USBMSC_RW_NOT_READY;
 					break;
 			}
+			hal_led_a(RED);
 			USBMSC_processBuffer();
+			hal_led_a(0);
 		}
 	}
 }
