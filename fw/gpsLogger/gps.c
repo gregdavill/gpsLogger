@@ -34,10 +34,10 @@ char nmea_file_name[] = "log000.txt";
 const char xml_a[] = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<kml xmlns=\"http://earth.google.com/kml/2.1\">\r\n\t<Document>\r\n\t<name>";//17-02-2016_18-58-42
 const char xml_b[] = "</name>\r\n\t\t<visibility>1</visibility>\r\n\t\t<Folder>\r\n\t\t\t<name>Track";
 const char xml_c[] = "</name>\r\n\t\t\t<Placemark>\r\n\t\t\t\t<name>Track information";
-const char xml_d[] = "</name>\r\n\t\t\t\t<Style>\r\n\t\t\t\t\t<LineStyle>\r\n\t\t\t\t\t\t<color>12F429FF";
+const char xml_d[] = "</name>\r\n\t\t\t\t<Style>\r\n\t\t\t\t\t<LineStyle>\r\n\t\t\t\t\t\t<color>ff03ffff";
 const char xml_e[] = "</color>\r\n\t\t\t\t\t\t<width>3</width>\r\n\t\t\t\t\t</LineStyle>\r\n\t\t\t\t</Style>\r\n\t\t\t\t<LineString>\r\n\t\t\t\t\t<tessellate>1</tessellate>\r\n\t\t\t\t\t<coordinates>\r\n";
 
-const char xml_f[] = "\t\t\t\t\t</coordinates>\r\n\t\t\t\t</LineString>\r\n\t\t\t\t<description>\r\n\t\t\t\t\t<![CDATA[Total time 00:34:34<br/>Distance 2.231Km<br/>Speed 3.873Km/h<br/>]]>\r\n\t\t\t\t</description>\r\n\t\t\t</Placemark>\r\n\t\t</Folder>\r\n\t</Document>\r\n</kml>\r\n";
+const char xml_f[] = "\t\t\t\t\t</coordinates>\r\n\t\t\t\t</LineString>\r\n\t\t\t\t<description>\r\n\t\t\t\t</description>\r\n\t\t\t</Placemark>\r\n\t\t</Folder>\r\n\t</Document>\r\n</kml>\r\n";
 
 FATFS FatFs;		/* FatFs work area needed for each volume */
 FIL gps_log;			/* File object needed for each open file */
@@ -99,106 +99,8 @@ void GPS_deinit()
 
 }
 
-uint8_t fix = 0;
-/* This is a simple, but long, state machine to determine if a valid GPS stream has a fix.
- * it is called one character at a time */
-void gps_fix(uint8_t c)
-{
-	static uint8_t state = 0;
-	switch( state )
-	{
-	case 0:
-		if(c == '$')
-			state = 1;
-		break;
-	case 1:
-			if(c == 'G')
-				state = 2;
-			else
-				state = 1;
-			break;
-	case 2:
-			if(c == 'P')
-				state = 3;
-			else
-				state = 1;
-			break;
-
-	case 3:
-			if(c == 'G')
-				state = 4;
-			else
-				state = 1;
-			break;
-
-	case 4:
-			if(c == 'G')
-				state = 5;
-			else
-				state = 1;
-			break;
-
-	case 5:
-			if(c == 'A')
-				state = 6;
-			else
-				state = 1;
-			break;
-
-	case 6:				// $GPGGA,
-			if(c == ',')
-				state = 7;
-			else
-				state = 1;
-			break;
-
-	case 7:				// time,
-			if(c == ',')
-			{
-				state = 8;
-			}
-			break;
-
-	case 8:				// lat,
-			if(c == ',')
-			{
-				state = 9;
-			}
-			break;
-
-	case 9:				// N,
-			if(c == ',')
-			{
-				state = 10;
-			}
-
-			break;
-
-	case 10:				// long,
-			if(c == ',')
-			{
-				state = 11;
-			}
-			break;
-
-	case 11:				// W,
-			if(c == ',')
-				state = 12;
-
-			break;
-
-	case 12:				// Fix value
-			if(c >= '0' && c <= '8')
-			{
-				fix = c - '0';
-			}
-			else
-				fix = 0;
-			state = 1;
-			break;
-	}
-}
-
+uint8_t file_date[10];
+uint8_t file_time[10];
 
 void gps_do()
 {
@@ -209,11 +111,36 @@ void gps_do()
 		uint16_t bytes_in_buffer = sizeof(gps_rx_bufferA);
 		uint8_t *c = (uint8_t*)gps_full_buffer;
 		do{
-			gps_fix(*c++);
-			if( fix == 1 || fix == 2 )
-				hal_led_b(GREEN);
-			else
-				hal_led_b(RED);
+
+			if( gps_util_valid(*c++) ) /* returns true when a correct checksum is processed */
+			{
+
+				char* gps_line = gps_util_get_last_valid_line();
+
+				if( gps_util_is_RMC(gps_line) )
+				{
+					hal_led_b(CYAN);
+					if( gps_util_fix_valid(gps_line) )
+					{
+						hal_led_b(GREEN);
+						hal_led_b(GREEN);
+						if(!file_date[0])
+						{
+							gps_util_extract_date(gps_line, file_date);
+							gps_util_extract_time(gps_line, file_time);
+
+							gps_create_kml_file(file_date, file_time);
+						}
+
+						gps_convert_NMEA2coords(gps_line);
+					}
+					else
+					{
+						hal_led_b(RED);
+					}
+				}
+			}
+
 		} while(--bytes_in_buffer);
 
 		gps_got_line = 0;
@@ -443,62 +370,8 @@ void gps_stop()
 
 	USCI_A_UART_disableInterrupt(USCI_A0_BASE, USCI_A_UART_RECEIVE_INTERRUPT); // disable interrupt
 
-
-	/* Create KML file? */
-	do {
-
-	uint8_t file_time[10] = {0};
-	uint8_t	file_date[10] = {0};
-
-
-	FRESULT rc;
 	uint16_t bw;
-	rc = f_open(&gps_log, "testlog.txt", FA_READ | FA_OPEN_ALWAYS);
-	if( rc )
-		hal_led_a(YELLOW);
-
-
-
-
-
-
-	while(1){
-		uint8_t* c = RWbuf;
-		rc = f_read(&gps_log, RWbuf, 512 , &bw ); /* efficient */
-
-		if(bw == 0)
-			break;
-
-		hal_led_b(BLUE);
-
-		while(--bw)
-		{
-
-			if( gps_util_valid(*c++) ) /* returns true when a correct checksum is processed */
-			{
-				char* gps_line = gps_util_get_last_valid_line();
-
-				if( gps_util_is_RMC(gps_line) )
-				{
-					hal_led_b(CYAN);
-					if( gps_util_fix_valid(gps_line) )
-					{
-						hal_led_b(GREEN);
-						if(!file_date[0])
-						{
-							gps_util_extract_date(gps_line, file_date);
-							gps_util_extract_time(gps_line, file_time);
-
-							gps_create_kml_file(file_date, file_time);
-						}
-
-						gps_convert_NMEA2coords(gps_line);
-					}
-				}
-			}
-
-		}
-	}
+	FRESULT rc;
 
 	f_write(&kml_file, xml_f, sizeof(xml_f) - 1, &bw);
 	if( rc )
@@ -507,14 +380,11 @@ void gps_stop()
 	f_close(&kml_file);
 
 
-	} while(0);
-
-
 
 	hal_led_b(0);
 	/* unmount work area */
 	f_mount(0, "", 0);		/* Give a work area to the default drive */
-	fix = 0;
+
 	hal_gps_pwr_off();
 }
 
