@@ -280,13 +280,133 @@ void gps_start()
 
 }
 
+
+void gps_minute2degree(uint8_t* minute_string, uint8_t* output)
+{
+	_iq24 minutes = _atoIQ24(minute_string);
+	minutes /= 60;
+	_IQ24toa(output, "%0.7f", minutes);
+}
+
+
+
+extern uint8_t RWbuf[512];
+
+
 void gps_stop()
 {
 	bActive = 0;
 
 	USCI_A_UART_disableInterrupt(USCI_A0_BASE, USCI_A_UART_RECEIVE_INTERRUPT); // disable interrupt
 
+
+	/* Create KML file? */
+	do {
+
+	uint8_t file_time[10] = {0};
+	uint8_t	file_date[10] = {0};
+
+
+	FRESULT rc;
 	uint16_t bw;
+	rc = f_open(&gps_log, "testlog.txt", FA_READ | FA_OPEN_ALWAYS);
+	if( rc )
+		hal_led_a(YELLOW);
+
+
+	FIL kml_file;
+	rc = f_open(&kml_file, "kml.txt", FA_WRITE | FA_OPEN_ALWAYS);
+	if( rc )
+		hal_led_a(YELLOW);
+
+	while(1){
+		uint8_t* c = RWbuf;
+		rc = f_read(&gps_log, RWbuf, 512 , &bw ); /* efficient */
+
+		if(bw == 0)
+			break;
+
+		hal_led_b(BLUE);
+
+		while(--bw)
+		{
+
+			if( gps_util_valid(*c++) ) /* returns true when a correct checksum is processed */
+			{
+				char* gps_line = gps_util_get_last_valid_line();
+
+				if( gps_util_is_RMC(gps_line) )
+				{
+					hal_led_b(CYAN);
+					if( gps_util_fix_valid(gps_line) )
+					{
+						hal_led_b(GREEN);
+						if(!file_date[0])
+							gps_util_extract_date(gps_line, file_date);
+						if(!file_time[0])
+							gps_util_extract_time(gps_line, file_time);
+
+						/* get lattiude */
+						uint8_t degree_string[4];
+						uint8_t minute_string[8];
+						uint8_t degrees_fraction[12];
+						uint8_t elevation[10];
+						uint8_t buff[64];
+						uint8_t negate;
+
+						gps_util_extract_lat_degrees(gps_line, degree_string);
+						gps_util_extract_lat_minutes(gps_line, minute_string);
+						gps_minute2degree(minute_string, degrees_fraction);
+
+						negate = gps_util_extract_north(gps_line);
+
+						/* format back into a ascii string */
+						uint8_t* buff_ptr = buff;
+
+						if(negate)
+							*buff_ptr++ = '-';
+
+						strcpy(buff_ptr, degree_string);
+						buff_ptr += strlen(degree_string);
+
+						strcpy(buff_ptr, degrees_fraction);
+						buff_ptr += strlen(degrees_fraction);
+
+						*buff_ptr++ = ',';
+
+						// repeat for long
+						gps_util_extract_long_degrees(gps_line, degree_string);
+						gps_util_extract_long_minutes(gps_line, minute_string);
+						gps_minute2degree(minute_string, degrees_fraction);
+
+						negate = gps_util_extract_west(gps_line);
+
+						if(negate)
+							*buff_ptr++ = '-';
+
+						strcpy(buff_ptr, degree_string);
+						buff_ptr += strlen(degree_string);
+
+						strcpy(buff_ptr, degrees_fraction);
+						buff_ptr += strlen(degrees_fraction);
+
+						strcpy(buff_ptr, ",0.0\r\n");
+
+						f_write(&kml_file, buff, strlen(buff), &bw);
+						hal_led_b(0);
+
+					}
+				}
+			}
+
+		}
+	}
+
+	f_close(&kml_file);
+
+
+	} while(0);
+
 
 
 	hal_led_b(0);

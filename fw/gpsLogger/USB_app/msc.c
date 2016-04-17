@@ -49,6 +49,9 @@
 #include "hal.h"
 const uint16_t BYTES_PER_BLOCK = 512;
 
+#ifndef NULL
+#define NULL 0
+#endif
 /*
  * Every application using this MSC API must define an instance of this
  * structure.  It establishes compile-time information about the storage media.
@@ -62,7 +65,6 @@ extern struct config_struct USBMSC_config;
 //needs the application to "process" it (exchange data with the media).
 // In this case each cluster has one block so this buffer is 512 bytes.
 uint8_t RWbuf[512];
-uint8_t RWbufA[512];
 
 uint8_t toggle = 0;
 
