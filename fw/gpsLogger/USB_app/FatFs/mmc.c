@@ -67,7 +67,7 @@ uint32_t get_fattime (void)
 
 
     /* Pack date and time into a uint32_t variable */
-    tmr =     (((uint32_t)year - 80) << 25)                                //rtcYear
+    tmr =     (((uint32_t)year - 60) << 25)                                //rtcYear
           | ((uint32_t)month << 21)                                            //rtcMon
           | ((uint32_t)day << 16)                                           //rtcMday
           | (uint16_t)(hour << 11)                                             //rtcHour
