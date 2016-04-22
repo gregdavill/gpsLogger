@@ -127,8 +127,8 @@ void gps_do()
 	{
 		if(init_gps)
 		{
-			gps_puts("$PMTK300,200,0,0,0,0*2F\r\n");
-			gps_puts("$PMTK220,200*2C\r\n");
+			gps_puts("$PMTK300,500,0,0,0,0*28\r\n");
+			gps_puts("$PMTK220,500*2B\r\n");
 			init_gps = 0;
 		}
 		uint16_t bytes_in_buffer = GPS_BUFFER_SIZE;
