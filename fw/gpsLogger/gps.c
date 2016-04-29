@@ -176,9 +176,9 @@ void gps_do()
 		if( rc )
 			hal_led_a(YELLOW);
 
-		rc = f_sync(&gps_log);
-		if( rc )
-			hal_led_a(YELLOW);
+		//rc = f_sync(&gps_log);
+		//if( rc )
+		//	hal_led_a(YELLOW);
 
 
 		//gps_full_buffer = 0;
@@ -217,9 +217,9 @@ void gps_start()
 
 	}
 
-	rc = f_open(&gps_log, nmea_file_name, FA_WRITE | FA_OPEN_ALWAYS);
-	if( rc )
-		hal_led_a(YELLOW);
+	//rc = f_open(&gps_log, nmea_file_name, FA_WRITE | FA_OPEN_ALWAYS);
+	//if( rc )
+	//	hal_led_a(YELLOW);
 
 	hal_led_b(RED);
 
@@ -303,7 +303,18 @@ void gps_convert_NMEA2coords(char* gps_line)
 
 	uint16_t bw;
 
-	f_write(&kml_file, buff, strlen(buff), &bw);
+	FRESULT rc = f_write(&kml_file, buff, strlen(buff), &bw);
+	if( rc )
+	{
+		hal_led_a(RED);
+	}
+
+	rc = f_sync(&kml_file);
+	if( rc )
+	{
+		hal_led_a(RED);
+	}
+
 }
 
 
