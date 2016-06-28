@@ -136,7 +136,7 @@ int main (void)
     				if (USB_enable() == USB_SUCCEED){
     					state = sUSB;
     					hal_led_a(GREEN);
-    					hal_sd_pwr_on();
+    					//hal_sd_pwr_on();
     					//detectCard();
 
     					USB_reset();
@@ -300,64 +300,6 @@ int main (void)
     		break;
     	}
     }
-
-
-
-    if( USB_getConnectionInformation() & USB_VBUS_PRESENT)
-    	{
-			switch (USB_getConnectionState())
-			{
-				case ST_ENUM_ACTIVE:
-
-					hal_led_b(GREEN);
-
-					USBMSC_processMSCBuffer(); // Handle READ/WRITE cmds from the host
-
-					// Every second, the Timer_A ISR sets this flag.  The
-					// checking can't be done from within the timer ISR, because it
-					// enables interrupts, and this is not a recommended
-					// practice due to the risk of nested interrupts.
-					if (bDetectCard){
-						USBMSC_checkMSCInsertionRemoval();
-
-						// Clear the flag, until the next timer ISR
-						bDetectCard = 0x00;
-					}
-
-					break;
-
-				// These cases are executed while your device is disconnected from
-				// the host (meaning, not enumerated); enumerated but suspended
-				// by the host, or connected to a powered hub without a USB host
-				// present.
-				case ST_PHYS_DISCONNECTED:
-				case ST_ENUM_SUSPENDED:
-				case ST_PHYS_CONNECTED_NOENUM_SUSP:
-					hal_led_b(YELLOW);
-					__bis_SR_register(LPM3_bits + GIE);
-					_NOP();
-					break;
-
-				// The default is executed for the momentary state
-				// ST_ENUM_IN_PROGRESS.  Usually, this state only last a few
-				// seconds.  Be sure not to enter LPM3 in this state; USB
-				// communication is taking place here, and therefore the mode must
-				// be LPM0 or active-CPU.
-				case ST_ENUM_IN_PROGRESS:
-				default:;
-			}
-    	}
-    	else
-    	{
-    		//if(gps_check())
-			{
-    			hal_led_b(YELLOW);
-				gps_do();
-				__bis_SR_register(LPM0_bits + GIE);
-				_NOP();
-			}
-    	}
-   // }  //while(1)
 
 }
 
