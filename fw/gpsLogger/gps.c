@@ -220,10 +220,6 @@ void gps_start()
 
 	}
 
-	//rc = f_open(&gps_log, nmea_file_name, FA_WRITE | FA_OPEN_ALWAYS);
-	//if( rc )
-	//	hal_led_a(YELLOW);
-
 	UINT bw = 0;
 	rc = f_write(&gps_log, NMEA_header, sizeof(NMEA_header) - 1, &bw );
 	if( rc )
@@ -265,6 +261,9 @@ void gps_convert_NMEA2coords(char* gps_line)
 	uint8_t* degrees_fraction = &RWbuf[12];
 	uint8_t* buff = &RWbuf[24];
 	uint8_t negate;
+
+
+	memset(RWbuf,0,128);
 
 	gps_util_extract_long_degrees(gps_line, degree_string);
 	gps_util_extract_long_minutes(gps_line, minute_string);
@@ -376,7 +375,7 @@ void gps_create_kml_file(char* date, char* time)
 	strcpy(ptr, ".kml");
 
 	uint16_t bw;
-	FRESULT rc = f_open(&kml_file, long_filename, FA_WRITE | FA_OPEN_ALWAYS);
+	FRESULT rc = f_open(&kml_file, long_filename, FA_WRITE | FA_CREATE_ALWAYS);
 	if( rc )
 		hal_led_a(YELLOW);
 
@@ -411,6 +410,12 @@ void gps_create_kml_file(char* date, char* time)
 	rc = f_write(&kml_file, xml_e, sizeof(xml_e) - 1, &bw);
 	if( rc )
 			hal_led_a(YELLOW);
+
+	rc = f_sync(&kml_file);
+	if( rc )
+			hal_led_a(YELLOW);
+
+
 }
 
 void gps_stop()
@@ -421,15 +426,17 @@ void gps_stop()
 
 	uint16_t bw;
 	FRESULT rc;
-	f_close(&gps_log);
-
-
-	f_write(&kml_file, xml_f, sizeof(xml_f) - 1, &bw);
+	rc = f_close(&gps_log);
 	if( rc )
 			hal_led_a(YELLOW);
 
-	f_close(&kml_file);
+	rc = f_write(&kml_file, xml_f, sizeof(xml_f) - 1, &bw);
+	if( rc )
+			hal_led_a(YELLOW);
 
+	rc = f_close(&kml_file);
+	if( rc )
+			hal_led_a(YELLOW);
 
 
 	hal_led_b(0);
