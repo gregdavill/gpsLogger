@@ -340,7 +340,7 @@ void pretty_date(char* in, char* out)
 	_IQ2toa(out, "%02.00f", _IQ2(gps_day));
 	out[2] = ' ';
 
-	memcpy(&out[3], &const_months[gps_month*3], 3);
+	memcpy(&out[3], &const_months[(gps_month - 1)*3], 3);
 
 	out[6] = ' ';
 

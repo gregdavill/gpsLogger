@@ -48,6 +48,7 @@
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DEFINE.21040495" name="Define symbols (-D)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DEFINE" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__MSP430F5513__"/>
+									<listOptionValue builtIn="false" value="TEST=$(shell C:\Program Files\Git\bin\git describe --abbrev=4 --dirty --always --tags)"/>
 									<listOptionValue builtIn="false" value="DEPRECATED"/>
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.OPT_LEVEL.444516768" name="Optimization Level" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.OPT_LEVEL" value="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.OPT_LEVEL.2" valueType="enumerated"/>
