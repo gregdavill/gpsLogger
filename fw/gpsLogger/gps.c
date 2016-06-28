@@ -17,7 +17,7 @@
 #include "hal.h"
 
 
-#define GPS_BUFFER_SIZE 256
+#define GPS_BUFFER_SIZE 128
 
 
 volatile uint8_t* gps_current_buffer;
@@ -179,9 +179,9 @@ void gps_do()
 		{
 			hal_led_a(YELLOW);
 		}
-		//rc = f_sync(&gps_log);
-		//if( rc )
-		//	hal_led_a(YELLOW);
+		rc = f_sync(&gps_log);
+		if( rc )
+			hal_led_a(YELLOW);
 
 
 		//gps_full_buffer = 0;
@@ -259,7 +259,7 @@ void gps_convert_NMEA2coords(char* gps_line)
 	uint8_t* degree_string = RWbuf;
 	uint8_t* minute_string = &RWbuf[4];
 	uint8_t* degrees_fraction = &RWbuf[12];
-	uint8_t* buff = &RWbuf[24];
+	uint8_t* _buff = &RWbuf[24];
 	uint8_t negate;
 
 
@@ -272,7 +272,7 @@ void gps_convert_NMEA2coords(char* gps_line)
 	negate = gps_util_extract_west(gps_line);
 
 	/* format back into a ascii string */
-	uint8_t* buff_ptr = buff;
+	uint8_t* buff_ptr = _buff;
 
 	strcpy(buff_ptr, "\t\t\t\t\t");
 	buff_ptr += strlen("\t\t\t\t\t");
@@ -310,7 +310,7 @@ void gps_convert_NMEA2coords(char* gps_line)
 
 	uint16_t bw;
 
-	FRESULT rc = f_write(&kml_file, buff, strlen(buff), &bw);
+	FRESULT rc = f_write(&kml_file, _buff, strlen(_buff), &bw);
 	if( rc )
 	{
 		hal_led_a(RED);
@@ -377,8 +377,13 @@ void gps_create_kml_file(char* date, char* time)
 	uint16_t bw;
 	FRESULT rc = f_open(&kml_file, long_filename, FA_WRITE | FA_CREATE_ALWAYS);
 	if( rc )
-		hal_led_a(YELLOW);
+	{
+		// attempt to append _1 to file
+		strcpy(ptr, "_1.kml");
+		rc = f_open(&kml_file, long_filename, FA_WRITE | FA_CREATE_ALWAYS);
 
+		hal_led_a(YELLOW);
+	}
 	rc = f_write(&kml_file, xml_a, sizeof(xml_a) - 1, &bw);
 	if( rc )
 			hal_led_a(YELLOW);

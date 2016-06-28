@@ -12,7 +12,11 @@ typedef enum {
 	VALID_CRC_CHECK_2,
 } validState_t;
 
-uint8_t buff[128];
+
+
+extern uint8_t RWbuf[512]; // make use of USB memory when USB isn't in use
+
+uint8_t* buff = &RWbuf[128];
 
 
 validState_t valid_state = VALID_INIT;

@@ -2641,7 +2641,7 @@ FRESULT f_read (
 					mem_cpy(rbuff + ((fp->fs->winsect - sect) * SS(fp->fs)), fp->fs->win, SS(fp->fs));
 #else
 				if ((fp->flag & FA__FS_DIRTY) && fp->dsect - sect < cc)
-					mem_cpy(rbuff + ((fp->dsect - sect) * SS(fp->fs)), fp->buf, SS(fp->fs));
+					mem_cpy(rbuff + ((fp->dsect - sect) * SS(fp->fs)), fp->_buf, SS(fp->fs));
 #endif
 #endif
 				rcnt = SS(fp->fs) * cc;			/* Number of bytes transferred */
@@ -2651,12 +2651,12 @@ FRESULT f_read (
 			if (fp->dsect != sect) {			/* Load data sector if not in cache */
 #if !_FS_READONLY
 				if (fp->flag & FA__FS_DIRTY) {		/* Write-back dirty sector cache */
-					if (disk_write(fp->fs->drv, fp->buf, fp->dsect, 1) != RES_OK)
+					if (disk_write(fp->fs->drv, fp->_buf, fp->dsect, 1) != RES_OK)
 						ABORT(fp->fs, FR_DISK_ERR);
 					fp->flag &= ~FA__FS_DIRTY;
 				}
 #endif
-				if (disk_read(fp->fs->drv, fp->buf, sect, 1) != RES_OK)	/* Fill sector cache */
+				if (disk_read(fp->fs->drv, fp->_buf, sect, 1) != RES_OK)	/* Fill sector cache */
 					ABORT(fp->fs, FR_DISK_ERR);
 			}
 #endif
@@ -2669,7 +2669,7 @@ FRESULT f_read (
 			ABORT(fp->fs, FR_DISK_ERR);
 		mem_cpy(rbuff, &fp->fs->win[fp->fptr % SS(fp->fs)], rcnt);	/* Pick partial sector */
 #else
-		mem_cpy(rbuff, &fp->buf[fp->fptr % SS(fp->fs)], rcnt);	/* Pick partial sector */
+		mem_cpy(rbuff, &fp->_buf[fp->fptr % SS(fp->fs)], rcnt);	/* Pick partial sector */
 #endif
 	}
 
@@ -2736,7 +2736,7 @@ FRESULT f_write (
 				ABORT(fp->fs, FR_DISK_ERR);
 #else
 			if (fp->flag & FA__FS_DIRTY) {		/* Write-back sector cache */
-				if (disk_write(fp->fs->drv, fp->buf, fp->dsect, 1) != RES_OK)
+				if (disk_write(fp->fs->drv, fp->_buf, fp->dsect, 1) != RES_OK)
 					ABORT(fp->fs, FR_DISK_ERR);
 				fp->flag &= ~FA__FS_DIRTY;
 			}
@@ -2758,7 +2758,7 @@ FRESULT f_write (
 				}
 #else
 				if (fp->dsect - sect < cc) { /* Refill sector cache if it gets invalidated by the direct write */
-					mem_cpy(fp->buf, wbuff + ((fp->dsect - sect) * SS(fp->fs)), SS(fp->fs));
+					mem_cpy(fp->_buf, wbuff + ((fp->dsect - sect) * SS(fp->fs)), SS(fp->fs));
 					fp->flag &= ~FA__FS_DIRTY;
 				}
 #endif
@@ -2774,7 +2774,7 @@ FRESULT f_write (
 #else
 			if (fp->dsect != sect) {		/* Fill sector cache with file data */
 				if (fp->fptr < fp->fsize &&
-					disk_read(fp->fs->drv, fp->buf, sect, 1) != RES_OK)
+					disk_read(fp->fs->drv, fp->_buf, sect, 1) != RES_OK)
 						ABORT(fp->fs, FR_DISK_ERR);
 			}
 #endif
@@ -2788,7 +2788,7 @@ FRESULT f_write (
 		mem_cpy(&fp->fs->win[fp->fptr % SS(fp->fs)], wbuff, wcnt);	/* Fit partial sector */
 		fp->fs->wflag = 1;
 #else
-		mem_cpy(&fp->buf[fp->fptr % SS(fp->fs)], wbuff, wcnt);	/* Fit partial sector */
+		mem_cpy(&fp->_buf[fp->fptr % SS(fp->fs)], wbuff, wcnt);	/* Fit partial sector */
 		fp->flag |= FA__FS_DIRTY;
 #endif
 	}
@@ -2820,7 +2820,7 @@ FRESULT f_sync (
 		if (fp->flag & FA__WRITTEN) {	/* Is there any change to the file? */
 #if !_FS_TINY
 			if (fp->flag & FA__FS_DIRTY) {	/* Write-back cached data if needed */
-				if (disk_write(fp->fs->drv, fp->buf, fp->dsect, 1) != RES_OK)
+				if (disk_write(fp->fs->drv, fp->_buf, fp->dsect, 1) != RES_OK)
 					LEAVE_FF(fp->fs, FR_DISK_ERR);
 				fp->flag &= ~FA__FS_DIRTY;
 			}
@@ -3083,12 +3083,12 @@ FRESULT f_lseek (
 #if !_FS_TINY
 #if !_FS_READONLY
 					if (fp->flag & FA__FS_DIRTY) {		/* Write-back dirty sector cache */
-						if (disk_write(fp->fs->drv, fp->buf, fp->dsect, 1) != RES_OK)
+						if (disk_write(fp->fs->drv, fp->_buf, fp->dsect, 1) != RES_OK)
 							ABORT(fp->fs, FR_DISK_ERR);
 						fp->flag &= ~FA__FS_DIRTY;
 					}
 #endif
-					if (disk_read(fp->fs->drv, fp->buf, dsc, 1) != RES_OK)	/* Load current sector */
+					if (disk_read(fp->fs->drv, fp->_buf, dsc, 1) != RES_OK)	/* Load current sector */
 						ABORT(fp->fs, FR_DISK_ERR);
 #endif
 					fp->dsect = dsc;
@@ -3156,12 +3156,12 @@ FRESULT f_lseek (
 #if !_FS_TINY
 #if !_FS_READONLY
 			if (fp->flag & FA__FS_DIRTY) {			/* Write-back dirty sector cache */
-				if (disk_write(fp->fs->drv, fp->buf, fp->dsect, 1) != RES_OK)
+				if (disk_write(fp->fs->drv, fp->_buf, fp->dsect, 1) != RES_OK)
 					ABORT(fp->fs, FR_DISK_ERR);
 				fp->flag &= ~FA__FS_DIRTY;
 			}
 #endif
-			if (disk_read(fp->fs->drv, fp->buf, nsect, 1) != RES_OK)	/* Fill sector cache */
+			if (disk_read(fp->fs->drv, fp->_buf, nsect, 1) != RES_OK)	/* Fill sector cache */
 				ABORT(fp->fs, FR_DISK_ERR);
 #endif
 			fp->dsect = nsect;
@@ -3503,7 +3503,7 @@ FRESULT f_truncate (
 			}
 #if !_FS_TINY
 			if (res == FR_OK && (fp->flag & FA__FS_DIRTY)) {
-				if (disk_write(fp->fs->drv, fp->buf, fp->dsect, 1) != RES_OK)
+				if (disk_write(fp->fs->drv, fp->_buf, fp->dsect, 1) != RES_OK)
 					res = FR_DISK_ERR;
 				else
 					fp->flag &= ~FA__FS_DIRTY;
@@ -4461,7 +4461,7 @@ TCHAR* f_gets (
 typedef struct {
 	FIL* fp;
 	int idx, nchr;
-	BYTE buf[64];
+	BYTE _buf[64];
 } putbuff;
 
 
@@ -4484,35 +4484,35 @@ void putc_bfd (
 #if _USE_LFN && _LFN_UNICODE
 #if _STRF_ENCODE == 3			/* Write a character in UTF-8 */
 	if (c < 0x80) {				/* 7-bit */
-		pb->buf[i++] = (BYTE)c;
+		pb->_buf[i++] = (BYTE)c;
 	} else {
 		if (c < 0x800) {		/* 11-bit */
-			pb->buf[i++] = (BYTE)(0xC0 | c >> 6);
+			pb->_buf[i++] = (BYTE)(0xC0 | c >> 6);
 		} else {				/* 16-bit */
-			pb->buf[i++] = (BYTE)(0xE0 | c >> 12);
-			pb->buf[i++] = (BYTE)(0x80 | (c >> 6 & 0x3F));
+			pb->_buf[i++] = (BYTE)(0xE0 | c >> 12);
+			pb->_buf[i++] = (BYTE)(0x80 | (c >> 6 & 0x3F));
 		}
-		pb->buf[i++] = (BYTE)(0x80 | (c & 0x3F));
+		pb->_buf[i++] = (BYTE)(0x80 | (c & 0x3F));
 	}
 #elif _STRF_ENCODE == 2			/* Write a character in UTF-16BE */
-	pb->buf[i++] = (BYTE)(c >> 8);
-	pb->buf[i++] = (BYTE)c;
+	pb->_buf[i++] = (BYTE)(c >> 8);
+	pb->_buf[i++] = (BYTE)c;
 #elif _STRF_ENCODE == 1			/* Write a character in UTF-16LE */
-	pb->buf[i++] = (BYTE)c;
-	pb->buf[i++] = (BYTE)(c >> 8);
+	pb->_buf[i++] = (BYTE)c;
+	pb->_buf[i++] = (BYTE)(c >> 8);
 #else							/* Write a character in ANSI/OEM */
 	c = ff_convert(c, 0);	/* Unicode -> OEM */
 	if (!c) c = '?';
 	if (c >= 0x100)
-		pb->buf[i++] = (BYTE)(c >> 8);
-	pb->buf[i++] = (BYTE)c;
+		pb->_buf[i++] = (BYTE)(c >> 8);
+	pb->_buf[i++] = (BYTE)c;
 #endif
 #else							/* Write a character without conversion */
-	pb->buf[i++] = (BYTE)c;
+	pb->_buf[i++] = (BYTE)c;
 #endif
 
-	if (i >= (int)(sizeof pb->buf) - 3) {	/* Write buffered characters to the file */
-		f_write(pb->fp, pb->buf, (UINT)i, &bw);
+	if (i >= (int)(sizeof pb->_buf) - 3) {	/* Write buffered characters to the file */
+		f_write(pb->fp, pb->_buf, (UINT)i, &bw);
 		i = (bw == (UINT)i) ? 0 : -1;
 	}
 	pb->idx = i;
@@ -4536,7 +4536,7 @@ int f_putc (
 	putc_bfd(&pb, c);	/* Put a character */
 
 	if (   pb.idx >= 0	/* Flush buffered characters to the file */
-		&& f_write(pb.fp, pb.buf, (UINT)pb.idx, &nw) == FR_OK
+		&& f_write(pb.fp, pb._buf, (UINT)pb.idx, &nw) == FR_OK
 		&& (UINT)pb.idx == nw) return pb.nchr;
 	return EOF;
 }
@@ -4564,7 +4564,7 @@ int f_puts (
 		putc_bfd(&pb, *str++);
 
 	if (   pb.idx >= 0		/* Flush buffered characters to the file */
-		&& f_write(pb.fp, pb.buf, (UINT)pb.idx, &nw) == FR_OK
+		&& f_write(pb.fp, pb._buf, (UINT)pb.idx, &nw) == FR_OK
 		&& (UINT)pb.idx == nw) return pb.nchr;
 	return EOF;
 }
