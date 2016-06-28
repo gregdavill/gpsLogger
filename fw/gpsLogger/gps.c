@@ -27,9 +27,11 @@ volatile uint8_t gps_rx_bufferB[GPS_BUFFER_SIZE];
 volatile uint16_t gps_rx_idx;
 volatile uint8_t gps_got_line;
 
-
 char nmea_file_name[] = "nmea/log000.txt";
 
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
+const char NMEA_header[] = "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\r\n     gpsLogger [https://github.com/Greeeg/gpsLogger]\r\n\r\n  Version: " TOSTRING(_VCS_COMMIT_) "\r\n  Build: " __DATE__ " " __TIME__ "\r\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\r\n";
 
 const char xml_a[] = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<kml xmlns=\"http://earth.google.com/kml/2.1\">\r\n\t<Document>\r\n\t<name>";//17-02-2016_18-58-42
 const char xml_b[] = "</name>\r\n\t\t<visibility>1</visibility>\r\n\t\t<Folder>\r\n\t\t\t<name>Track";
@@ -174,8 +176,9 @@ void gps_do()
 		uint16_t bw;
 		rc = f_write(&gps_log, (const void*)gps_full_buffer, GPS_BUFFER_SIZE, (unsigned int*)&bw);	/* Write data to the file */
 		if( rc )
+		{
 			hal_led_a(YELLOW);
-
+		}
 		//rc = f_sync(&gps_log);
 		//if( rc )
 		//	hal_led_a(YELLOW);
@@ -220,6 +223,11 @@ void gps_start()
 	//rc = f_open(&gps_log, nmea_file_name, FA_WRITE | FA_OPEN_ALWAYS);
 	//if( rc )
 	//	hal_led_a(YELLOW);
+
+	UINT bw = 0;
+	rc = f_write(&gps_log, NMEA_header, sizeof(NMEA_header) - 1, &bw );
+	if( rc )
+		hal_led_a(RED);
 
 	hal_led_b(RED);
 
