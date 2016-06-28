@@ -17,14 +17,15 @@
 #include "hal.h"
 
 
-#define GPS_BUFFER_SIZE 128
+#define GPS_BUFFER_SIZE 32
+#define GPS_BUFFERS 8
 
 
 volatile uint8_t* gps_current_buffer;
 volatile uint8_t* gps_full_buffer;
-volatile uint8_t gps_rx_bufferA[GPS_BUFFER_SIZE];
-volatile uint8_t gps_rx_bufferB[GPS_BUFFER_SIZE];
+volatile uint8_t gps_rx_buffer[GPS_BUFFER_SIZE * GPS_BUFFERS];
 volatile uint16_t gps_rx_idx;
+volatile uint8_t gps_buffer_idx;
 volatile uint8_t gps_got_line;
 
 char nmea_file_name[] = "nmea/log000.txt";
@@ -79,7 +80,9 @@ void GPS_init()
 
 	    USCI_A_UART_enable(USCI_A0_BASE);
 
-	    gps_current_buffer = gps_rx_bufferA;
+
+	    gps_util_init();
+
 	    gps_full_buffer = 0;
 	    gps_rx_idx = 0;
 	    bActive = 0;
@@ -127,23 +130,53 @@ void gps_do()
 	//re_format();
 	if(gps_got_line) /* process the data. */
 	{
+
+
 		if(init_gps)
 		{
 			gps_puts("$PMTK300,500,0,0,0,0*28\r\n");
 			gps_puts("$PMTK220,500*2B\r\n");
 			init_gps = 0;
+			return;
 		}
-		uint16_t bytes_in_buffer = GPS_BUFFER_SIZE;
+
+		gps_got_line = 0;
 		uint8_t *c = (uint8_t*)gps_full_buffer;
-		do{
+		uint16_t idx = 0;
+		for( ; idx < GPS_BUFFER_SIZE; ++idx)
+		{
 
 			if( gps_util_valid(*c++) ) /* returns true when a correct checksum is processed */
 			{
 
 				char* gps_line = gps_util_get_last_valid_line();
 
+				if( !gps_line )
+					break;
+
 				if( gps_util_is_RMC(gps_line) )
 				{
+					/* visual indication of data */
+						static uint8_t _flipper = 0;
+						if( _flipper ^= 1 )
+						{
+							hal_led_a(GREEN);
+						}
+						else
+							hal_led_a(0);
+
+
+						uint16_t bw = 0;
+										uint16_t len = strlen(gps_line);
+										gps_line[len++] = '\r';
+										gps_line[len++] = '\n';
+										gps_line[len] = 0;
+
+
+										f_write(&gps_log, (const void*)gps_line, len, (unsigned int*)&bw);	/* Write data to the file */
+										f_sync(&gps_log);
+
+
 					if( gps_util_fix_valid(gps_line) )
 					{
 						hal_led_b(GREEN);
@@ -167,21 +200,22 @@ void gps_do()
 				}
 			}
 
-		} while(--bytes_in_buffer);
+		}
 
-		gps_got_line = 0;
 
 
 		FRESULT rc;
 		uint16_t bw;
-		rc = f_write(&gps_log, (const void*)gps_full_buffer, GPS_BUFFER_SIZE, (unsigned int*)&bw);	/* Write data to the file */
+		//rc = f_write(&gps_log, (const void*)gps_full_buffer, idx, (unsigned int*)&bw);	/* Write data to the file */
 		if( rc )
 		{
 			hal_led_a(YELLOW);
 		}
 		rc = f_sync(&gps_log);
 		if( rc )
+		{
 			hal_led_a(YELLOW);
+		}
 
 
 		//gps_full_buffer = 0;
@@ -229,6 +263,9 @@ void gps_start()
 
 	hal_gps_pwr_on(); /* calls gps_init() */
 
+	gps_current_buffer = gps_rx_buffer;
+	gps_buffer_idx = 0;
+	gps_rx_idx = 0;
 	gps_got_line = 0; // clear flags
 	gps_time_invalid = 1;
 	init_gps = 1;
@@ -431,6 +468,12 @@ void gps_stop()
 
 	uint16_t bw;
 	FRESULT rc;
+
+	rc = f_write(&gps_log, "=-=-=-=-=-=-=-=-=-=-=\r\nClean Power off\r\n=-=-=-=-=-=-=-=-=-=-=\r\n", 63, &bw);
+	if( rc )
+			hal_led_a(YELLOW);
+
+
 	rc = f_close(&gps_log);
 	if( rc )
 			hal_led_a(YELLOW);
@@ -476,26 +519,19 @@ void USCI_A0_ISR(void)
 	 c = UCA0RXBUF;
 	 gps_current_buffer[gps_rx_idx++] = c;
 
-	 if(gps_rx_idx == GPS_BUFFER_SIZE) /* switch buffers */
+	 if(gps_rx_idx >= GPS_BUFFER_SIZE) /* switch buffers */
 	 {
 		 gps_rx_idx = 0;
 		 gps_full_buffer = gps_current_buffer;
 		 gps_got_line = 1;
 
-		 if( gps_current_buffer == gps_rx_bufferA )
-			 gps_current_buffer = gps_rx_bufferB;
-		 else
-			 gps_current_buffer = gps_rx_bufferA;
-		 __bic_SR_register_on_exit(LPM3_bits);
-	 }
+		 /* get next buffer */
+		 if( ++gps_buffer_idx >= (GPS_BUFFERS))
+			 gps_buffer_idx = 0;
 
-	 /* visual indication of data */
-	 if(!hal_button_status())
-	 {
-		 if( c == '$')
-			 hal_led_a(GREEN);
-		 if( c == '\n')
-			 hal_led_a(0);
+		 gps_current_buffer = &gps_rx_buffer[gps_buffer_idx*GPS_BUFFER_SIZE];
+
+		 __bic_SR_register_on_exit(LPM0_bits);
 	 }
 }
 

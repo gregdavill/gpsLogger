@@ -25,6 +25,12 @@ uint8_t* valid_line_ptr;
 uint8_t valid_line_length;
 
 
+void gps_util_init()
+{
+	valid_state = VALID_INIT;
+
+}
+
 /*
  * Take charaters at a time, return 1 if valid string found
  */
@@ -37,12 +43,14 @@ uint8_t gps_util_valid(uint8_t c)
 	{
 		case VALID_INIT:
 		{
+			valid_line_length = 0;
 			if (c == '$')
 			{
 				valid_state = VALID_CAPTURE;
 				valid_line_crc = 0;
 				valid_line_ptr = buff;
 				valid_line_length = 0;
+				memset(buff,0,128);
 			}
 		}
 		break;
@@ -63,6 +71,8 @@ uint8_t gps_util_valid(uint8_t c)
 				{
 					/* next we campare crc */
 					valid_state = VALID_CRC_CHECK_1;
+					*valid_line_ptr++ = 0;
+					return_value = 1;
 					break;
 				}
 
@@ -75,6 +85,7 @@ uint8_t gps_util_valid(uint8_t c)
 					}
 					*valid_line_ptr++ = c;
 					valid_line_crc ^= c;
+					break;
 				}
 			}
 		}
@@ -82,7 +93,9 @@ uint8_t gps_util_valid(uint8_t c)
 
 		case VALID_CRC_CHECK_1:
 		{
-			if (c >= 'A' | c >= 'a') /* Hex to dec */
+			valid_state = VALID_INIT; /* crc format error */
+
+			if (c >= 'A' || c >= 'a') /* Hex to dec */
 			{
 				c -= ('a' + 10);
 			}
@@ -92,15 +105,10 @@ uint8_t gps_util_valid(uint8_t c)
 			}
 			else
 			{
-				valid_state = VALID_INIT; /* crc format error */
 				break;
 			}
 
-			if ((c & 0xF) != ((valid_line_crc >> 4) & 0xF))
-			{
-				valid_state = VALID_INIT; /* crc MSB not good */
-			}
-			else
+			if ((c & 0xF) == ((valid_line_crc >> 4) & 0xF))
 			{
 				valid_state = VALID_CRC_CHECK_2; /* crc MSB not good */
 			}
@@ -109,7 +117,9 @@ uint8_t gps_util_valid(uint8_t c)
 
 		case VALID_CRC_CHECK_2:
 		{
-			if (c >= 'A' | c >= 'a') /* Hex to dec */
+			valid_state = VALID_INIT; /* crc format error */
+
+			if (c >= 'A' || c >= 'a') /* Hex to dec */
 			{
 				c -= ('a' + 10);
 			}
@@ -119,20 +129,20 @@ uint8_t gps_util_valid(uint8_t c)
 			}
 			else
 			{
-				valid_state = VALID_INIT; /* crc format error */
 				break;
 			}
 
 			if ((c & 0xF) == ((valid_line_crc) & 0xF)) /* crc good! */
 			{
-				*valid_line_ptr++ = '0';
-				return_value = 1;
+			//	*valid_line_ptr++ = 0;
+			//	return_value = 1;
 			}
-
-			valid_state = VALID_INIT; /* line done return */
 		}
 		break;
 
+		default:
+			valid_state = VALID_INIT;
+			break;
 	}
 
 	return return_value;
@@ -141,13 +151,21 @@ uint8_t gps_util_valid(uint8_t c)
 
 uint8_t* gps_util_get_last_valid_line(void)
 {
-	return buff;
+	if( valid_line_length )
+		return buff;
+	return 0;
 }
 
 uint8_t gps_util_is_RMC(uint8_t* s)
 {
-	if (strncmp((const char*)s, "GPRMC", 5) == 0)
+	if( s[0] == 'G' &&
+		s[1] == 'P' &&
+		s[2] == 'R' &&
+		s[3] == 'M' &&
+		s[4] == 'C')
+	{
 		return 1;
+	}
 	return 0;
 }
 

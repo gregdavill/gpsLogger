@@ -233,7 +233,7 @@ int main (void)
 					// Clear the flag, until the next timer ISR
 					bDetectCard = 0x00;
 				}
-    			if( gps_check() )
+    			while( gps_check() )
     			{
     				gps_do();
     			}
