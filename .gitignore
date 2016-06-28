@@ -9,7 +9,6 @@
 *.pch
 
 # Libraries
-*.lib
 *.a
 *.la
 *.lo
@@ -37,3 +36,6 @@
 .config/
 Debug/
 Release/
+
+#kicad cache
+*-cache*
