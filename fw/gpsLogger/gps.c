@@ -157,25 +157,13 @@ void gps_do()
 				if( gps_util_is_RMC(gps_line) )
 				{
 					/* visual indication of data */
-						static uint8_t _flipper = 0;
-						if( _flipper ^= 1 )
-						{
-							hal_led_a(GREEN);
-						}
-						else
-							hal_led_a(0);
-
-
-						uint16_t bw = 0;
-										uint16_t len = strlen(gps_line);
-										gps_line[len++] = '\r';
-										gps_line[len++] = '\n';
-										gps_line[len] = 0;
-
-
-										f_write(&gps_log, (const void*)gps_line, len, (unsigned int*)&bw);	/* Write data to the file */
-										f_sync(&gps_log);
-
+					static uint8_t _flipper = 0;
+					if( _flipper ^= 1 )
+					{
+						hal_led_a(GREEN);
+					}
+					else
+						hal_led_a(0);
 
 					if( gps_util_fix_valid(gps_line) )
 					{
@@ -206,7 +194,7 @@ void gps_do()
 
 		FRESULT rc;
 		uint16_t bw;
-		//rc = f_write(&gps_log, (const void*)gps_full_buffer, idx, (unsigned int*)&bw);	/* Write data to the file */
+		rc = f_write(&gps_log, (const void*)gps_full_buffer, idx, (unsigned int*)&bw);	/* Write data to the file */
 		if( rc )
 		{
 			hal_led_a(YELLOW);

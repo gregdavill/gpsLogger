@@ -95,9 +95,9 @@ uint8_t gps_util_valid(uint8_t c)
 		{
 			valid_state = VALID_INIT; /* crc format error */
 
-			if (c >= 'A' || c >= 'a') /* Hex to dec */
+			if (c >= 'A' && c <= 'F') /* Hex to dec */
 			{
-				c -= ('a' + 10);
+				c -= ('A' + 10);
 			}
 			else if (c >= '0' && c <= '9')
 			{
@@ -119,9 +119,9 @@ uint8_t gps_util_valid(uint8_t c)
 		{
 			valid_state = VALID_INIT; /* crc format error */
 
-			if (c >= 'A' || c >= 'a') /* Hex to dec */
+			if (c >= 'A' && c <= 'F') /* Hex to dec */
 			{
-				c -= ('a' + 10);
+				c -= ('A' + 10);
 			}
 			else if (c >= '0' && c <= '9')
 			{
@@ -134,8 +134,7 @@ uint8_t gps_util_valid(uint8_t c)
 
 			if ((c & 0xF) == ((valid_line_crc) & 0xF)) /* crc good! */
 			{
-			//	*valid_line_ptr++ = 0;
-			//	return_value = 1;
+
 			}
 		}
 		break;
