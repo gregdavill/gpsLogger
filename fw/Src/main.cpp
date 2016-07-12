@@ -4,6 +4,8 @@
 
 #include "mark3.h"
 
+#include "hal.h"
+
 //---------------------------------------------------------------------------
 // This block declares the thread data for the main application thread.  It
 // defines a thread object, stack (in word-array form), and the entry-point
@@ -49,7 +51,10 @@ void AppMain(void *unused_)
 
 	/* Implement a state machine to govern the operation of the entire device */
 	Thread::Sleep(100);
-	Hal::LedA::Toggle();
+	Hal::Init();
+
+	//Hal::LedA.Init();
+	//Hal::LedB.Init();
 
     while(1)
     {

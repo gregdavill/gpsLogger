@@ -1,4 +1,8 @@
 eclipse.preferences.version=1
+encoding//Debug/Lib/FatFs/subdir_rules.mk=UTF-8
+encoding//Debug/Lib/FatFs/subdir_vars.mk=UTF-8
+encoding//Debug/Lib/subdir_rules.mk=UTF-8
+encoding//Debug/Lib/subdir_vars.mk=UTF-8
 encoding//Debug/Mark3/drivers/common/graphics_sdl/subdir_rules.mk=UTF-8
 encoding//Debug/Mark3/drivers/common/graphics_sdl/subdir_vars.mk=UTF-8
 encoding//Debug/Mark3/drivers/common/graphics_slip/subdir_rules.mk=UTF-8
@@ -119,6 +123,8 @@ encoding//Debug/Mark3/services/slip/subdir_rules.mk=UTF-8
 encoding//Debug/Mark3/services/slip/subdir_vars.mk=UTF-8
 encoding//Debug/Mark3/services/slipterm/subdir_rules.mk=UTF-8
 encoding//Debug/Mark3/services/slipterm/subdir_vars.mk=UTF-8
+encoding//Debug/Src/Hal/subdir_rules.mk=UTF-8
+encoding//Debug/Src/Hal/subdir_vars.mk=UTF-8
 encoding//Debug/Src/subdir_rules.mk=UTF-8
 encoding//Debug/Src/subdir_vars.mk=UTF-8
 encoding//Debug/makefile=UTF-8
