@@ -31,11 +31,11 @@ void KernelTimer::Config(void)
     TA0CTL = 0;                        // Reset the register
     TA0R = 0;                          // Clear Timer A
     TA0CTL |= TACLR;                   // Reset the clock divider, etc.
-    TA0CTL |= TASSEL_2;                // Set the timer to use SMCLK
+    TA0CTL |= TASSEL_1;                // Set the timer to use SMCLK
     TA0CTL &= ~TAIFG;                  // Clear any pending interrupts
     TA0CCTL0 &= ~CCIFG;                // Clear pending interrupts
 #if KERNEL_TIMERS_TICKLESS
-    TA0CTL |= ID_3; // Divide-by-8
+    TA0CTL |= ID_0; // Divide-by-8
 #else
     TA0CCR0 = (K_USHORT)TIMER_FREQ; // Set interrupts to occur at tick freq.
 #endif

@@ -46,7 +46,7 @@
 #include "inc/hw_memmap.h"
 
 #ifdef __MSP430_HAS_PORT1_R__
-#include "gpio.h"
+#include "public/gpio.h"
 
 #include <assert.h>
 

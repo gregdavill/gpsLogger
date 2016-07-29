@@ -264,6 +264,8 @@ TCHAR* f_gets (TCHAR* buff, int len, FIL* fp);						/* Get a string from the fil
 DWORD get_fattime (void);
 #endif
 
+BYTE detectCard (void);
+
 /* Unicode support functions */
 #if _USE_LFN							/* Unicode - OEM code conversion */
 WCHAR ff_convert (WCHAR chr, UINT dir);	/* OEM-Unicode bidirectional conversion */

@@ -48,9 +48,10 @@ uint8_t INS = 1;                                                           //KLQ
 #ifdef __IAR_SYSTEMS_ICC__
 #pragma diag_suppress=Pe061
 #endif
-extern uint16_t gps_year;
-extern uint8_t gps_day,gps_month;
-extern uint8_t gps_hour,gps_minute,gps_second;
+
+uint16_t gps_year;
+uint8_t gps_day,gps_month;
+uint8_t gps_hour,gps_minute,gps_second;
 
 uint32_t get_fattime (void)
 {

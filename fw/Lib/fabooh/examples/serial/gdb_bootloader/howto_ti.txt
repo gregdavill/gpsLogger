@@ -1,0 +1,38 @@
+This latest version of the gdb_bootloader code now works properly with TI binaries.
+However, you must enable the CCS eclipse output to Intel Hex feature.  Once enabled,
+CCS will create a projectname.hex file in the binary directory.
+
+Instead of using the gdb 'load' command to upload to flash, you must use the gdb 'restore'
+command preceded by an 'eraseflash' command.  See the following example session
+that uploads the generated hex file 'tiblink.hex' to flash from a project called tiblink:
+
+$ msp430-gdb -l 2 -b 9600 -ex 'target remote /dev/ttyUSB0'
+GNU gdb (GDB) 7.2
+Copyright (C) 2010 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "--host=i686-pc-linux-gnu --target=msp430".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Remote debugging using /dev/ttyUSB0
+0x0000c000 in ?? ()
+(gdb) eraseflash 
+Erasing all flash memory
+ok
+(gdb) restore ~/workspace_ccs_6.1.1/tiblink/Debug/tiblink.hex
+Restoring section .sec1 (0xc000 to 0xc08e)
+Restoring section .sec2 (0xffde to 0xffe2)
+Restoring section .sec3 (0xffe4 to 0xffe8)
+Restoring section .sec4 (0xffea to 0x10000)
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [Remote target] will be killed.
+
+Quit anyway? (y or n) y
+$ 
+
+After gdb is exited, it will automatically restart the chip and run the newly
+loaded firmware.

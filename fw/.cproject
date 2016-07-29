@@ -31,6 +31,12 @@
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.MMCU.1090721286" name="Target MCU (-mmcu)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.MMCU" value="msp430f5514" valueType="string"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.INCLUDE_PATH.1521225243" name="Include paths (-I)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.INCLUDE_PATH" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${CCS_BASE_ROOT}/msp430/include_gcc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Lib/USB_config}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Lib}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Mark3/drivers/cpu/msp430/gps/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Lib/fabooh/include/3rdparty}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Lib/fabooh/board/gpsLogger}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Lib/fabooh/include/msp430/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Src/Hal/public}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Lib/public}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Mark3/kernel/public}&quot;"/>
@@ -40,7 +46,7 @@
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.OPT_FOR_SPACE.2125722978" name="Optimize for space rather than speed (-Os)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.OPT_FOR_SPACE" value="true" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.OTHER_FLAGS.1714134784" name="Other flags" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.OTHER_FLAGS" valueType="stringList">
-									<listOptionValue builtIn="false" value="-mlarge"/>
+									<listOptionValue builtIn="false" value=""/>
 									<listOptionValue builtIn="false" value="-fpermissive"/>
 									<listOptionValue builtIn="false" value="-mcode-region=none"/>
 									<listOptionValue builtIn="false" value="-mdata-region=none"/>
@@ -50,8 +56,10 @@
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DWARF_VERSION.783977051" name="Generate debug information in DWARF version (-gdwarf-)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DWARF_VERSION" value="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DWARF_VERSION.3" valueType="enumerated"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DATA_SECTIONS.1729052459" name="Place data items into their own section (-fdata-sections)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DATA_SECTIONS" value="true" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.FUNCTION_SECTIONS.2120471846" name="Place each function into its own section (-ffunction-sections)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.FUNCTION_SECTIONS" value="true" valueType="boolean"/>
-								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DEFINE.751148248" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DEFINE" valueType="definedSymbols">
+								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DEFINE.751148248" name="Define symbols (-D)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DEFINE" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="MCLK_FREQUENCY=25000000"/>
+									<listOptionValue builtIn="false" value="_CDC_"/>
+									<listOptionValue builtIn="false" value="FABOOH"/>
 								</option>
 								<inputType id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compiler.inputType__C_SRCS.147105280" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compiler.inputType__C_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compiler.inputType__CPP_SRCS.730437716" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compiler.inputType__CPP_SRCS"/>
@@ -96,7 +104,8 @@
 						</tool>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="Lib/FatFs/option/unicode.c|Lib/FatFs/option/syscall.c|Lib/FatFs/option/ccsbcs.c|Lib/FatFs/option/cc950.c|Lib/FatFs/option/cc949.c|Lib/FatFs/option/cc936.c|Lib/FatFs/option/cc932.c|Lib/IQmathLib_CCS_MPY32_5xx_6xx_CPUX_large_code_large_data.lib|Mark3/kernel/cpu/generic|Mark3/kernel/cpu/cm0|Mark3/kernel/cpu/avr|Mark3/services|Mark3/examples|Mark3/drivers/common|Mark3/drivers/cpu/cm0|Mark3/drivers/cpu/avr" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="Lib/fabooh/include/cortex-m0|Lib/fabooh/board|Lib/fabooh/examples|Lib/fabooh/apps|Lib/FatFs/option/syscall.c|Lib/FatFs/option/ccsbcs.c|Lib/FatFs/option/cc950.c|Lib/FatFs/option/cc949.c|Lib/FatFs/option/cc936.c|Lib/FatFs/option/cc932.c|Lib/IQmathLib_CCS_MPY32_5xx_6xx_CPUX_large_code_large_data.lib|Mark3/kernel/cpu/generic|Mark3/kernel/cpu/cm0|Mark3/kernel/cpu/avr|Mark3/services|Mark3/examples|Mark3/drivers/common|Mark3/drivers/cpu/cm0|Mark3/drivers/cpu/avr" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Lib/fabooh/board/gpsLogger"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

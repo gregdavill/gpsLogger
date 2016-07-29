@@ -36,10 +36,10 @@ See license.txt for more information
 #define K_LONG          int32_t             //!< The 32-bit signed integer type used by Mark3
 
 #if !defined(K_ADDR)
-    #define K_ADDR      uint32_t            //!< Primative datatype representing address-size
+    #define K_ADDR      uint16_t            //!< Primative datatype representing address-size
 #endif
 #if !defined(K_WORD)
-    #define K_WORD      uint32_t            //!< Primative datatype representing a data word
+    #define K_WORD      uint16_t            //!< Primative datatype representing a data word
 #endif
 
 //---------------------------------------------------------------------------

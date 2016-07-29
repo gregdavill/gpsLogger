@@ -24,11 +24,11 @@ See license.txt for more information
 #define __KERNELTIMER_H_
 
 //---------------------------------------------------------------------------
-#define SYSTEM_FREQ        ((K_ULONG) 1200000)
+#define SYSTEM_FREQ        ((K_ULONG) 4000000UL)
 #if !KERNEL_TIMERS_TICKLESS
   #define TIMER_FREQ         ((K_ULONG)(SYSTEM_FREQ / 100)) // Timer ticks per second...
 #else
-  #define TIMER_FREQ	     ((K_ULONG)(SYSTEM_FREQ / 8))
+  #define TIMER_FREQ	     ((K_ULONG)(32768))
 #endif
 
 //---------------------------------------------------------------------------

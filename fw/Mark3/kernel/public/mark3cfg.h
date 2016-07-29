@@ -128,7 +128,7 @@ See license.txt for more information
     anywhere a semaphore or event-flag is insufficient.
 */
 #if KERNEL_USE_SEMAPHORE
-    #define KERNEL_USE_MESSAGE           (1)
+    #define KERNEL_USE_MESSAGE           (0)
 #else
     #define KERNEL_USE_MESSAGE           (0)
 #endif
@@ -141,7 +141,7 @@ See license.txt for more information
     and simplify data management.
 */
 #if KERNEL_USE_MESSAGE
-    #define GLOBAL_MESSAGE_POOL_SIZE     (8)
+    #define GLOBAL_MESSAGE_POOL_SIZE     (4)
 #endif
 
 /*!
@@ -207,7 +207,7 @@ See license.txt for more information
     diagnostic functionality when Mark3-based applications are run on the
     flavr AVR simulator.
 */
-#define KERNEL_AWARE_SIMULATION          (1)
+#define KERNEL_AWARE_SIMULATION          (0)
 
 /*!
     Enabling this feature removes the necessity for the user to dedicate
@@ -216,5 +216,5 @@ See license.txt for more information
     slight overhead to the context switch and scheduler, as a special case
     has to be taken into account.
 */
-#define KERNEL_USE_IDLE_FUNC             (1)
+#define KERNEL_USE_IDLE_FUNC             (0)
 #endif
