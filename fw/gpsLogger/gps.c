@@ -450,6 +450,9 @@ void gps_create_kml_file(char* date, char* time)
 
 void gps_stop()
 {
+	if(!bActive)
+		return;
+
 	bActive = 0;
 
 	USCI_A_UART_disableInterrupt(USCI_A0_BASE, USCI_A_UART_RECEIVE_INTERRUPT); // disable interrupt
