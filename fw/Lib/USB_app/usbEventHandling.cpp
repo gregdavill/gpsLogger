@@ -41,6 +41,8 @@
 #include "USB_config/descriptors.h"
 #include "USB_API/USB_Common/usb.h"
 
+#include <mainEvent.h>
+
 #ifdef _CDC_
 #include "USB_API/USB_CDC_API/UsbCdc.h"
 #endif
@@ -57,8 +59,6 @@
 #include "USB_API/USB_PHDC_API/UsbPHDC.h"
 #endif
 
-//These variables are only example, they are not needed for stack
-//extern volatile uint8_t bCDCDataReceived_event;    //data received event
 
 /*
  * If this function gets executed, it's a sign that the output of the USB PLL has failed.
@@ -78,6 +78,7 @@ uint8_t USB_handleClockEvent ()
 uint8_t USB_handleVbusOnEvent ()
 {
     //TO DO: You can place your code here
+	MainEvent.Set(USB_EVENT_VBUS_ON);
 
     //We switch on USB and connect to the BUS
     if (USB_enable() == USB_SUCCEED){
@@ -94,6 +95,7 @@ uint8_t USB_handleVbusOnEvent ()
 uint8_t USB_handleVbusOffEvent ()
 {
     //TO DO: You can place your code here	
+	MainEvent.Set(USB_EVENT_VBUS_OFF);
 	UCS_turnOffXT2();
 
     return (TRUE);                              //return TRUE to wake the main loop (in the case the CPU slept before interrupt)

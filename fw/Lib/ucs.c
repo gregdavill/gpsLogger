@@ -184,7 +184,7 @@ static uint32_t privateUCSSourceClockFromDCO(uint16_t FLLRefCLKSource)
 static uint32_t privateUCSComputeCLKFrequency(uint16_t CLKSource,
                                               uint16_t CLKSourceDivider)
 {
-    uint32_t CLKFrequency;
+    uint32_t CLKFrequency = 0;
     uint8_t CLKSourceFrequencyDivider = 1;
     uint8_t i = 0;
 

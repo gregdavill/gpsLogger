@@ -10,11 +10,14 @@
 #include <fabooh.h>
 
 #include "ff.h"
-#include "mmc.h"
+#include "dvrMMC.h"
 
 #include "IQmathLib.h"
 
+#include "gps.h"
 
+EventFlag m_event;
+//MailBox mb;
 
 void LoggerError(FRESULT f_res)
 {
@@ -42,13 +45,22 @@ void LoggerError(FRESULT f_res)
 void LoggerLedCallback(Thread *_owner, void *_data)
 {
 	/* Turn off LED */
+	LED_A_RED::high();
+	LED_A_BLUE::high();
+	LED_A_GREEN::high();
 }
 
-void LoggerMain(void *_fs)
+static void rxCall(msp430GPS* _gps)
+{
+	uint8_t d = 1;//_gps->Read(0,0);
+	m_event.Set(d);
+}
+
+void LoggerMain(void *_q)
 {
 
-	static FATFS fatfs;
-	static FIL logger_file;
+	FATFS fatfs;
+	FIL logger_file;
 
 	FRESULT f_res;
 
@@ -56,25 +68,31 @@ void LoggerMain(void *_fs)
 
 	char nmea_file_name[] = "log000.txt";
 
-
 	/* Power up SD card and access disk */
 	MMC_POWER_ENABLE::high();
 	Thread::Sleep(50);
 
-	/* Low level init, get SD into MMC mode */
-	//detectCard();
-	//get_fattime();
-	if(detectCard() == 0)
-	{
-		LoggerError(10);
-	}
+	m_event.Init();
 
-	/* Mount FAT fs */
-	f_res = f_mount(&fatfs, "", 0);
-	if(f_res)
-	{
-		LoggerError(f_res);
-	}
+	/* Get GPS driver */
+	Driver *gps = DriverList::FindByPath("/dev/gps");
+
+	/* Get MMC driver */
+	Driver *mmc = DriverList::FindByPath("/dev/mmc");
+
+	gps->Control(CMD_SET_RX_CALLBACK, (void*)rxCall, 0,0,0);
+
+	/* Note will allocate memory here */
+	gps->Open();
+
+	/* These should probably be included in the GPS driver... */
+	GPS_POWER_ENABLE::high();
+	GPS_BACKUP_POWER::high();
+
+	/* Low level init, get SD into MMC mode */
+	mmc->Control(CMD_MMC_DETECT_CARD);
+	//mmc->Control(CMD_MMC_MOUNT);
+	//mmc->Control(CMD_MMC_SET_FILE_BUFFER, &logger_file );
 
 	/* determine the next log file number. */
 	for( uint16_t file_number = 0 ; file_number < 999 ; file_number++ )
@@ -85,7 +103,12 @@ void LoggerMain(void *_fs)
 
 
 		// this call will fail if the file does exist.
-		f_res = f_open(&logger_file, nmea_file_name, FA_WRITE | FA_CREATE_NEW);
+		//mmc->Control(CMD_MMC_SET_FILENAME, nmea_file_name);
+		//mmc->Control(CMD_MMC_SET_ACCESS_RIGHTS, FA_WRITE | FA_CREATE_NEW);
+
+		//f_res = mmc->Open();
+
+		f_res = FR_OK;
 
 		// file opened sucessfully? we are done
 		if( f_res == FR_OK )
@@ -104,17 +127,60 @@ void LoggerMain(void *_fs)
 	}
 
 
-	f_res = f_write(&logger_file, "test\r\n", 6, &bytes_written );
-		if( f_res )
+
+
+
+	while(1)
+	{
+		/* data aquired stored here */
+		char* gps_string = 0;
+		uint16_t gps_string_length = 0;
+
+		/* Get more data note this is a blocking call */
+		while(gps_string_length == 0)
 		{
-			LoggerError(f_res);
+			gps_string_length = gps->Read(0, gps_string);
+			if(gps_string_length != 0)
+				break;
+
+			bool _bool;
+			m_event.Wait(1,EVENT_FLAG_ANY); /* Blocking call */
+			m_event.Clear(1);
 		}
 
-		f_res = f_sync(&logger_file);
-			if( f_res )
-			{
-				LoggerError(f_res);
-			}
+		/* Turn LED on to indicate data */
+		LED_A_RED::low();
+
+		/* Start timer to turn off LED */
+		Timer tmr;
+		tmr.Start(false, 100, LoggerLedCallback, 0);
+
+		/* Write data to SD/MMC card */
+		//mmc->Write(gps_string_length, gps_string);
+		//mmc->Control(CMD_MMC_SYNC);
+
+		/* Turn LED on to indicate data */
+		LED_A_BLUE::low();
+
+		/* Start timer to turn off LED */
+		//Timer tmr;
+		tmr.Start(false, 100, LoggerLedCallback, 0);
+
+
+		/* Parse data through GPS state machine */
+		for( uint16_t index  = 0 ; index < gps_string_length; index++)
+		{
+		//	flag |= gps_state(gps_string[index]);
+		}
+
+		//if(gps_state.changed == true)
+		{
+			/* Make KML string */
+		//	mmc->write();
+		}
+
+		/* Somehow handle shutting down thread */
+	}
 
 
 			Thread::Sleep(100);
@@ -126,21 +192,6 @@ void LoggerMain(void *_fs)
 
 	Scheduler::GetCurrentThread()->Exit();
 
-    while(1)
-    {
-
-    	/* Wait for more data */
-    	//m_notify.Wait();
-
-    	/* Turn LED on to indicate data */
-
-    	/* Start timer to turn off LED */
-    	Timer tmr;
-    	tmr.Start(false, 100, LoggerLedCallback, 0);
-
-    	int gps_day = 1;
-    	//_IQ2toa(nmea_file_name, "%02.00f", _IQ2(gps_day));
-    }
 }
 
 

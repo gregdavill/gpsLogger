@@ -206,10 +206,10 @@ public:
         \return Driver-specific return code, 0 = OK, non-0 = error
     */
     virtual K_USHORT Control( K_USHORT usEvent_, 
-                                    void *pvDataIn_, 
-                                    K_USHORT usSizeIn_, 
-                                    void *pvDataOut_, 
-                                    K_USHORT usSizeOut_ ) = 0;
+                                    void *pvDataIn_ = 0,
+                                    K_USHORT usSizeIn_ = 0,
+                                    void *pvDataOut_ = 0,
+                                    K_USHORT usSizeOut_ = 0 ) = 0;
     
     /*!
         \fn void SetName( const K_CHAR *pcName_ )

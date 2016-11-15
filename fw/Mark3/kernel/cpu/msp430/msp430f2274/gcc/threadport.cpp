@@ -152,7 +152,7 @@ void ThreadPort::StartThreads()
 
 */
 //---------------------------------------------------------------------------
-void __attribute__ ((__interrupt__(PORT1_VECTOR), naked))
+void __attribute__ ((__interrupt__(PORT2_VECTOR), naked))
 isr_KernelSWI(void)
 {
     Thread_SaveContext();       // Push the context (registers) of the current task

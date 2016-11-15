@@ -26,26 +26,26 @@ See license.txt for more information
 //---------------------------------------------------------------------------
 void KernelSWI::Config(void)
 {
-    P1DIR &= ~0x04;
+    P2DIR &= ~0x04;
 }
 
 //---------------------------------------------------------------------------
 void KernelSWI::Start(void)
 {        
-    P1IE = 0x04;
+    P2IE |= 0x04;
 }
 
 //---------------------------------------------------------------------------
 void KernelSWI::Stop(void)
 {
-    P1IE &= ~0x04;
+    P2IE &= ~0x04;
 }
 
 //---------------------------------------------------------------------------
 K_UCHAR KernelSWI::DI()
 {
-    K_UCHAR ucRet = ((P1IE & 0x04) == 0x04);
-    P1IE &= ~0x04;
+    K_UCHAR ucRet = ((P2IE & 0x04) == 0x04);
+    P2IE &= ~0x04;
     return ucRet;
 }
 
@@ -54,22 +54,22 @@ void KernelSWI::RI(K_BOOL bEnable_)
 {
     if (bEnable_)
     {
-        P1IE |= 0x04;
+        P2IE |= 0x04;
     }
     else
     {
-        P1IE &= ~0x04;
+        P2IE &= ~0x04;
     }
 }
 
 //---------------------------------------------------------------------------
 void KernelSWI::Clear(void)
 {
-    P1IFG &= ~0x04;
+    P2IFG &= ~0x04;
 }
 
 //---------------------------------------------------------------------------
 void KernelSWI::Trigger(void)
 {
-    P1IFG |= 0x04;
+    P2IFG |= 0x04;
 }

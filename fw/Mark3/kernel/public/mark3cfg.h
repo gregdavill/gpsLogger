@@ -128,7 +128,7 @@ See license.txt for more information
     anywhere a semaphore or event-flag is insufficient.
 */
 #if KERNEL_USE_SEMAPHORE
-    #define KERNEL_USE_MESSAGE           (0)
+    #define KERNEL_USE_MESSAGE           (1)
 #else
     #define KERNEL_USE_MESSAGE           (0)
 #endif

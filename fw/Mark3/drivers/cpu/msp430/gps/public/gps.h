@@ -20,6 +20,9 @@
 #include "kerneltypes.h"
 #include "driver.h"
 
+#include <fabooh.h>
+
+
 #define UART_DEFAULT_BAUD       ((K_ULONG)9600)
 
 
@@ -83,21 +86,9 @@ private:
 	void SetBaud(void);
 	void StartTx(void);
 
-    K_UCHAR m_ucTxSize;                //!< Size of the TX Buffer
-    K_UCHAR m_ucTxHead;                //!< Head index
-    K_UCHAR m_ucTxTail;                //!< Tail index
 
-    K_UCHAR m_ucRxSize;                //!< Size of the RX Buffer
-    K_UCHAR m_ucRxHead;                //!< Head index
-    K_UCHAR m_ucRxTail;                //!< Tail index
-
-    K_UCHAR m_bRxOverflow;              //!< Receive buffer overflow
-    K_UCHAR m_bEcho;                    //!< Whether or not to echo RX characters to TX
-
-    K_UCHAR *m_pucRxBuffer;            //!< Receive buffer pointer
-    K_UCHAR *m_pucTxBuffer;            //!< Transmit buffer pointer
-
-    K_ULONG m_ulBaudRate;              //!< Baud rate
+	ringbuffer_t<uint8_t, 16, uint8_t> pRingBuffer;
+	ringbuffer_t<uint8_t, 4, uint8_t> pTxBuffer;
 
     K_UCHAR m_ucRxEscape;              //!< Escape character
 

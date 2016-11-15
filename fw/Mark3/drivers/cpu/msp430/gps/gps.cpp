@@ -27,6 +27,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+
+
 serial_base_usci_t<9600, 4000000UL, GPS_RX, GPS_TX> Serial;
 
 //---------------------------------------------------------------------------
@@ -48,8 +51,6 @@ K_UCHAR msp430GPS::Open()
 {
 	pclActive = this;
 	Serial.begin(9600);
-
-	UCA0IE = UCRXIE;
 	return 0;
 }
 
@@ -88,10 +89,12 @@ K_USHORT msp430GPS::Control( K_USHORT usCmdId_, void *pvIn_, K_USHORT usSizeIn_,
             break;
 		case CMD_SET_RX_ENABLE:
 		{
+			UCA0IE |= UCRXIE;
 		}
 			break;
 		case CMD_SET_RX_DISABLE:
 		{
+			UCA0IE &= ~UCRXIE;
 		}
 			break;
         default:
@@ -103,19 +106,48 @@ K_USHORT msp430GPS::Control( K_USHORT usCmdId_, void *pvIn_, K_USHORT usSizeIn_,
 //---------------------------------------------------------------------------
 K_USHORT msp430GPS::Read( K_USHORT usSizeIn_, K_UCHAR *pvData_ )
 {
-    return m_ucTxSize;//fread( pvData_, 1, usSizeIn_, stderr );
+	for(uint16_t count = 0 ; count < usSizeIn_ ; count++)
+	{
+		if(pRingBuffer.empty())
+		{
+			return count;
+		}
+		pvData_[count] = pRingBuffer.pop_front();
+	}
+    return count;//fread( pvData_, 1, usSizeIn_, stderr );
 }
 
 //---------------------------------------------------------------------------
 K_USHORT msp430GPS::Write(K_USHORT usSizeOut_, K_UCHAR *pvData_)
 {
-    return 0;//fwrite( pvData_, 1, usSizeOut_, stderr );
+	for(uint16_t count = 0 ; count < usSizeOut_ ; count++)
+	{
+		if(pTxBuffer.full())
+		{
+			return count;
+		}
+		CS_ENTER();
+		pTxBuffer.push_back(pvData_[count]);
+
+		/* Start a transmission if none active */
+		if(UCA0IFG & UCTXIFG == 0)
+		{
+			StartTx();
+		}
+
+		CS_EXIT();
+
+	}
+	return count;//fwrite( pvData_, 1, usSizeOut_, stderr );
 }
 
 //---------------------------------------------------------------------------
 void msp430GPS::StartTx(void)
 {
-    // stub
+	/* Start transmission */
+	CS_ENTER();
+    UCA0TXBUF = pTxBuffer.pop_front();
+    CS_EXIT();
 }
 
 //---------------------------------------------------------------------------
@@ -127,18 +159,22 @@ void msp430GPS::RxISR()
 	else if( rxChar == '\n')
 		LED_B_BLUE::high();
 
-	m_ucTxSize = rxChar;
+	CS_ENTER();
+	pRingBuffer.push_back(rxChar);
+	CS_EXIT();
 
-	if( pfCallback != 0)
+	if( pfCallback != 0 )
 	{
-		pfCallback(this);
+		//pfCallback(this);
 	}
-	// stub
 }
 
 //---------------------------------------------------------------------------
 void msp430GPS::TxISR()
 {
+	/* If we have more data to send, do it */
+	if(!pTxBuffer.empty())
+		UCA0TXBUF = pTxBuffer.pop_front();
     // Stub
 }
 
@@ -152,7 +188,11 @@ usciA0_vect()
 			pclActive->RxISR();
 		UCA0IFG &= ~UCRXIFG;
 		break;
-	case USCI_UCTXIFG: break;
+	case USCI_UCTXIFG:
+		if(pclActive)
+			pclActive->TxISR();
+		UCA0IFG &= ~UCTXIFG;
+		break;
 	default: break;
 	}
 }
