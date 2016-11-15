@@ -205,19 +205,6 @@ void func_StateIdle(void)
 		NewState = e_StateLogging;
 		hal_led_a(CYAN);
 
-		hal_sd_pwr_on();
-
-		timeout = 8;
-		while( --timeout )
-		{
-			delay_ms(100);
-		}
-
-		detectCard();
-		Timer_A_startCounter(TIMER_A0_BASE, TIMER_A_UP_MODE);
-
-		gps_start();
-		hal_button_event();
 		return; // don't enter sleep
 	}
 
@@ -303,9 +290,13 @@ void entry_StateLogging(void)
 {
 	hal_led_a(0);
 	hal_led_b(0);
-	hal_gps_pwr_on();
 	hal_sd_pwr_on();
+	delay_ms(100);
 
+	detectCard();
+
+
+	hal_gps_pwr_on();
 	hal_gps_rtc_on(); // saves around 7uA
 
 	gps_start();

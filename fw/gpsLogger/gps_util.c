@@ -158,7 +158,7 @@ uint8_t* gps_util_get_last_valid_line(void)
 uint8_t gps_util_is_RMC(uint8_t* s)
 {
 	if( s[0] == 'G' &&
-		s[1] == 'P' &&
+		(s[1] == 'P' || s[1] == 'N' ) &&
 		s[2] == 'R' &&
 		s[3] == 'M' &&
 		s[4] == 'C')

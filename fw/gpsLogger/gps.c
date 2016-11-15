@@ -450,15 +450,20 @@ void gps_create_kml_file(char* date, char* time)
 
 void gps_stop()
 {
-	if(!bActive)
-		return;
 
-	bActive = 0;
 
 	USCI_A_UART_disableInterrupt(USCI_A0_BASE, USCI_A_UART_RECEIVE_INTERRUPT); // disable interrupt
 
 	uint16_t bw;
 	FRESULT rc;
+
+	hal_gps_pwr_off();
+
+	if(!bActive)
+			return;
+
+	bActive = 0;
+
 
 	rc = f_write(&gps_log, "=-=-=-=-=-=-=-=-=-=-=\r\nClean Power off\r\n=-=-=-=-=-=-=-=-=-=-=\r\n", 63, &bw);
 	if( rc )
@@ -482,7 +487,7 @@ void gps_stop()
 	/* unmount work area */
 	f_mount(0, "", 0);		/* Give a work area to the default drive */
 
-	hal_gps_pwr_off();
+
 }
 
 
