@@ -47,7 +47,7 @@ FIL gps_log;			/* File object needed for each open file */
 FIL kml_file;
 
 
-uint8_t bActive;
+uint8_t bActive, b_KmlFileOpen;
 /* Use UCA1 */
 void GPS_init()
 {
@@ -85,7 +85,7 @@ void GPS_init()
 
 	    gps_full_buffer = 0;
 	    gps_rx_idx = 0;
-	    bActive = 0;
+
 
 
 }
@@ -103,6 +103,81 @@ void gps_puts(uint8_t* s)
 	{
 		gps_putc(*s++);
 	}
+}
+
+/**
+    \brief ubx_transmit_message - Append checksum and transmit a UBX message to a Ublox GPS.
+
+    \param data - Header + Payload of message
+    \param len - Length of message (Max 30 bytes)
+
+    \return void
+*/
+void ubx_transmit_message( const char* data, int len ) {
+    uint8_t message_buffer[64];
+
+    /* Stop buffer overflows */
+    if( len > 30 ) {
+        return;
+    }
+
+    /* Copy message payload to buffer, make use of the DMA */
+    memcpy( message_buffer, ( void* )data, len );
+
+
+    /*  Calculate checksum
+        Ublox has uses an 8bit fletcher Algorithm over the main payload of the messages.
+        See Programming manual: UBX-13003221
+    */
+    uint8_t ck_a = 0, ck_b = 0;
+
+    for( int i = 2 ; i < len; i++ ) {
+        ck_a += message_buffer[i];
+        ck_b += ck_a;
+    }
+
+    /* Append checksum to data and increment length to match */
+    message_buffer[len++] = ck_a;
+    message_buffer[len++] = ck_b;
+
+    /* Write entire string to GPS */
+    for(uint16_t i = 0; i < len; i++)
+    {
+    	gps_putc(message_buffer[i]);
+    }
+}
+
+void gps_ublox_send()
+{
+	const char change_talker[] = {0xB5, 0x62 , 0x06, 0x17, 0x14, 0x00, 0x00, 0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01,  'G', 'P', 0, 0, 0, 0, 0, 0};
+
+	    /* Change talker to "GP" */
+	    ubx_transmit_message( change_talker, sizeof( change_talker ) );
+
+	    /* Disable GLL */
+	    const char disable_gll[] = {0xB5, 0x62 , 0x06, 0x01, 0x03, 0x00, 0xF0, 0x01, 0x00};
+	    ubx_transmit_message( disable_gll, sizeof( disable_gll ) );
+
+	    /* Slow GSV */
+	    const char disable_gsv[] = {0xB5, 0x62 , 0x06, 0x01, 0x03, 0x00, 0xF0, 0x03, 0x10};
+	    ubx_transmit_message( disable_gsv, sizeof( disable_gsv ) );
+
+	    /* Slow GSA */
+	    const char disable_gsa[] = {0xB5, 0x62 , 0x06, 0x01, 0x03, 0x00, 0xF0, 0x02, 0x10};
+	    ubx_transmit_message( disable_gsa, sizeof( disable_gsa ) );
+
+	    /* Disable VTG */
+	    const char disable_vtg[] = {0xB5, 0x62 , 0x06, 0x01, 0x03, 0x00, 0xF0, 0x05, 0x00};
+	    ubx_transmit_message( disable_vtg, sizeof( disable_vtg ) );
+
+
+	    uint16_t transmission_speed = 500;
+	    /* Boost Transmit rate to 2Hz */
+	    const char boost_rate[] = {0xB5, 0x62 , 0x06, 0x08, 0x06, 0x00, ( char )( transmission_speed & 0xFF ), ( char )( transmission_speed >> 8 ), 1, 0, 0, 0};
+	    ubx_transmit_message( boost_rate, sizeof( boost_rate ) );
+
+	    /* Delay removes all those ublox binary ack messages which could mees up our NEMA output file. */
+	    delay_ms(500);
 }
 
 void GPS_deinit()
@@ -127,16 +202,20 @@ uint8_t init_gps;
 
 void gps_do()
 {
-	//re_format();
 	if(gps_got_line) /* process the data. */
 	{
 
 
-		if(init_gps)
+		if(init_gps == 1)
 		{
 			gps_puts("$PMTK300,500,0,0,0,0*28\r\n");
 			gps_puts("$PMTK220,500*2B\r\n");
-			init_gps = 0;
+
+			/* Ublox sentences */
+			gps_ublox_send();
+
+			init_gps = 2;
+			gps_got_line = 0;
 			return;
 		}
 
@@ -145,7 +224,6 @@ void gps_do()
 		uint16_t idx = 0;
 		for( ; idx < GPS_BUFFER_SIZE; ++idx)
 		{
-
 			if( gps_util_valid(*c++) ) /* returns true when a correct checksum is processed */
 			{
 
@@ -170,13 +248,16 @@ void gps_do()
 						hal_led_b(GREEN);
 						if(gps_time_invalid)
 						{
-							gps_util_extract_date(gps_line, file_date);
-							gps_util_extract_time(gps_line, file_time);
+							/* Ceck if we have a valid date in string */
+							if(gps_util_extract_date(gps_line, file_date) != 0)
+							{
+								gps_util_extract_time(gps_line, file_time);
 
-							gps_util_update_timezone(file_date, file_time);
-							gps_time_invalid = 0;
+								gps_util_update_timezone(file_date, file_time);
+								gps_time_invalid = 0;
 
-							gps_create_kml_file(file_date, file_time);
+								gps_create_kml_file(file_date, file_time);
+							}
 						}
 
 						gps_convert_NMEA2coords(gps_line);
@@ -199,8 +280,14 @@ void gps_do()
 		{
 			hal_led_a(YELLOW);
 		}
-		rc = f_sync(&gps_log);
-		if( rc )
+		uint8_t timeout = 32;
+		while(--timeout)
+		{
+			rc = f_sync(&gps_log);
+			if(rc == FR_OK )
+				break;
+		}
+		if(timeout == 0)
 		{
 			hal_led_a(YELLOW);
 		}
@@ -214,14 +301,14 @@ void gps_do()
 void gps_start()
 {
 	bActive = 1;
-
+	b_KmlFileOpen = 0;
 
 	f_mount(&FatFs, "", 0);		/* Give a work area to the default drive */
 
 	FRESULT rc;
 	/* we want to store logs into nma folder, ensure it exists */
 	rc = f_mkdir("nmea");
-    if (rc != FR_EXIST || rc != FR_OK)
+    if (rc != FR_EXIST && rc != FR_OK)
     	hal_led_a(RED);
 
 	/* determine the next log file number. */
@@ -238,14 +325,25 @@ void gps_start()
 		// file opened sucessfully? we are done
 		if( rc == FR_OK )
 			break;
-
-
 	}
 
 	UINT bw = 0;
 	rc = f_write(&gps_log, NMEA_header, sizeof(NMEA_header) - 1, &bw );
 	if( rc )
 		hal_led_a(RED);
+
+	/* I've found that the SD card takes awhile to do the first write form a cold boot. */
+	uint8_t timeout = 32;
+	while(--timeout)
+	{
+		rc = f_sync(&gps_log);
+		if(rc == FR_OK )
+			break;
+	}
+	if(timeout == 0)
+	{
+		hal_led_a(RED);
+	}
 
 	hal_led_b(RED);
 
@@ -259,7 +357,6 @@ void gps_start()
 	init_gps = 1;
 
 	USCI_A_UART_clearInterrupt(USCI_A0_BASE, USCI_A_UART_RECEIVE_INTERRUPT);
-
 	// Enable USCI_A0 RX interrupt
 	USCI_A_UART_enableInterrupt(USCI_A0_BASE, USCI_A_UART_RECEIVE_INTERRUPT); // Enable interrupt
 
@@ -278,6 +375,25 @@ void gps_minute2degree(uint8_t* minute_string, uint8_t* output)
 extern uint8_t RWbuf[512]; // make use of USB memory when USB isn't in use
 
 void gps_convert_NMEA2coords(char* gps_line)
+{
+	uint16_t bw;
+
+	FRESULT rc = f_write(&kml_file, gps_line, strlen(gps_line), &bw);
+	if( rc )
+	{
+		hal_led_a(RED);
+	}
+
+	rc = f_sync(&kml_file);
+	if( rc )
+	{
+		hal_led_a(RED);
+	}
+
+}
+
+
+void gps_convert_NMEA2coords1(char* gps_line)
 {
 
 	/* recycle USB RAM for more buffer space */
@@ -382,11 +498,12 @@ void pretty_date(char* in, char* out)
 
 void gps_create_kml_file(char* date, char* time)
 {
-
 	uint8_t time_string[15];
 	uint8_t date_string[15];
 	uint8_t long_filename[32];
 	uint8_t *ptr = long_filename;
+
+	b_KmlFileOpen = 1;
 
 	pretty_date(date, date_string);
 	pretty_time(time, time_string);
@@ -465,7 +582,7 @@ void gps_stop()
 	bActive = 0;
 
 
-	rc = f_write(&gps_log, "=-=-=-=-=-=-=-=-=-=-=\r\nClean Power off\r\n=-=-=-=-=-=-=-=-=-=-=\r\n", 63, &bw);
+	rc = f_write(&gps_log, "\r\n=-=-=-=-=-=-=-=-=-=-=\r\nClean Power off\r\n=-=-=-=-=-=-=-=-=-=-=\r\n", 65, &bw);
 	if( rc )
 			hal_led_a(YELLOW);
 
@@ -474,14 +591,19 @@ void gps_stop()
 	if( rc )
 			hal_led_a(YELLOW);
 
-	rc = f_write(&kml_file, xml_f, sizeof(xml_f) - 1, &bw);
-	if( rc )
-			hal_led_a(YELLOW);
 
-	rc = f_close(&kml_file);
-	if( rc )
-			hal_led_a(YELLOW);
+	/* Do we need to close the KML file? Is it open? */
 
+	if(b_KmlFileOpen)
+	{
+		rc = f_write(&kml_file, xml_f, sizeof(xml_f) - 1, &bw);
+		if( rc )
+				hal_led_a(YELLOW);
+
+		rc = f_close(&kml_file);
+		if( rc )
+				hal_led_a(YELLOW);
+	}
 
 	hal_led_b(0);
 	/* unmount work area */

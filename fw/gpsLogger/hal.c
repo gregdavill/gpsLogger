@@ -140,7 +140,7 @@ void hal_sd_pwr_on()
 
 	 /* enable IO pins and spi module */
 	 SDCard_init();
-	 disk_initialize(0);     //Attempt to initialize it
+	 //disk_initialize(0);     //Attempt to initialize it
 }
 
 void hal_sd_pwr_off()

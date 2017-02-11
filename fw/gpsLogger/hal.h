@@ -48,7 +48,16 @@
 #endif
 
 
-enum colours{RED = 1, GREEN = 2, BLUE = 4, YELLOW = 3, CYAN = 6, MAGENTA = 5, WHITE = 7};
+enum colours{
+	RED 	= 2,
+	GREEN 	= 1,
+	BLUE 	= 4,
+
+	YELLOW = 	RED |	GREEN ,
+	CYAN = 				GREEN |	BLUE,
+	MAGENTA = 	RED |			BLUE,
+	WHITE = 	RED |	GREEN |	BLUE
+};
 
 void USBHAL_initPorts(void);
 void USBHAL_initClocks(uint32_t mclkFreq);

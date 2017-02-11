@@ -402,7 +402,7 @@ uint8_t gps_util_extract_date(uint8_t* in, uint8_t* out)
 	do
 	{
 		if (*s_ptr == ',' || *s_ptr == 0)
-			break;
+			return 0;
 
 		*out++ = *s_ptr++;
 	} while (++len < 6); /* XX.YYYYYY */
@@ -434,7 +434,7 @@ uint8_t gps_hour,gps_minute,gps_second;
 const char days_of_month[] = {0,31,29,31,30,31,30,31,31,30,31,30,31};
 uint8_t isLeap(uint16_t y)
 {
-	if( y % 4 == 0 && y % 100 != 0 && y % 400 == 0)
+	if( (y % 4 == 0) && (y % 100 != 0) && (y % 400 == 0))
 		return 1;
 	return 0;
 }

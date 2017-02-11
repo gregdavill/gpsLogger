@@ -104,11 +104,15 @@ typedef ((*funcPtr_t)(void));
 
 
 funcPtr_t StateFuctions[e_StateLast] = {
-		&func_StateIdle, &func_StateLogging, &func_StateUsbConnected
+		&func_StateIdle,
+		&func_StateLogging,
+		&func_StateUsbConnected
 };
 
 funcPtr_t StateEntryFuctions[e_StateLast] = {
-		&entry_StateIdle, &entry_StateLogging, &entry_StateUsbConnected
+		&entry_StateIdle,
+		&entry_StateLogging,
+		&entry_StateUsbConnected
 };
 
 
@@ -144,8 +148,9 @@ int main (void)
 
 }
 
-/* IDLE state */
-
+/*
+ * ======== IDLE state ========
+ */
 void func_StateIdle(void)
 {
 
@@ -167,24 +172,6 @@ void func_StateIdle(void)
 
 		NewState = e_StateUsbConnected;
 		return;
-
-//PMM_setVCore(PMM_CORE_LEVEL_2);
-		/* Power up SD card*/
-		//hal_sd_pwr_on();
-		//delay_ms(100);
-
-
-		//USBMSC_initMSC();                  // Initialize MSC API, and report media to the host
-		if (USB_enable() == USB_SUCCEED){
-
-			//hal_led_a(GREEN);
-			//hal_sd_pwr_on();
-			//detectCard();
-
-			USB_reset();
-			USB_connect();  //generate rising edge on DP -> the host enumerates our device as full speed device
-		}
-		return; // Exit, next loop around will be different state
 	}
 
 	/* start GPS */
@@ -199,25 +186,24 @@ void func_StateIdle(void)
 			delay_ms(100);
 		}
 		hal_led_a(0);
-		if( hal_button_status() == 0 )
+		if( timeout != 0 )
 			return;
 
 		NewState = e_StateLogging;
 		hal_led_a(CYAN);
 
+		hal_button_event();
+
 		return; // don't enter sleep
 	}
 
 
-	USB_disable(); //Disable
+	//USB_disable(); //Disable
 	hal_gps_rtc_on(); // saves around 7uA
 	Timer_A_stop(TIMER_A0_BASE);
-	//UCS_turnOffSMCLK();
-	//PMM_setVCore(PMM_CORE_LEVEL_0);
+
 	__bis_SR_register(LPM4_bits + GIE);
 	_NOP();
-	//UCS_turnOnSMCLK();
-	//PMM_setVCore(PMM_CORE_LEVEL_2);
 }
 
 /* This function is called during the transition to StateIdle */
@@ -231,7 +217,7 @@ void entry_StateIdle(void)
 
 	gps_stop();
 
-	hal_gps_pwr_off();
+	//hal_gps_pwr_off();
 	hal_sd_pwr_off();
 	UCS_turnOffXT2();
 
@@ -241,6 +227,11 @@ void entry_StateIdle(void)
 
 	__enable_interrupt();       // Enable interrupts globally
 }
+
+
+/*
+ * ======== LOGGING state ========
+ */
 
 void func_StateLogging(void)
 {
@@ -288,21 +279,35 @@ void func_StateLogging(void)
 /* This function is called during the transition to StateIdle */
 void entry_StateLogging(void)
 {
-	hal_led_a(0);
-	hal_led_b(0);
+	//
+	hal_led_b(CYAN);
+
 	hal_sd_pwr_on();
-	delay_ms(100);
+	delay_ms(1000);
+	hal_led_b(0);
 
-	detectCard();
 
+	hal_led_a(0);
+	uint8_t timeout  = 0;
+	while(!detectCard())
+	{
+		if(++timeout > 10)
+			return;
 
-	hal_gps_pwr_on();
-	hal_gps_rtc_on(); // saves around 7uA
+		delay_ms(100);
+	}
+
+	Timer_A_startCounter(TIMER_A0_BASE, TIMER_A_UP_MODE);
+
+	//hal_gps_pwr_on();
+	//hal_gps_rtc_on(); // saves around 7uA
 
 	gps_start();
 }
 
-
+/*
+ * ======== USB CONNECTED state ========
+ */
 void func_StateUsbConnected(void)
 {
 	/* No USB present? Why are we here, What does it all mean? */
@@ -318,26 +323,12 @@ void func_StateUsbConnected(void)
 	else
 	hal_led_b(GREEN);
 
-	hal_button_event(); // clear button event
+	hal_button_event(); // clear button events
+
 	switch (USB_getConnectionState())
 	{
 		case ST_ENUM_ACTIVE:
-
-
-
 			USBMSC_processMSCBuffer(); // Handle READ/WRITE cmds from the host
-
-			// Every second, the Timer_A ISR sets this flag.  The
-			// checking can't be done from within the timer ISR, because it
-			// enables interrupts, and this is not a recommended
-			// practice due to the risk of nested interrupts.
-			//if (bDetectCard){
-			//USBMSC_checkMSCInsertionRemoval();
-
-			// Clear the flag, until the next timer ISR
-			//bDetectCard = 0x00;
-			//}
-
 			break;
 
 		// These cases are executed while your device is disconnected from
