@@ -51,18 +51,11 @@
 
 #include "driverlib.h"
 
-#include "USB_config/descriptors.h"
-#include "USB_API/USB_Common/device.h"
-#include "USB_API/USB_Common/usb.h"
-#include "USB_API/USB_MSC_API/UsbMscScsi.h"
-#include "USB_API/USB_MSC_API/UsbMsc.h"
-#include "USB_API/USB_MSC_API/UsbMscStateMachine.h"
 
-#include "USB_app/msc.h"  // FatFs #includes
-#include "USB_app/FatFs/mmc.h"
+#include "FatFs/mmc.h"
+#include "FatFs/ff.h"
 #include "main.h"
 
-#include "gps.h"
 
 /*
  * NOTE: Modify hal.h to select a specific evaluation board and customize for
@@ -75,45 +68,11 @@
 void initTimer(void);
 void setTimer_A_Parameters(void);
 
-
-
-
-void func_StateIdle(void);
-void entry_StateIdle(void);
-void func_StateLogging(void);
-void entry_StateLogging(void);
-void func_StateUsbConnected(void);
-void entry_StateUsbConnected(void);
-
-
-
-// Global flag by which the timer ISR will trigger main() to check the
-// media status
 volatile uint8_t bDelayDone;
 Timer_A_initUpModeParam Timer_A_params = {0};
 
-
-#define GPS_MODE 1
-
-enum eOperatingStates {e_StateIdle = 0, e_StateLogging = 1, e_StateUsbConnected = 2, e_StateLast};
-
-enum eOperatingStates OperatingState = 0, NewState = 0;
-
-
-typedef ((*funcPtr_t)(void));
-
-
-funcPtr_t StateFuctions[e_StateLast] = {
-		&func_StateIdle,
-		&func_StateLogging,
-		&func_StateUsbConnected
-};
-
-funcPtr_t StateEntryFuctions[e_StateLast] = {
-		&entry_StateIdle,
-		&entry_StateLogging,
-		&entry_StateUsbConnected
-};
+FATFS fatFs;
+FIL firmwareFile;
 
 
 /*  
@@ -123,256 +82,64 @@ int main (void)
 {
     WDT_A_hold(WDT_A_BASE); // Stop watchdog timer
 
-    PMM_setVCore(PMM_CORE_LEVEL_2);
+    //PMM_setVCore(PMM_CORE_LEVEL_2);
 	USBHAL_initPorts();                // Config GPIOS for low-power (output low)
-	USBHAL_initClocks(MCLK_FREQUENCY); // Config clocks. MCLK=SMCLK=FLL=MCLK_FREQUENCY; ACLK=REFO=32kHz
+	//USBHAL_initClocks(MCLK_FREQUENCY); // Config clocks. MCLK=SMCLK=FLL=MCLK_FREQUENCY; ACLK=REFO=32kHz
 
 
     initTimer();
-    entry_StateIdle();
 
-    // state machine
-    while (1)
-    {
-    	StateFuctions[(uint16_t)OperatingState]();
-
-    	/* Call entry fuction if required */
-    	if(NewState != OperatingState)
-    	{
-    		StateEntryFuctions[(uint16_t)NewState]();
-
-    		/* Update state */
-    		OperatingState = NewState;
-    	}
-    }
-
-}
-
-/*
- * ======== IDLE state ========
- */
-void func_StateIdle(void)
-{
-
-	/* If we are running then the following cases apply:
-	 *  - Battery has been plugged in
-	 *  - State has been set to IDLE (turn OFF)
-	 *  - We have been plogged into USB (turn ON USB MSC)
-	 *  - Our button has been pressed (Turn ON Logging)
-	 *
-	 */
-
-	/* Check and Handle the events */
-
-	/* USB connected */
-	if(USB_getConnectionInformation() & USB_VBUS_PRESENT)
-	{
-		/* Visual Debug of USB connection */
-		hal_led_a(CYAN);
-
-		NewState = e_StateUsbConnected;
-		return;
-	}
-
-	/* start GPS */
-	if(hal_button_event())
-	{
-
-		/* delay for starting */
-		hal_led_a(RED);
-		uint8_t timeout = 16;
-		while( hal_button_status() == 1 && --timeout )
-		{
-			delay_ms(100);
-		}
-		hal_led_a(0);
-		if( timeout != 0 )
-			return;
-
-		NewState = e_StateLogging;
-		hal_led_a(CYAN);
-
-		delay_ms(100);
-		hal_button_event();
-		hal_button_event();
-
-		return; // don't enter sleep
-	}
-
-
-	//USB_disable(); //Disable
-	hal_gps_rtc_on(); // saves around 7uA
-	Timer_A_stop(TIMER_A0_BASE);
-
-	__bis_SR_register(LPM4_bits + GIE);
-	_NOP();
-}
-
-/* This function is called during the transition to StateIdle */
-void entry_StateIdle(void)
-{
-
-
-	USB_setup(FALSE, TRUE);      // Init USB & events; if a host is present, connect
-
-
-	gps_stop();
-
-	//hal_gps_pwr_off();
-	hal_sd_pwr_off();
-	UCS_turnOffXT2();
+	hal_sd_pwr_on();
 
 	hal_led_a(0);
 	hal_led_b(0);
 
-	USB_disable(); //Disable
-	hal_gps_rtc_on(); // takes around 7uA
 	Timer_A_stop(TIMER_A0_BASE);
 
 	__enable_interrupt();       // Enable interrupts globally
-}
 
 
-/*
- * ======== LOGGING state ========
- */
+	/* Init SD Media */
+	FRESULT rc = f_mount(&fatFs,"", 0);
 
-void func_StateLogging(void)
-{
-	/* Do we need to stop logging? */
+	rc = f_open(&firmwareFile, "firmware.bin", FA_READ);
 
-	/* Have we connected to USB, Go via IDLE state to get system setup. */
-	if((USB_getConnectionInformation() & USB_VBUS_PRESENT))
+	while(1)
 	{
-		NewState = e_StateIdle;
-		return;
-	}
+		uint16_t memory_address = 0x4400;
 
-	if(hal_button_event())
-	{
-		/* delay for stopping */
-		uint8_t timeout = 16;
+		uint16_t page_buffer[64];
+		uint16_t br;
 
-		while( hal_button_status() == 1 && --timeout )
+		rc = f_read(&firmwareFile, page_buffer, sizeof(page_buffer), br);
+		if(rc)
 		{
-			hal_led_a(RED);
-			delay_ms(100);
-			hal_led_a(0);
+			/* Error condition */
+			break;
 		}
-		hal_led_a(0);
+		else if(br != sizeof(page_buffer))
+		{
+			/* Error condition, possible end of file */
+			if(br == 0)
+				break;
+		}
+		else
+		{
+			/* write data to memory + increment pointer */
+			FlashCtl_write16(page_buffer, (uint16_t*)memory_address, br);
+			memory_address += br;
+		}
 
-		if( hal_button_status() == 0 )
-			return;
 
-		NewState = e_StateIdle;
-		return;
+
 	}
 
 
-	{
-		gps_do();
-	}
 
-	/* Wait til new data */
-	__bis_SR_register(LPM0_bits + GIE);
-	_NOP();
+
+
 
 }
-
-/* This function is called during the transition to StateIdle */
-void entry_StateLogging(void)
-{
-	//
-	hal_led_b(CYAN);
-
-	hal_sd_pwr_on();
-	delay_ms(1000);
-	hal_led_b(0);
-
-
-	hal_led_a(0);
-	uint8_t timeout  = 0;
-	while(!detectCard())
-	{
-		if(++timeout > 10)
-			return;
-
-		delay_ms(100);
-	}
-
-	Timer_A_startCounter(TIMER_A0_BASE, TIMER_A_UP_MODE);
-
-	//hal_gps_pwr_on();
-	//hal_gps_rtc_on(); // saves around 7uA
-
-	gps_start();
-}
-
-/*
- * ======== USB CONNECTED state ========
- */
-void func_StateUsbConnected(void)
-{
-	/* No USB present? Why are we here, What does it all mean? */
-	if(!(USB_getConnectionInformation() & USB_VBUS_PRESENT))
-	{
-		NewState = e_StateIdle;
-		return;
-	}
-
-	/* check state of chareger? */
-	if( hal_charge_status())
-	hal_led_b(RED);
-	else
-	hal_led_b(GREEN);
-
-	hal_button_event(); // clear button events
-
-	switch (USB_getConnectionState())
-	{
-		case ST_ENUM_ACTIVE:
-			USBMSC_processMSCBuffer(); // Handle READ/WRITE cmds from the host
-			break;
-
-		// These cases are executed while your device is disconnected from
-		// the host (meaning, not enumerated); enumerated but suspended
-		// by the host, or connected to a powered hub without a USB host
-		// present.
-		case ST_PHYS_DISCONNECTED:
-		case ST_ENUM_SUSPENDED:
-		case ST_PHYS_CONNECTED_NOENUM_SUSP:
-			hal_led_a(BLUE);
-			//state = sIDLE;
-			break;
-
-		// The default is executed for the momentary state
-		// ST_ENUM_IN_PROGRESS.  Usually, this state only last a few
-		// seconds.  Be sure not to enter LPM3 in this state; USB
-		// communication is taking place here, and therefore the mode must
-		// be LPM0 or active-CPU.
-		case ST_ENUM_IN_PROGRESS:
-		default:;
-	}
-}
-
-
-void entry_StateUsbConnected(void)
-{
-
-	hal_sd_pwr_on();
-	delay_ms(100);
-
-	 USB_setup(TRUE, TRUE);      // Init USB & events; if a host is present, connect
-
-	 USBMSC_initMSC();                  // Initialize MSC API, and report media to the host
-
-}
-
-
-
-
-
-
 
 /*  
  * ======== TIMER0_A0_ISR ========
@@ -448,7 +215,6 @@ void __attribute__ ((interrupt(UNMI_VECTOR))) UNMI_ISR (void)
             // breakpoint here and see if execution hits it.  See the
             // Programmer's Guide for more information.
             SYSBERRIV = 0; //clear bus error flag
-            USB_disable(); //Disable
     }
 }
 

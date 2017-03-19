@@ -1,0 +1,4246 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+
+<meta content="HTML Tidy for Windows (vers 15 August 2007), see www.w3.org" name="generator">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii"><!-- /* * Copyright 2007 by Texas Instruments Incorporated. * All rights reserved. Property of Texas Instruments Incorporated. * Restricted rights to use, duplicate or disclose this code are * granted through contract. * * */ --><title>MSP430 Peripheral Driver Library</title><!-- For now, we use the doxygen style sheet -->
+
+
+
+<link href="docs/html/doxygen.css" rel="stylesheet" type="text/css">
+<link href="docs/html/doxygen.css" rel="stylesheet" type="text/css"></head>
+<body>
+<table width="100%">
+<tbody>
+<tr>
+<td bgcolor="black" width="1"><a href="http://www.ti.com"><img style="border: 0px solid ;" src="images/tilogo.gif" alt="Texas Instruments"></a></td>
+<td bgcolor="red"><img alt="Texas Instruments" src="images/titagline.gif"></td>
+</tr>
+</tbody>
+</table>
+<h1>MSP430 DriverLib &nbsp;2.00.00.16&nbsp;</h1>
+<h1>List of APIs removed in this version</h1><br><big><span style="font-weight: bold;">MSP430F5xx_6xx Family</span></big><br>
+
+ 
+<table style="border-collapse: collapse; width: 732px; height: 9238px;" border="1" cellpadding="0" cellspacing="0">
+<col style="width: 280pt;" width="373">
+ <col style="width: 245pt;" width="327">
+ <tbody><tr style="height: 14.4pt;" height="19">
+  <td class="xl65" style="height: 14.4pt; width: 280pt; font-weight: bold;" height="19" width="373">Old API</td>
+  <td class="xl65" style="width: 245pt; font-weight: bold;" width="327">New API</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">ADC10_A_memoryConfigure</td>
+  <td>ADC10_A_configureMemory</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">ADC12_A_memoryConfigure</td>
+  <td>ADC12_A_configureMemory</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">AES_clearInterruptFlag</td>
+  <td>AES_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">AES_generateFirstRoundKey</td>
+  <td>AES_setDecipherKey</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">AES_getInterruptFlagStatus</td>
+  <td>AES_getInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">AES_startGenerateFirstRoundKey</td>
+  <td>AES_startSetDecipherKey</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">AES256_clearInterruptFlag</td>
+  <td>AES256_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">AES256_getInterruptFlagStatus</td>
+  <td>AES256_getInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">BAK_BATT_chargerInitAndEnable</td>
+  <td>BattBak_initAndEnableCharger</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">BAK_BATT_disable</td>
+  <td>BattBak_disable</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">BAK_BATT_disableBackupSupplyToADC</td>
+  <td>BattBak_disableBackupSupplyToADC</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">BAK_BATT_disableCharger</td>
+  <td>BattBak_disableCharger</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">BAK_BATT_enableBackupSupplyToADC</td>
+  <td>BattBak_enableBackupSupplyToADC</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">BAK_BATT_getBackupRAMData</td>
+  <td>BattBak_getBackupRAMData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">BAK_BATT_manuallySwitchToBackupSupply</td>
+  <td>BattBak_manuallySwitchToBackupSupply</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">BAK_BATT_setBackupRAMData</td>
+  <td>BattBak_setBackupRAMData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">BAK_BATT_unlockBackupSubSystem</td>
+  <td>BattBak_unlockBackupSubSystem</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">BattBak_chargerInitAndEnable</td>
+  <td>BattBak_initAndEnableCharger</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">BattBak_manuallySwitchToBackupSupply</td>
+  <td>BattBak_switchToBackupSupplyManually</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_clearInterrupt</td>
+  <td>Comp_B_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_configureReferenceVoltage</td>
+  <td>Comp_B_configureReferenceVoltage</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_disable</td>
+  <td>Comp_B_disable</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_disableInputBuffer</td>
+  <td>Comp_B_disableInputBuffer</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_disableInterrupt</td>
+  <td>Comp_B_disableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_enable</td>
+  <td>Comp_B_enable</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_enableInputBuffer</td>
+  <td>Comp_B_enableInputBuffer</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_enableInterrupt</td>
+  <td>Comp_B_enableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_getInterruptStatus</td>
+  <td>Comp_B_getInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_init</td>
+  <td>Comp_B_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_initialize</td>
+  <td>Comp_B_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_interruptSetEdgeDirection</td>
+  <td>Comp_B_setInterruptEdgeDirection</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Comp_B_interruptSetEdgeDirection</td>
+  <td>Comp_B_setInterruptEdgeDirection</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_interruptToggleEdgeDirection</td>
+  <td>Comp_B_interruptToggleEdgeDirection</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Comp_B_interruptToggleEdgeDirection</td>
+  <td>Comp_B_toggleInterruptEdgeDirection</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_IOSwap</td>
+  <td>Comp_B_swapIO</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Comp_B_IOSwap</td>
+  <td>Comp_B_swapIO</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_outputValue</td>
+  <td>Comp_B_outputValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Comp_B_setReferenceVoltage</td>
+  <td>Comp_B_configureReferenceVoltage</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_setReferenceVoltage</td>
+  <td>Comp_B_setReferenceVoltage</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_shortInputs</td>
+  <td>Comp_B_shortInputs</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_B_unshortInputs</td>
+  <td>Comp_B_unshortInputs</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CRC_setData</td>
+  <td>CRC_set16BitData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CRC_setDataByteBitsReversed</td>
+  <td>CRC_set16BitDataReversed</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">DAC12_A_initialize</td>
+  <td>DAC12_A_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">DMA_initialize</td>
+  <td>DMA_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">DMA_NMIAbortStatus</td>
+  <td>DMA_getNMIAbortStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_clearInterruptFlag</td>
+  <td>EUSCI_A_SPI_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_A_SPI_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_A_SPI_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_masterChangeClock</td>
+  <td>EUSCI_A_SPI_changeMasterClock</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_masterInit</td>
+  <td>EUSCI_A_SPI_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_slaveInit</td>
+  <td>EUSCI_A_SPI_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_clearInterruptFlag</td>
+  <td>EUSCI_A_UART_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_A_UART_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_A_UART_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_initAdvance</td>
+  <td>EUSCI_A_UART_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_clearInterruptFlag</td>
+  <td>EUSCI_B_I2C_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_B_I2C_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_B_I2C_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterInit</td>
+  <td>EUSCI_B_I2C_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterIsSTOPSent</td>
+  <td>EUSCI_B_I2C_masterIsStopSent</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveFinish</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteFinish</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveFinishWithTimeout</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteFinishWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveNext</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteNext</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveStop</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteStop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendFinish</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteFinish</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendFinishWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteFinishWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendNext</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteNext</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendNextWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteNextWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStart</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStart</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStartWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStartWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStop</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStopWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStopWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterSingleReceive</td>
+  <td>EUSCI_B_I2C_masterReceiveSingle</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_slaveDataGet</td>
+  <td>EUSCI_B_I2C_slaveGetData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_slaveDataPut</td>
+  <td>EUSCI_B_I2C_slavePutData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_slaveInit</td>
+  <td>EUSCI_B_I2C_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_clearInterruptFlag</td>
+  <td>EUSCI_B_SPI_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_B_SPI_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_B_SPI_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_masterChangeClock</td>
+  <td>EUSCI_B_SPI_changeMasterClock</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_masterInit</td>
+  <td>EUSCI_B_SPI_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_slaveInit</td>
+  <td>EUSCI_B_SPI_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FLASH_bankErase</td>
+  <td>FlashCtl_eraseBank</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FLASH_eraseCheck</td>
+  <td>FlashCtl_eraseCheck</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FLASH_lockInfoA</td>
+  <td>FlashCtl_lockInfoA</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FLASH_massErase</td>
+  <td>FlashCtl_performMassErase</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FLASH_memoryFill32</td>
+  <td>FlashCtl_fillMemory32</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FLASH_segmentErase</td>
+  <td>FlashCtl_eraseSegment</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FLASH_status</td>
+  <td>FlashCtl_status</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FLASH_unlockInfoA</td>
+  <td>FlashCtl_unlockInfoA</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FLASH_write16</td>
+  <td>FlashCtl_write16</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FLASH_write32</td>
+  <td>FlashCtl_write32</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FLASH_write8</td>
+  <td>FlashCtl_write8</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FlashCtl_bankErase</td>
+  <td>FlashCtl_eraseBank</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FlashCtl_eraseCheck</td>
+  <td>FlashCtl_performEraseCheck</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FlashCtl_massErase</td>
+  <td>FlashCtl_performMassErase</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FlashCtl_memoryFill32</td>
+  <td>FlashCtl_fillMemory32</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FlashCtl_segmentErase</td>
+  <td>FlashCtl_eraseSegment</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FlashCtl_status</td>
+  <td>FlashCtl_getStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_clearInterruptFlag</td>
+  <td>GPIO_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_interruptEdgeSelect</td>
+  <td>GPIO_selectInterruptEdge</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_setAsInputPinWithPullDownresistor</td>
+  <td>GPIO_setAsInputPinWithPullDownResistor</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_setAsInputPinWithPullUpresistor</td>
+  <td>GPIO_setAsInputPinWithPullUpResistor</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">LCD_C_setMemoryCharacter</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">LDOPWR_clearInterruptStatus</td>
+  <td>LDOPWR_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPU_clearAllInterruptFlags</td>
+  <td>MPU_clearAllInterrupts</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPU_clearInterruptFlag</td>
+  <td>MPU_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_getResult16Bit</td>
+  <td>MPY32_getResult</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_getResult24Bit</td>
+  <td>MPY32_getResult</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_getResult32Bit</td>
+  <td>MPY32_getResult</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_getResult64Bit</td>
+  <td>MPY32_getResult</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_getResult8Bit</td>
+  <td>MPY32_getResult</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_resetFractionMode</td>
+  <td>MPY32_disableFractionalMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_resetSaturationMode</td>
+  <td>MPY32_disableSaturationMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_setFractionMode</td>
+  <td>MPY32_enableFractionalMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_setSaturationMode</td>
+  <td>MPY32_enableSaturationMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMAP_configurePorts</td>
+  <td>PMAP_initPorts</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_regOff</td>
+  <td>PMM_turnOffRegulator</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_regOn</td>
+  <td>PMM_turnOnRegulator</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_SvsHDisabledInLPMFullPerf</td>
+  <td>PMM_disableSvsHInLPMFullPerf</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_SvsHDisabledInLPMNormPerf</td>
+  <td>PMM_disableSvsHInLPMNormPerf</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_SvsHEnabledInLPMFullPerf</td>
+  <td>PMM_enableSvsHInLPMFullPerf</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_SvsHEnabledInLPMNormPerf</td>
+  <td>PMM_enableSvsHInLPMNormPerf</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_SvsHOptimizedInLPMFullPerf</td>
+  <td>PMM_optimizeSvsHInLPMFullPerf</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_SvsLDisabledInLPMFastWake</td>
+  <td>PMM_disableSvsLInLPMFastWake</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_SvsLDisabledInLPMSlowWake</td>
+  <td>PMM_disableSvsLInLPMSlowWake</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_SvsLEnabledInLPMFastWake</td>
+  <td>PMM_enableSvsLInLPMFastWake</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_SvsLEnabledInLPMSlowWake</td>
+  <td>PMM_enableSvsLInLPMSlowWake</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_SvsLOptimizedInLPMFastWake</td>
+  <td>PMM_optimizeSvsLInLPMFastWake</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_disableReferenceVoltage</td>
+  <td>Ref_A_disableReferenceVoltage</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_disableReferenceVoltageOutput</td>
+  <td>Ref_A_disableReferenceVoltageOutput</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_disableTempSensor</td>
+  <td>Ref_A_disableTempSensor</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_enableReferenceVoltage</td>
+  <td>Ref_A_enableReferenceVoltage</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_enableReferenceVoltageOutput</td>
+  <td>Ref_A_enableReferenceVoltageOutput</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_enableTempSensor</td>
+  <td>Ref_A_enableTempSensor</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_getBandgapMode</td>
+  <td>Ref_A_getBandgapMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_getBufferedBandgapVoltageStatus</td>
+  <td>Ref_A_isBufferedBandgapVoltageReady</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_getVariableReferenceVoltageStatus</td>
+  <td>Ref_A_isVariableReferenceVoltageOutputReady</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_isBandgapActive</td>
+  <td>Ref_A_isBandgapActive</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_isBufferedBandgapVoltageReady</td>
+  <td>Ref_A_isBufferedBandgapVoltageReady</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_isRefGenActive</td>
+  <td>Ref_A_isRefGenActive</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_isRefGenBusy</td>
+  <td>Ref_A_isRefGenBusy</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_isVariableReferenceVoltageOutputReady</td>
+  <td>Ref_A_isVariableReferenceVoltageOutputReady</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_setBufferedBandgapVoltageOneTimeTrigger</td>
+  <td>Ref_A_setBufferedBandgapVoltageOneTimeTrigger</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_setReferenceVoltage</td>
+  <td>Ref_A_setReferenceVoltage</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_setReferenceVoltageOneTimeTrigger</td>
+  <td>Ref_A_setReferenceVoltageOneTimeTrigger</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_A_calendarInit</td>
+  <td>RTC_A_initCalendar</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_A_CounterInit</td>
+  <td>RTC_A_initCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_A_counterPrescaleHold</td>
+  <td>RTC_A_holdCounterPrescale</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_A_counterPrescaleInit</td>
+  <td>RTC_A_initCounterPrescale</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_A_counterPrescaleStart</td>
+  <td>RTC_A_startCounterPrescale</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_A_setCalendarAlarm</td>
+  <td>RTC_A_configureCalendarAlarm</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_A_setPrescaleCounterValue</td>
+  <td>RTC_A_setPrescaleValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SD24_B_configureConverter</td>
+  <td>SD24_B_initConverter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SD24_B_configureConverterAdvanced</td>
+  <td>SD24_B_initConverterAdvanced</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SD24_B_initialize</td>
+  <td>SD24_B_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_clearJTAGMailboxFlagStatus</td>
+  <td>SysCtl_clearJTAGMailboxFlagStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_disableBSLMemory</td>
+  <td>SysCtl_disableBSLMemory</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_disableBSLProtect</td>
+  <td>SysCtl_disableBSLProtect</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_disableRAMBasedInterruptVectors</td>
+  <td>SysCtl_disableRAMBasedInterruptVectors</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_enableBSLMemory</td>
+  <td>SysCtl_enableBSLMemory</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_enableBSLProtect</td>
+  <td>SysCtl_enableBSLProtect</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_enableDedicatedJTAGPins</td>
+  <td>SysCtl_enableDedicatedJTAGPins</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_enablePMMAccessProtect</td>
+  <td>SysCtl_enablePMMAccessProtect</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_enableRAMBasedInterruptVectors</td>
+  <td>SysCtl_enableRAMBasedInterruptVectors</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_getBSLEntryIndication</td>
+  <td>SysCtl_getBSLEntryIndication</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_getJTAGInboxMessage16Bit</td>
+  <td>SysCtl_getJTAGInboxMessage16Bit</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_getJTAGInboxMessage32Bit</td>
+  <td>SysCtl_getJTAGInboxMessage32Bit</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_getJTAGMailboxFlagStatus</td>
+  <td>SysCtl_getJTAGMailboxFlagStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_JTAGMailboxInit</td>
+  <td>SysCtl_initJTAGMailbox</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_setBSLSize</td>
+  <td>SysCtl_setBSLSize</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_setJTAGOutgoingMessage16Bit</td>
+  <td>SysCtl_setJTAGOutgoingMessage16Bit</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_setJTAGOutgoingMessage32Bit</td>
+  <td>SysCtl_setJTAGOutgoingMessage32Bit</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_setRAMAssignedToBSL</td>
+  <td>SysCtl_setRAMAssignedToBSL</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_JTAGMailboxInit</td>
+  <td>SysCtl_initJTAGMailbox</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TEC_clearInterruptFlag</td>
+  <td>TEC_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TEC_configureExternalClearInput</td>
+  <td>TEC_initExternalClearInput</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TEC_configureExternalFaultInput</td>
+  <td>TEC_initExternalFaultInput</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_clear</td>
+  <td>Timer_A_clear</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_clearCaptureCompareInterruptFlag</td>
+  <td>Timer_A_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearCaptureCompareInterruptFlag<span style="">&nbsp;</span></td>
+  <td>Timer_A_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_clearTimerInterruptFlag</td>
+  <td>Timer_A_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearTimerInterruptFlag</td>
+  <td>Timer_A_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_configureContinuousMode</td>
+  <td>Timer_A_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_configureContinuousMode</td>
+  <td>Timer_A_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_configureUpDownMode</td>
+  <td>Timer_A_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_configureUpDownMode</td>
+  <td>Timer_A_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_configureUpMode</td>
+  <td>Timer_A_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_configureUpMode</td>
+  <td>Timer_A_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_disableCaptureCompareInterrupt</td>
+  <td>Timer_A_disableCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_disableInterrupt</td>
+  <td>Timer_A_disableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_enableCaptureCompareInterrupt</td>
+  <td>Timer_A_enableCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_enableInterrupt</td>
+  <td>Timer_A_enableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_generatePWM</td>
+  <td>Timer_A_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_generatePWM</td>
+  <td>Timer_A_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getCaptureCompareCount</td>
+  <td>Timer_A_getCaptureCompareCount</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getCaptureCompareInterruptStatus</td>
+  <td>Timer_A_getCaptureCompareInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getCounterValue</td>
+  <td>Timer_A_getCounterValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getInterruptStatus</td>
+  <td>Timer_A_getInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getOutputForOutputModeOutBitValue</td>
+  <td>Timer_A_getOutputForOutputModeOutBitValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getSynchronizedCaptureCompareInput</td>
+  <td>Timer_A_getSynchronizedCaptureCompareInput</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_initCapture</td>
+  <td>Timer_A_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initCapture</td>
+  <td>Timer_A_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initCaptureMode</td>
+  <td>Timer_A_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_initCompare</td>
+  <td>Timer_A_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initCompare</td>
+  <td>Timer_A_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initCompareMode</td>
+  <td>Timer_A_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initContinuousMode</td>
+  <td>Timer_A_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initUpDownMode</td>
+  <td>Timer_A_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initUpMode</td>
+  <td>Timer_A_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_outputPWM</td>
+  <td>Timer_A_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_setCompareValue</td>
+  <td>Timer_A_setCompareValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_setOutputForOutputModeOutBitValue</td>
+  <td>Timer_A_setOutputForOutputModeOutBitValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_startContinousMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startContinousMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_startContinuousMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startContinuousMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startCounter</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_startUpDownMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startUpDownMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_startUpMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startUpMode</td>
+  <td>Timer_A_startUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_stop</td>
+  <td>Timer_A_stop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_clear</td>
+  <td>Timer_B_clear</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_clearCaptureCompareInterruptFlag</td>
+  <td>Timer_B_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_clearCaptureCompareInterruptFlag<span style="">&nbsp;</span></td>
+  <td>Timer_B_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_clearTimerInterruptFlag</td>
+  <td>Timer_B_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_clearTimerInterruptFlag</td>
+  <td>Timer_B_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_configureContinuousMode</td>
+  <td>Timer_B_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_configureContinuousMode</td>
+  <td>Timer_B_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_configureUpDownMode</td>
+  <td>Timer_B_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_configureUpDownMode</td>
+  <td>Timer_B_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_configureUpMode</td>
+  <td>Timer_B_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_configureUpMode</td>
+  <td>Timer_B_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_disableCaptureCompareInterrupt</td>
+  <td>Timer_B_disableCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_disableInterrupt</td>
+  <td>Timer_B_disableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_enableCaptureCompareInterrupt</td>
+  <td>Timer_B_enableCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_enableInterrupt</td>
+  <td>Timer_B_enableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_generatePWM</td>
+  <td>Timer_B_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_generatePWM</td>
+  <td>Timer_B_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getCaptureCompareCount</td>
+  <td>Timer_B_getCaptureCompareCount</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getCaptureCompareInterruptStatus</td>
+  <td>Timer_B_getCaptureCompareInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getCounterValue</td>
+  <td>Timer_B_getCounterValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getInterruptStatus</td>
+  <td>Timer_B_getInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getOutputForOutputModeOutBitValue</td>
+  <td>Timer_B_getOutputForOutputModeOutBitValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getSynchronizedCaptureCompareInput</td>
+  <td>Timer_B_getSynchronizedCaptureCompareInput</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_initCapture</td>
+  <td>Timer_B_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initCapture</td>
+  <td>Timer_B_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initCaptureMode</td>
+  <td>Timer_B_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_initCompare</td>
+  <td>Timer_B_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initCompare</td>
+  <td>Timer_B_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initCompareLatchLoadEvent</td>
+  <td>Timer_B_initCompareLatchLoadEvent</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initCompareMode</td>
+  <td>Timer_B_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initContinuousMode</td>
+  <td>Timer_B_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initUpDownMode</td>
+  <td>Timer_B_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initUpMode</td>
+  <td>Timer_B_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_outputPWM</td>
+  <td>Timer_B_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_selectCounterLength</td>
+  <td>Timer_B_selectCounterLength</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_selectLatchingGroup</td>
+  <td>Timer_B_selectLatchingGroup</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_setCompareValue</td>
+  <td>Timer_B_setCompareValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_setOutputForOutputModeOutBitValue</td>
+  <td>Timer_B_setOutputForOutputModeOutBitValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_startContinousMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_startContinousMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_startContinuousMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_startContinuousMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_startCounter</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_startUpDownMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_startUpDownMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_startUpMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_startUpMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_stop</td>
+  <td>Timer_B_stop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_clear</td>
+  <td>Timer_D_clear</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_clearCaptureCompareInterruptFlag</td>
+  <td>Timer_D_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_D_clearCaptureCompareInterruptFlag<span style="">&nbsp;</span></td>
+  <td>Timer_D_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_clearHighResInterruptStatus</td>
+  <td>Timer_D_clearHighResInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_D_clearHighResInterruptStatus<span style="">&nbsp;</span></td>
+  <td>Timer_D_clearHighResInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_clearTimerInterruptFlag</td>
+  <td>Timer_D_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_D_clearTimerInterruptFlag</td>
+  <td>Timer_D_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_D_combineTDCCRToGeneratePWM</td>
+  <td>Timer_D_combineTDCCRToOuputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_combineTDCCRToGeneratePWM</td>
+  <td>Timer_D_combineTDCCRToOuputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_combineTDCCRToOutputPWM</td>
+  <td>Timer_D_combineTDCCRToOutputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_D_configureContinuousMode</td>
+  <td>Timer_D_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_configureContinuousMode</td>
+  <td>Timer_D_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_configureHighResGeneratorInFreeRunningMode</td>
+  <td>Timer_D_initHighResGeneratorInFreeRunningMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_D_configureHighResGeneratorInRegulatedMode</td>
+  <td>Timer_D_initHighResGeneratorInRegulatedMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_configureHighResGeneratorInRegulatedMode</td>
+  <td>Timer_D_initHighResGeneratorInRegulatedMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_D_configureUpDownMode</td>
+  <td>Timer_D_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_configureUpDownMode</td>
+  <td>Timer_D_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_D_configureUpMode</td>
+  <td>Timer_D_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_configureUpMode</td>
+  <td>Timer_D_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_disableCaptureCompareInterrupt</td>
+  <td>Timer_D_disableCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_disableHighResClockEnhancedAccuracy</td>
+  <td>Timer_D_disableHighResClockEnhancedAccuracy</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_disableHighResFastWakeup</td>
+  <td>Timer_D_disableHighResFastWakeup</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_DisableHighResGeneratorForceON</td>
+  <td>Timer_D_disableHighResGeneratorForceON</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_disableHighResGeneratorForceON</td>
+  <td>Timer_D_disableHighResGeneratorForceON</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_disableHighResInterrupt</td>
+  <td>Timer_D_disableHighResInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_disableTimerInterrupt</td>
+  <td>Timer_D_disableTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_enableCaptureCompareInterrupt</td>
+  <td>Timer_D_enableCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_enableHighResClockEnhancedAccuracy</td>
+  <td>Timer_D_enableHighResClockEnhancedAccuracy</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_enableHighResFastWakeup</td>
+  <td>Timer_D_enableHighResFastWakeup</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_EnableHighResGeneratorForceON</td>
+  <td>Timer_D_enableHighResGeneratorForceON</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_enableHighResGeneratorForceON</td>
+  <td>Timer_D_enableHighResGeneratorForceON</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_enableHighResInterrupt</td>
+  <td>Timer_D_enableHighResInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_enableTimerInterrupt</td>
+  <td>Timer_D_enableTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_D_generatePWM</td>
+  <td>Timer_D_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_generatePWM</td>
+  <td>Timer_D_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_getCaptureCompareCount</td>
+  <td>Timer_D_getCaptureCompareCount</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_getCaptureCompareInputSignal</td>
+  <td>Timer_D_getCaptureCompareInputSignal</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_getCaptureCompareInterruptStatus</td>
+  <td>Timer_D_getCaptureCompareInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_getCaptureCompareLatchCount</td>
+  <td>Timer_D_getCaptureCompareLatchCount</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_getCounterValue</td>
+  <td>Timer_D_getCounterValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_getHighResInterruptStatus</td>
+  <td>Timer_D_getHighResInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_getOutputForOutputModeOutBitValue</td>
+  <td>Timer_D_getOutputForOutputModeOutBitValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_getSynchronizedCaptureCompareInput</td>
+  <td>Timer_D_getSynchronizedCaptureCompareInput</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_getTimerInterruptStatus</td>
+  <td>Timer_D_getTimerInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_D_initCapture</td>
+  <td>Timer_D_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_initCapture</td>
+  <td>Timer_D_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_initCaptureMode</td>
+  <td>Timer_D_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_D_initCompare</td>
+  <td>Timer_D_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_initCompare</td>
+  <td>Timer_D_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_initCompareLatchLoadEvent</td>
+  <td>Timer_D_initCompareLatchLoadEvent</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_initCompareMode</td>
+  <td>Timer_D_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_initContinuousMode</td>
+  <td>Timer_D_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_initHighResGeneratorInFreeRunningMode</td>
+  <td>Timer_D_initHighResGeneratorInFreeRunningMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_initHighResGeneratorInRegulatedMode</td>
+  <td>Timer_D_initHighResGeneratorInRegulatedMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_initUpDownMode</td>
+  <td>Timer_D_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_initUpMode</td>
+  <td>Timer_D_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_outputPWM</td>
+  <td>Timer_D_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_selectCounterLength</td>
+  <td>Timer_D_selectCounterLength</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_selectHighResClockRange</td>
+  <td>Timer_D_selectHighResClockRange</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_selectHighResCoarseClockRange</td>
+  <td>Timer_D_selectHighResCoarseClockRange</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_selectLatchingGroup</td>
+  <td>Timer_D_selectLatchingGroup</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_setCompareValue</td>
+  <td>Timer_D_setCompareValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_setOutputForOutputModeOutBitValue</td>
+  <td>Timer_D_setOutputForOutputModeOutBitValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_startCounter</td>
+  <td>Timer_D_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_D_stop</td>
+  <td>Timer_D_stop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">UCS_clockSignalInit</td>
+  <td>UCS_initClockSignal</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">UCS_faultFlagStatus</td>
+  <td>UCS_getFaultFlagStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">UCS_HFXT1Start</td>
+  <td>UCS_turnOnHFXT1</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">UCS_HFXT1StartWithTimeout</td>
+  <td>UCS_turnOnHFXT1WithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">UCS_LFXT1Start</td>
+  <td>UCS_turnOnLFXT1</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">UCS_LFXT1StartWithTimeout</td>
+  <td>UCS_turnOnLFXT1WithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">UCS_SMCLKOff</td>
+  <td>UCS_turnOffSMCLK</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">UCS_SMCLKOn</td>
+  <td>UCS_turnOnSMCLK</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">UCS_XT1Off</td>
+  <td>UCS_turnOffXT1</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">UCS_XT2Off</td>
+  <td>UCS_turnOffXT2</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">UCS_XT2Start</td>
+  <td>UCS_turnOnXT2</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">UCS_XT2StartWithTimeout</td>
+  <td>UCS_turnOnXT2WithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_A_SPI_clearInterruptFlag</td>
+  <td>USCI_A_SPI_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_A_SPI_masterChangeClock</td>
+  <td>USCI_A_SPI_changeMasterClock</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_A_SPI_masterInit</td>
+  <td>USCI_A_SPI_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_A_SPI_slaveInit</td>
+  <td>USCI_A_SPI_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_A_UART_clearInterruptFlag</td>
+  <td>USCI_A_UART_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_A_UART_initAdvance</td>
+  <td>USCI_A_UART_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_clearInterruptFlag</td>
+  <td>USCI_B_I2C_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterInit</td>
+  <td>USCI_B_I2C_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterIsSTOPSent</td>
+  <td>USCI_B_I2C_masterIsStopSent</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterMultiByteReceiveFinish</td>
+  <td>USCI_B_I2C_masterReceiveMultiByteFinish</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterMultiByteReceiveFinishWithTimeout</td>
+  <td>USCI_B_I2C_masterReceiveMultiByteFinishWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterMultiByteReceiveNext</td>
+  <td>USCI_B_I2C_masterReceiveMultiByteNext</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterMultiByteReceiveStart</td>
+  <td>USCI_B_I2C_masterReceiveMultiByteStart</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterMultiByteReceiveStop</td>
+  <td>USCI_B_I2C_masterReceiveMultiByteStop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterMultiByteSendFinish</td>
+  <td>USCI_B_I2C_masterSendMultiByteFinish</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterMultiByteSendFinishWithTimeout</td>
+  <td>USCI_B_I2C_masterSendMultiByteFinishWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterMultiByteSendNext</td>
+  <td>USCI_B_I2C_masterSendMultiByteNext</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterMultiByteSendNextWithTimeout</td>
+  <td>USCI_B_I2C_masterSendMultiByteNextWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterMultiByteSendStart</td>
+  <td>USCI_B_I2C_masterSendMultiByteStart</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterMultiByteSendStartWithTimeout</td>
+  <td>USCI_B_I2C_masterSendMultiByteStartWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterMultiByteSendStop</td>
+  <td>USCI_B_I2C_masterSendMultiByteStop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterMultiByteSendStopWithTimeout</td>
+  <td>USCI_B_I2C_masterSendMultiByteStopWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterSingleReceive</td>
+  <td>USCI_B_I2C_masterReceiveSingle</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterSingleReceiveStart</td>
+  <td>USCI_B_I2C_masterReceiveSingleStart</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_masterSingleReceiveStartWithTimeout</td>
+  <td>USCI_B_I2C_masterReceiveSingleStartWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_slaveDataGet</td>
+  <td>USCI_B_I2C_slaveGetData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_slaveDataPut</td>
+  <td>USCI_B_I2C_slavePutData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_I2C_slaveInit</td>
+  <td>USCI_B_I2C_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_SPI_clearInterruptFlag</td>
+  <td>USCI_B_SPI_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_SPI_masterChangeClock</td>
+  <td>USCI_B_SPI_changeMasterClock</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_SPI_masterInit</td>
+  <td>USCI_B_SPI_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">USCI_B_SPI_slaveInit</td>
+  <td>USCI_B_SPI_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">WDT_A_intervalTimerInit</td>
+  <td>WDT_A_initIntervalTimer</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">WDT_A_watchdogTimerInit</td>
+  <td>WDT_A_initWatchdogTimer</td>
+ </tr>
+</tbody>
+</table>
+<br>
+<big>eusci_i2c.c/eusci_i2c.h files are replaced with eusci_b_i2c.c/eusci_b_i2c.h<br></big><big>eusci_spi.c/eusci_spi.h files are replaced with eusci_a_spi.c/eusci_a_spi.h/eusci_b_spi.c/eusci_b_spi.h<br></big><big>eusci_uart.c/eusci_uart.h files are replaced with eusci_a_uart.c/eusci_a_uart.h<br><br></big><big>usci_i2c.c/usci_i2c.h files are replaced with&nbsp;usci_b_i2c.c/usci_b_i2c.h<br></big><big>usci_spi.c/usci_spi.h files are replaced with&nbsp;usci_a_spi.c/usci_a_spi.h/usci_b_spi.c/usci_b_spi.h<br></big><big>usci_uart.c/usci_uart.h files are replaced with&nbsp;usci_a_uart.c/usci_a_uart.h</big><br><big style="font-weight: bold;"><br>MSP430FR5xx_6xx Family</big><br>
+
+ 
+<table style="border-collapse: collapse; width: 407px;" border="1" cellpadding="0" cellspacing="0">
+<col style="width: 214pt;" width="286">
+ <col style="width: 193pt;" width="257">
+ <tbody><tr style="height: 14.4pt;" height="19">
+  <td class="xl65" style="height: 14.4pt; width: 214pt; font-weight: bold;" height="19" width="286">Old API</td>
+  <td class="xl65" style="width: 193pt; font-weight: bold;" width="257">New API</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">ADC12_B_initialize</td>
+  <td>ADC12_B_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">ADC12_B_memoryConfigure</td>
+  <td>ADC12_B_configureMemory</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">AES256_clearInterruptFlag</td>
+  <td>AES256_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">AES256_getInterruptFlagStatus</td>
+  <td>AES256_getInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_clearInterrupt</td>
+  <td>Comp_E_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_disable</td>
+  <td>Comp_E_disable</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_disableInputBuffer</td>
+  <td>Comp_E_disableInputBuffer</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_disableInterrupt</td>
+  <td>Comp_E_disableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_enable</td>
+  <td>Comp_E_enable</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_enableInputBuffer</td>
+  <td>Comp_E_enableInputBuffer</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_enableInterrupt</td>
+  <td>Comp_E_enableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_getInterruptStatus</td>
+  <td>Comp_E_getInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_init</td>
+  <td>Comp_E_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_initialize</td>
+  <td>COMP_E_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_interruptSetEdgeDirection</td>
+  <td>Comp_E_setInterruptEdgeDirection</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Comp_E_interruptSetEdgeDirection<span style="">&nbsp;</span></td>
+  <td>Comp_E_setInterruptEdgeDirection</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_interruptToggleEdgeDirection</td>
+  <td>Comp_E_toggleInterruptEdgeDirection</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Comp_E_interruptToggleEdgeDirection<span style="">&nbsp;</span></td>
+  <td>Comp_E_toggleInterruptEdgeDirection</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_IOSwap</td>
+  <td>Comp_E_swapIO</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Comp_E_IOSwap</td>
+  <td>Comp_E_swapIO</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_outputValue</td>
+  <td>Comp_E_outputValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_setPowerMode</td>
+  <td>Comp_E_setPowerMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_setReferenceAccuracy</td>
+  <td>Comp_E_setReferenceAccuracy</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_setReferenceVoltage</td>
+  <td>Comp_E_setReferenceVoltage</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_shortInputs</td>
+  <td>Comp_E_shortInputs</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_E_unshortInputs</td>
+  <td>Comp_E_unshortInputs</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CRC_setData</td>
+  <td>CRC_set16BitData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CRC_setDataByteBitsReversed</td>
+  <td>CRC_set16BitDataReversed</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_clockSignalInit</td>
+  <td>CS_initClockSignal</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_faultFlagStatus</td>
+  <td>CS_getFaultFlagStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_HFXTOff</td>
+  <td>CS_turnOffHFXT</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_HFXTStart</td>
+  <td>CS_turnOnHFXT</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_HFXTStartWithTimeout</td>
+  <td>CS_turnOnHFXTWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_LFXTOff</td>
+  <td>CS_turnOffLFXT</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_LFXTStart</td>
+  <td>CS_turnOnLFXT</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_LFXTStartWithTimeout</td>
+  <td>CS_turnOnLFXTWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_VLOoff</td>
+  <td>CS_turnOffVLO</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">DMA_initialize</td>
+  <td>DMA_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">DMA_NMIAbortStatus</td>
+  <td>DMA_getNMIAbortStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">ESI_clearInterruptFlag</td>
+  <td>ESI_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_clearInterruptFlag</td>
+  <td>EUSCI_A_SPI_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_A_SPI_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_A_SPI_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_masterChangeClock</td>
+  <td>EUSCI_A_SPI_changeMasterClock</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_masterInit</td>
+  <td>EUSCI_A_SPI_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_slaveInit</td>
+  <td>EUSCI_A_SPI_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_clearInterruptFlag</td>
+  <td>EUSCI_A_UART_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_A_UART_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_A_UART_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_initAdvance</td>
+  <td>EUSCI_A_UART_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_clearInterruptFlag</td>
+  <td>EUSCI_B_I2C_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_B_I2C_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_B_I2C_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterInit</td>
+  <td>EUSCI_B_I2C_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterIsSTOPSent</td>
+  <td>EUSCI_B_I2C_masterIsStopSent</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveFinish</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteFinish</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveFinishWithTimeout</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteFinishWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveNext</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteNext</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveStop</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteStop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendFinish</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteFinish</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendFinishWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteFinishWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendNext</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteNext</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendNextWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteNextWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStart</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStart</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStartWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStartWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStop</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStopWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStopWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterSingleReceive</td>
+  <td>EUSCI_B_I2C_masterReceiveSingle</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_slaveDataGet</td>
+  <td>EUSCI_B_I2C_slaveGetData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_slaveDataPut</td>
+  <td>EUSCI_B_I2C_slavePutData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_slaveInit</td>
+  <td>EUSCI_B_I2C_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_clearInterruptFlag</td>
+  <td>EUSCI_B_SPI_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_B_SPI_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_B_SPI_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_masterChangeClock</td>
+  <td>EUSCI_B_SPI_changeMasterClock</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_masterInit</td>
+  <td>EUSCI_B_SPI_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_slaveInit</td>
+  <td>EUSCI_B_SPI_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_configureWaitStateControl</td>
+  <td>FRAMCtl_configureWaitStateControl</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_delayPowerUpFromLPM</td>
+  <td>FRAMCtl_delayPowerUpFromLPM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_disableInterrupt</td>
+  <td>FRAMCtl_disableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_enableInterrupt</td>
+  <td>FRAMCtl_enableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_getInterruptStatus</td>
+  <td>FRAMCtl_getInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_memoryFill32</td>
+  <td>FRAMCtl_memoryFill32</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_write16</td>
+  <td>FRAMCtl_write16</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_write32</td>
+  <td>FRAMCtl_write32</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_write8</td>
+  <td>FRAMCtl_write8</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_clearInterruptFlag</td>
+  <td>GPIO_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_interruptEdgeSelect</td>
+  <td>GPIO_selectInterruptEdge</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_setAsInputPinWithPullDownresistor</td>
+  <td>GPIO_setAsInputPinWithPullDownResistor</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_setAsInputPinWithPullUpresistor</td>
+  <td>GPIO_setAsInputPinWithPullUpResistor</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">LCD_C_setMemoryCharacter</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPU_clearAllInterruptFlags</td>
+  <td>MPU_clearAllInterrupts</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPU_clearInterruptFlag</td>
+  <td>MPU_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPU_createThreeSegments</td>
+  <td>MPU_initThreeSegments</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPU_createTwoSegments</td>
+  <td>MPU_initTwoSegments</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_getResult16Bit</td>
+  <td>MPY32_getResult</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_getResult24Bit</td>
+  <td>MPY32_getResult</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_getResult32Bit</td>
+  <td>MPY32_getResult</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_getResult64Bit</td>
+  <td>MPY32_getResult</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_getResult8Bit</td>
+  <td>MPY32_getResult</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_resetFractionMode</td>
+  <td>MPY32_disableFractionalMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_resetSaturationMode</td>
+  <td>MPY32_disableSaturationMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_setFractionMode</td>
+  <td>MPY32_enableFractionalMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_setSaturationMode</td>
+  <td>MPY32_enableSaturationMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMAP_configurePorts</td>
+  <td>PMAP_initPorts</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_regOff</td>
+  <td>PMM_turnOffRegulator</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_regOn</td>
+  <td>PMM_turnOnRegulator</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_disableReferenceVoltage</td>
+  <td>Ref_A_disableReferenceVoltage</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_disableReferenceVoltageOutput</td>
+  <td>Ref_A_disableReferenceVoltageOutput</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_disableTempSensor</td>
+  <td>Ref_A_disableTempSensor</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_enableReferenceVoltage</td>
+  <td>Ref_A_enableReferenceVoltage</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_enableReferenceVoltageOutput</td>
+  <td>Ref_A_enableReferenceVoltageOutput</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_enableTempSensor</td>
+  <td>Ref_A_enableTempSensor</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_getBandgapMode</td>
+  <td>Ref_A_getBandgapMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_getBufferedBandgapVoltageStatus</td>
+  <td>Ref_A_isBufferedBandgapVoltageReady</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_getVariableReferenceVoltageStatus</td>
+  <td>Ref_A_isVariableReferenceVoltageOutputReady</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_isBandgapActive</td>
+  <td>Ref_A_isBandgapActive</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_isBufferedBandgapVoltageReady</td>
+  <td>Ref_A_isBufferedBandgapVoltageReady</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_isRefGenActive</td>
+  <td>Ref_A_isRefGenActive</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_isRefGenBusy</td>
+  <td>Ref_A_isRefGenBusy</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_isVariableReferenceVoltageOutputReady</td>
+  <td>Ref_A_isVariableReferenceVoltageOutputReady</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_setBufferedBandgapVoltageOneTimeTrigger</td>
+  <td>Ref_A_setBufferedBandgapVoltageOneTimeTrigger</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_setReferenceVoltage</td>
+  <td>Ref_A_setReferenceVoltage</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_A_setReferenceVoltageOneTimeTrigger</td>
+  <td>Ref_A_setReferenceVoltageOneTimeTrigger</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_B_calendarInit</td>
+  <td>RTC_B_initCalendar</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_B_setCalendarAlarm</td>
+  <td>RTC_B_configureCalendarAlarm</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_B_setPrescaleCounterValue</td>
+  <td>RTC_B_setPrescaleValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_C_calendarInit</td>
+  <td>RTC_C_initCalendar</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_C_counterInit</td>
+  <td>RTC_C_initCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_C_counterPrescaleHold</td>
+  <td>RTC_C_holdCounterPrescale</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_C_counterPrescaleInit</td>
+  <td>RTC_C_initCounterPrescale</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_C_counterPrescaleStart</td>
+  <td>RTC_C_startCounterPrescale</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_C_setCalendarAlarm</td>
+  <td>RTC_C_configureCalendarAlarm</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_clearJTAGMailboxFlagStatus</td>
+  <td>SysCtl_clearJTAGMailboxFlagStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_disableBSLMemory</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_disableBSLProtect</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_disableRAMBasedInterruptVectors</td>
+  <td>SysCtl_disableRAMBasedInterruptVectors</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_enableBSLMemory</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_enableBSLProtect</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_enableDedicatedJTAGPins</td>
+  <td>SysCtl_enableDedicatedJTAGPins</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_enablePMMAccessProtect</td>
+  <td>SysCtl_enablePMMAccessProtect</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_enableRAMBasedInterruptVectors</td>
+  <td>SysCtl_enableRAMBasedInterruptVectors</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_getBSLEntryIndication</td>
+  <td>SysCtl_getBSLEntryIndication</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_getJTAGInboxMessage16Bit</td>
+  <td>SysCtl_getJTAGInboxMessage16Bit</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_getJTAGInboxMessage32Bit</td>
+  <td>SysCtl_getJTAGInboxMessage32Bit</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_getJTAGMailboxFlagStatus</td>
+  <td>SysCtl_getJTAGMailboxFlagStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_JTAGMailboxInit</td>
+  <td>SysCtl_initJTAGMailbox</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_setBSLSize</td>
+  <td>SysCtl_setBSLSize</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_setJTAGOutgoingMessage16Bit</td>
+  <td>SysCtl_setJTAGOutgoingMessage16Bit</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_setJTAGOutgoingMessage32Bit</td>
+  <td>SysCtl_setJTAGOutgoingMessage32Bit</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_setRAMAssignedToBSL</td>
+  <td>SysCtl_setRAMAssignedToBSL</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_disableBSLMemory</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_disableBSLProtect</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_enableBSLMemory</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_enableBSLProtect</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_JTAGMailboxInit</td>
+  <td>SysCtl_initJTAGMailbox</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_setBSLSize</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_setRAMAssignedToBSL</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_clear</td>
+  <td>Timer_A_clear</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_clearCaptureCompareInterruptFlag</td>
+  <td>Timer_A_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearCaptureCompareInterruptFlag<span style="">&nbsp;</span></td>
+  <td>Timer_A_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearCaptureCompareInterruptFlag<span style="">&nbsp;</span></td>
+  <td>Timer_A_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearTimerInterruptFlag</td>
+  <td>Timer_A_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_clearTimerInterruptFlag</td>
+  <td>Timer_A_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearTimerInterruptFlag</td>
+  <td>Timer_A_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_configureContinuousMode</td>
+  <td>Timer_A_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_configureContinuousMode</td>
+  <td>Timer_A_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_configureUpDownMode</td>
+  <td>Timer_A_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_configureUpDownMode</td>
+  <td>Timer_A_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_configureUpMode</td>
+  <td>Timer_A_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_configureUpMode</td>
+  <td>Timer_A_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_disableCaptureCompareInterrupt</td>
+  <td>Timer_A_disableCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_disableInterrupt</td>
+  <td>Timer_A_disableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_enableCaptureCompareInterrupt</td>
+  <td>Timer_A_enableCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_enableInterrupt</td>
+  <td>Timer_A_enableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_generatePWM</td>
+  <td>Timer_A_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_generatePWM</td>
+  <td>Timer_A_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getCaptureCompareCount</td>
+  <td>Timer_A_getCaptureCompareCount</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getCaptureCompareInterruptStatus</td>
+  <td>Timer_A_getCaptureCompareInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getCounterValue</td>
+  <td>Timer_A_getCounterValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getInterruptStatus</td>
+  <td>Timer_A_getInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getOutputForOutputModeOutBitValue</td>
+  <td>Timer_A_getOutputForOutputModeOutBitValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getSynchronizedCaptureCompareInput</td>
+  <td>Timer_A_getSynchronizedCaptureCompareInput</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_initCapture</td>
+  <td>Timer_A_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initCapture</td>
+  <td>Timer_A_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initCaptureMode</td>
+  <td>Timer_A_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_initCompare</td>
+  <td>Timer_A_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initCompare</td>
+  <td>Timer_A_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initCompareMode</td>
+  <td>Timer_A_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initContinuousMode</td>
+  <td>Timer_A_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initUpDownMode</td>
+  <td>Timer_A_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initUpMode</td>
+  <td>Timer_A_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_outputPWM</td>
+  <td>Timer_A_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_setCompareValue</td>
+  <td>Timer_A_setCompareValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_setOutputForOutputModeOutBitValue</td>
+  <td>Timer_A_setOutputForOutputModeOutBitValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_startContinousMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startContinousMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_startContinuousMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startContinuousMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startCounter</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_startUpDownMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startUpDownMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_startUpMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startUpMode</td>
+  <td>Timer_A_startUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_stop</td>
+  <td>Timer_A_stop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_clear</td>
+  <td>Timer_B_clear</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_clearCaptureCompareInterruptFlag</td>
+  <td>Timer_B_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_clearCaptureCompareInterruptFlag<span style="">&nbsp;</span></td>
+  <td>Timer_B_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_clearCaptureCompareInterruptFlag<span style="">&nbsp;</span></td>
+  <td>Timer_B_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_clearTimerInterruptFlag</td>
+  <td>Timer_B_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_clearTimerInterruptFlag</td>
+  <td>Timer_B_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_clearTimerInterruptFlag</td>
+  <td>Timer_B_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_configureContinuousMode</td>
+  <td>Timer_B_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_configureContinuousMode</td>
+  <td>Timer_B_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_configureUpDownMode</td>
+  <td>Timer_B_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_configureUpDownMode</td>
+  <td>Timer_B_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_configureUpMode</td>
+  <td>Timer_B_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_configureUpMode</td>
+  <td>Timer_B_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_disableCaptureCompareInterrupt</td>
+  <td>Timer_B_disableCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_disableInterrupt</td>
+  <td>Timer_B_disableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_enableCaptureCompareInterrupt</td>
+  <td>Timer_B_enableCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_enableInterrupt</td>
+  <td>Timer_B_enableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_generatePWM</td>
+  <td>Timer_B_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_generatePWM</td>
+  <td>Timer_B_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getCaptureCompareCount</td>
+  <td>Timer_B_getCaptureCompareCount</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getCaptureCompareInterruptStatus</td>
+  <td>Timer_B_getCaptureCompareInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getCounterValue</td>
+  <td>Timer_B_getCounterValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getInterruptStatus</td>
+  <td>Timer_B_getInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getOutputForOutputModeOutBitValue</td>
+  <td>Timer_B_getOutputForOutputModeOutBitValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getSynchronizedCaptureCompareInput</td>
+  <td>Timer_B_getSynchronizedCaptureCompareInput</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_initCapture</td>
+  <td>Timer_B_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initCapture</td>
+  <td>Timer_B_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initCaptureMode</td>
+  <td>Timer_B_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_initCompare</td>
+  <td>Timer_B_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initCompare</td>
+  <td>Timer_B_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initCompareLatchLoadEvent</td>
+  <td>Timer_B_initCompareLatchLoadEvent</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initCompareMode</td>
+  <td>Timer_B_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initContinuousMode</td>
+  <td>Timer_B_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initUpDownMode</td>
+  <td>Timer_B_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initUpMode</td>
+  <td>Timer_B_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_outputPWM</td>
+  <td>Timer_B_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_selectCounterLength</td>
+  <td>Timer_B_selectCounterLength</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_selectLatchingGroup</td>
+  <td>Timer_B_selectLatchingGroup</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_setCompareValue</td>
+  <td>Timer_B_setCompareValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_setOutputForOutputModeOutBitValue</td>
+  <td>Timer_B_setOutputForOutputModeOutBitValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_startContinousMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_startContinousMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_startContinuousMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_startContinuousMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_startCounter</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_startUpDownMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_startUpDownMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;">Timer_B_startUpMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_startUpMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_stop</td>
+  <td>Timer_B_stop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">WDT_A_intervalTimerInit</td>
+  <td>WDT_A_initIntervalTimer</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">WDT_A_watchdogTimerInit</td>
+  <td>WDT_A_initWatchdogTimer</td>
+ </tr>
+</tbody>
+</table>
+<br>
+<big style="font-weight: bold;">MSP430FR57xx Family</big><br>
+
+ 
+<table style="border-collapse: collapse; width: 373px;" border="1" cellpadding="0" cellspacing="0">
+<col style="width: 186pt;" width="248">
+ <col style="width: 187pt;" width="250">
+ <tbody><tr style="height: 14.4pt;" height="19">
+  <td class="xl65" style="height: 14.4pt; width: 186pt; font-weight: bold;" height="19" width="248">Old API</td>
+  <td class="xl65" style="width: 187pt; font-weight: bold;" width="250">New API</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">ADC10_B_memoryConfgiure</td>
+  <td>ADC10_B_configureMemory</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">AES256_clearInterruptFlag</td>
+  <td>AES256_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">AES256_getInterruptFlagStatus</td>
+  <td>AES256_getInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_clearInterrupt</td>
+  <td>Comp_D_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_disable</td>
+  <td>Comp_D_disable</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_disableInputBuffer</td>
+  <td>Comp_D_disableInputBuffer</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_disableInterrupt</td>
+  <td>Comp_D_disableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_enable</td>
+  <td>Comp_D_enable</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_enableInputBuffer</td>
+  <td>Comp_D_enableInputBuffer</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_enableInterrupt</td>
+  <td>Comp_D_enableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_getInterruptStatus</td>
+  <td>Comp_D_getInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_init</td>
+  <td>Comp_D_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_initialize</td>
+  <td>Comp_D_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_interruptSetEdgeDirection</td>
+  <td>Comp_D_setInterruptEdgeDirection</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_interruptToggleEdgeDirection</td>
+  <td>Comp_D_toggleInterruptEdgeDirection</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Comp_D_interruptSetEdgeDirection</td>
+  <td>Comp_D_setInterruptEdgeDirection</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Comp_D_interruptToggleEdgeDirection</td>
+  <td>Comp_D_toggleInterruptEdgeDirection</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_IOSwap</td>
+  <td>Comp_D_swapIO</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Comp_D_IOSwap</td>
+  <td>Comp_D_swapIO</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_outputValue</td>
+  <td>Comp_D_outputValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_setReferenceAccuracy</td>
+  <td>Comp_D_setReferenceAccuracy</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_setReferenceVoltage</td>
+  <td>Comp_D_setReferenceVoltage</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_shortInputs</td>
+  <td>Comp_D_shortInputs</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">COMP_D_unshortInputs</td>
+  <td>Comp_D_unshortInputs</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CRC_setData</td>
+  <td>CRC_set16BitData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CRC_setDataByteBitsReversed</td>
+  <td>CRC_set16BitDataReversed</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_clockSignalInit</td>
+  <td>CS_initClockSignal</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_faultFlagStatus</td>
+  <td>CS_getFaultFlagStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_XT1Off</td>
+  <td>CS_turnOffXT1</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_XT1Start</td>
+  <td>CS_turnOnXT1</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_XT1StartWithTimeout</td>
+  <td>CS_turnOnXT1WithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_XT2Off</td>
+  <td>CS_turnOffXT2</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_XT2Start</td>
+  <td>CS_turnOnXT2</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_XT2StartWithTimeout</td>
+  <td>CS_turnOnXT2WithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">DMA_initialize</td>
+  <td>DMA_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">DMA_NMIAbortStatus</td>
+  <td>DMA_getNMIAbortStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_clearInterruptFlag</td>
+  <td>EUSCI_A_SPI_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_A_SPI_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_A_SPI_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_masterChangeClock</td>
+  <td>EUSCI_A_SPI_changeMasterClock</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_masterInit</td>
+  <td>EUSCI_A_SPI_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_slaveInit</td>
+  <td>EUSCI_A_SPI_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_clearInterruptFlag</td>
+  <td>EUSCI_A_UART_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_A_UART_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_A_UART_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_initAdvance</td>
+  <td>EUSCI_A_UART_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_clearInterruptFlag</td>
+  <td>EUSCI_B_I2C_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_B_I2C_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_B_I2C_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterInit</td>
+  <td>EUSCI_B_I2C_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterIsSTOPSent</td>
+  <td>EUSCI_B_I2C_masterIsStopSent</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveFinish</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteFinish</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveFinishWithTimeout</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteFinishWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveNext</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteNext</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveStop</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteStop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendFinish</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteFinish</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendFinishWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteFinishWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendNext</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteNext</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendNextWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteNextWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStart</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStart</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStartWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStartWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStop</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStopWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStopWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterSingleReceive</td>
+  <td>EUSCI_B_I2C_masterReceiveSingle</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_slaveDataGet</td>
+  <td>EUSCI_B_I2C_slaveGetData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_slaveDataPut</td>
+  <td>EUSCI_B_I2C_slavePutData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_slaveInit</td>
+  <td>EUSCI_B_I2C_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_clearInterruptFlag</td>
+  <td>EUSCI_B_SPI_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_B_SPI_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_B_SPI_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_masterChangeClock</td>
+  <td>EUSCI_B_SPI_changeMasterClock</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_masterInit</td>
+  <td>EUSCI_B_SPI_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_slaveInit</td>
+  <td>EUSCI_B_SPI_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_configureWaitStateControl</td>
+  <td>FRAMCtl_configureWaitStateControl</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_disableInterrupt</td>
+  <td>FRAMCtl_disableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_enableInterrupt</td>
+  <td>FRAMCtl_enableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_getInterruptStatus</td>
+  <td>FRAMCtl_getInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_memoryFill32</td>
+  <td>FRAMCtl_memoryFill32</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_write16</td>
+  <td>FRAMCtl_write16</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_write32</td>
+  <td>FRAMCtl_write32</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAM_write8</td>
+  <td>FRAMCtl_write8</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_clearInterruptFlag</td>
+  <td>GPIO_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_interruptEdgeSelect</td>
+  <td>GPIO_selectInterruptEdge</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_setAsInputPinWithPullDownresistor</td>
+  <td>GPIO_setAsInputPinWithPullDownResistor</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_setAsInputPinWithPullUpresistor</td>
+  <td>GPIO_setAsInputPinWithPullUpResistor</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPU_clearAllInterruptFlags</td>
+  <td>MPU_clearAllInterrupts</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPU_clearInterruptFlag</td>
+  <td>MPU_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPU_createThreeSegments</td>
+  <td>MPU_initThreeSegments</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPU_createTwoSegments</td>
+  <td>MPU_initTwoSegments</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_getResult16Bit</td>
+  <td>MPY32_getResult</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_getResult24Bit</td>
+  <td>MPY32_getResult</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_getResult32Bit</td>
+  <td>MPY32_getResult</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_getResult64Bit</td>
+  <td>MPY32_getResult</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_getResult8Bit</td>
+  <td>MPY32_getResult</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_resetFractionMode</td>
+  <td>MPY32_disableFractionalMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_resetSaturationMode</td>
+  <td>MPY32_disableSaturationMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_setFractionMode</td>
+  <td>MPY32_enableFractionalMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">MPY32_setSaturationMode</td>
+  <td>MPY32_enableSaturationMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_regOff</td>
+  <td>PMM_turnOffRegulator</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_regOn</td>
+  <td>PMM_turnOnRegulator</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_disableReferenceVoltage</td>
+  <td>Ref_disableReferenceVoltage</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_disableTempSensor</td>
+  <td>Ref_disableTempSensor</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_enableReferenceVoltage</td>
+  <td>Ref_enableReferenceVoltage</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_enableTempSensor</td>
+  <td>Ref_enableTempSensor</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_getBandgapMode</td>
+  <td>Ref_getBandgapMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_isBandgapActive</td>
+  <td>Ref_isBandgapActive</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_isRefGenActive</td>
+  <td>Ref_isRefGenActive</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_isRefGenBusy</td>
+  <td>Ref_isRefGenBusy</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">REF_setReferenceVoltage</td>
+  <td>Ref_setReferenceVoltage</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_B_calendarInit</td>
+  <td>RTC_B_initCalendar</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_B_setCalendarAlarm</td>
+  <td>RTC_B_configureCalendarAlarm</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_B_setPrescaleCounterValue</td>
+  <td>RTC_B_setPrescaleValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_C_calendarInit</td>
+  <td>RTC_C_initCalendar</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_C_counterInit</td>
+  <td>RTC_C_initCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_C_counterPrescaleHold</td>
+  <td>RTC_C_holdCounterPrescale</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_C_counterPrescaleInit</td>
+  <td>RTC_C_initCounterPrescale</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_C_counterPrescaleStart</td>
+  <td>RTC_C_startCounterPrescale</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">RTC_C_setCalendarAlarm</td>
+  <td>RTC_C_configureCalendarAlarm</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_clearJTAGMailboxFlagStatus</td>
+  <td>SysCtl_clearJTAGMailboxFlagStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_disableBSLMemory</td>
+  <td>SysCtl_disableBSLMemory</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_disableBSLProtect</td>
+  <td>SysCtl_disableBSLProtect</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_disableRAMBasedInterruptVectors</td>
+  <td>SysCtl_disableRAMBasedInterruptVectors</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_enableBSLMemory</td>
+  <td>SysCtl_enableBSLMemory</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_enableBSLProtect</td>
+  <td>SysCtl_enableBSLProtect</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_enableDedicatedJTAGPins</td>
+  <td>SysCtl_enableDedicatedJTAGPins</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_enablePMMAccessProtect</td>
+  <td>SysCtl_enablePMMAccessProtect</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_enableRAMBasedInterruptVectors</td>
+  <td>SysCtl_enableRAMBasedInterruptVectors</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_getBSLEntryIndication</td>
+  <td>SysCtl_getBSLEntryIndication</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_getJTAGInboxMessage16Bit</td>
+  <td>SysCtl_getJTAGInboxMessage16Bit</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_getJTAGInboxMessage32Bit</td>
+  <td>SysCtl_getJTAGInboxMessage32Bit</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_getJTAGMailboxFlagStatus</td>
+  <td>SysCtl_getJTAGMailboxFlagStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_JTAGMailboxInit</td>
+  <td>SysCtl_initJTAGMailbox</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_setBSLSize</td>
+  <td>SysCtl_setBSLSize</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_setJTAGOutgoingMessage16Bit</td>
+  <td>SysCtl_setJTAGOutgoingMessage16Bit</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_setJTAGOutgoingMessage32Bit</td>
+  <td>SysCtl_setJTAGOutgoingMessage32Bit</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SYS_setRAMAssignedToBSL</td>
+  <td>SysCtl_setRAMAssignedToBSL</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_disableBSLMemory</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_disableBSLProtect</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_enableBSLMemory</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_enableBSLProtect</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_JTAGMailboxInit</td>
+  <td>SysCtl_initJTAGMailbox</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_setBSLSize</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_setRAMAssignedToBSL</td>
+  <td>[REMOVED]</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_clear</td>
+  <td>Timer_A_clear</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_clearCaptureCompareInterruptFlag</td>
+  <td>Timer_A_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearCaptureCompareInterruptFlag<span style="">&nbsp;</span></td>
+  <td>Timer_A_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearCaptureCompareInterruptFlag<span style="">&nbsp;</span></td>
+  <td>Timer_A_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearCaptureCompareInterruptFlag<span style="">&nbsp;</span></td>
+  <td>Timer_A_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearTimerInterruptFlag</td>
+  <td>Timer_A_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_clearTimerInterruptFlag</td>
+  <td>Timer_A_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearTimerInterruptFlag</td>
+  <td>Timer_A_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearTimerInterruptFlag</td>
+  <td>Timer_A_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_configureContinuousMode</td>
+  <td>Timer_A_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_configureContinuousMode</td>
+  <td>Timer_A_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_configureUpDownMode</td>
+  <td>Timer_A_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_configureUpDownMode</td>
+  <td>Timer_A_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_configureUpMode</td>
+  <td>Timer_A_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_configureUpMode</td>
+  <td>Timer_A_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_disableCaptureCompareInterrupt</td>
+  <td>Timer_A_disableCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_disableInterrupt</td>
+  <td>Timer_A_disableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_enableCaptureCompareInterrupt</td>
+  <td>Timer_A_enableCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_enableInterrupt</td>
+  <td>Timer_A_enableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_generatePWM</td>
+  <td>Timer_A_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_generatePWM</td>
+  <td>Timer_A_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getCaptureCompareCount</td>
+  <td>Timer_A_getCaptureCompareCount</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getCaptureCompareInterruptStatus</td>
+  <td>Timer_A_getCaptureCompareInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getCounterValue</td>
+  <td>Timer_A_getCounterValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getInterruptStatus</td>
+  <td>Timer_A_getInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getOutputForOutputModeOutBitValue</td>
+  <td>Timer_A_getOutputForOutputModeOutBitValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getSynchronizedCaptureCompareInput</td>
+  <td>Timer_A_getSynchronizedCaptureCompareInput</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_initCapture</td>
+  <td>Timer_A_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initCapture</td>
+  <td>Timer_A_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initCaptureMode</td>
+  <td>Timer_A_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_initCompare</td>
+  <td>Timer_A_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initCompare</td>
+  <td>Timer_A_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initCompareMode</td>
+  <td>Timer_A_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initContinuousMode</td>
+  <td>Timer_A_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initUpDownMode</td>
+  <td>Timer_A_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initUpMode</td>
+  <td>Timer_A_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_outputPWM</td>
+  <td>Timer_A_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_setCompareValue</td>
+  <td>Timer_A_setCompareValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_setOutputForOutputModeOutBitValue</td>
+  <td>Timer_A_setOutputForOutputModeOutBitValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_startContinousMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startContinousMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_startContinuousMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startContinuousMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startCounter</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_startUpDownMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startUpDownMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_startUpMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startUpMode</td>
+  <td>Timer_A_startUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_stop</td>
+  <td>Timer_A_stop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_clear</td>
+  <td>Timer_B_clear</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_clearCaptureCompareInterruptFlag</td>
+  <td>Timer_B_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_clearCaptureCompareInterruptFlag<span style="">&nbsp;</span></td>
+  <td>Timer_B_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_clearCaptureCompareInterruptFlag<span style="">&nbsp;</span></td>
+  <td>Timer_B_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_clearCaptureCompareInterruptFlag<span style="">&nbsp;</span></td>
+  <td>Timer_B_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_clearTimerInterruptFlag</td>
+  <td>Timer_B_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_clearTimerInterruptFlag</td>
+  <td>Timer_B_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_clearTimerInterruptFlag</td>
+  <td>Timer_B_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_clearTimerInterruptFlag</td>
+  <td>Timer_B_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_configureContinuousMode</td>
+  <td>Timer_B_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_configureContinuousMode</td>
+  <td>Timer_B_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_configureUpDownMode</td>
+  <td>Timer_B_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;">TIMER_B_configureUpDownMode</td>
+  <td>Timer_B_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_configureUpMode</td>
+  <td>Timer_B_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_configureUpMode</td>
+  <td>Timer_B_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_disableCaptureCompareInterrupt</td>
+  <td>Timer_B_disableCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_disableInterrupt</td>
+  <td>Timer_B_disableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_enableCaptureCompareInterrupt</td>
+  <td>Timer_B_enableCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_enableInterrupt</td>
+  <td>Timer_B_enableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_generatePWM</td>
+  <td>Timer_B_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_generatePWM</td>
+  <td>Timer_B_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getCaptureCompareCount</td>
+  <td>Timer_B_getCaptureCompareCount</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getCaptureCompareInterruptStatus</td>
+  <td>Timer_B_getCaptureCompareInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getCounterValue</td>
+  <td>Timer_B_getCounterValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getInterruptStatus</td>
+  <td>Timer_B_getInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getOutputForOutputModeOutBitValue</td>
+  <td>Timer_B_getOutputForOutputModeOutBitValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_getSynchronizedCaptureCompareInput</td>
+  <td>Timer_B_getSynchronizedCaptureCompareInput</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_initCapture</td>
+  <td>Timer_B_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initCapture</td>
+  <td>Timer_B_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initCaptureMode</td>
+  <td>Timer_B_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_initCompare</td>
+  <td>Timer_B_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initCompare</td>
+  <td>Timer_B_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initCompareLatchLoadEvent</td>
+  <td>Timer_B_initCompareLatchLoadEvent</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initCompareMode</td>
+  <td>Timer_B_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initContinuousMode</td>
+  <td>Timer_B_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initUpDownMode</td>
+  <td>Timer_B_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_initUpMode</td>
+  <td>Timer_B_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_outputPWM</td>
+  <td>Timer_B_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_selectCounterLength</td>
+  <td>Timer_B_selectCounterLength</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_selectLatchingGroup</td>
+  <td>Timer_B_selectLatchingGroup</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_setCompareValue</td>
+  <td>Timer_B_setCompareValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_setOutputForOutputModeOutBitValue</td>
+  <td>Timer_B_setOutputForOutputModeOutBitValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_startContinousMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_startContinousMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_startContinuousMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_startContinuousMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_startCounter</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_startUpDownMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_startUpDownMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_B_startUpMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_startUpMode</td>
+  <td>Timer_B_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_B_stop</td>
+  <td>Timer_B_stop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">WDT_A_intervalTimerInit</td>
+  <td>WDT_A_initIntervalTimer</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">WDT_A_watchdogTimerInit</td>
+  <td>WDT_A_initWatchdogTimer</td>
+ </tr>
+</tbody>
+</table><br><big>eusci_i2c.c/eusci_i2c.h files are replaced with eusci_b_i2c.c/eusci_b_i2c.h<br></big><big>eusci_spi.c/eusci_spi.h files are replaced with eusci_a_spi.c/eusci_a_spi.h/eusci_b_spi.c/eusci_b_spi.h<br></big><big>eusci_uart.c/eusci_uart.h files are replaced with eusci_a_uart.c/eusci_a_uart.h<br></big><br>
+<big style="font-weight: bold;">MSP430FR2xx_4xx Family</big><br>
+
+ 
+<table style="border-collapse: collapse; width: 409px;" border="1" cellpadding="0" cellspacing="0">
+<col style="width: 198pt;" width="264">
+ <col style="width: 211pt;" width="282">
+ <tbody><tr style="height: 14.4pt;" height="19">
+  <td class="xl65" style="height: 14.4pt; width: 198pt; font-weight: bold;" height="19" width="264">Old API</td>
+  <td class="xl65" style="width: 211pt; font-weight: bold;" width="282">New API</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_clockSignalInit</td>
+  <td>CS_initClockSignal</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_faultFlagStatus</td>
+  <td>CS_getFaultFlagStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_XT1AutoOff</td>
+  <td>CS_turnOffXT1</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_XT1Start</td>
+  <td>CS_turnOnXT1</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_XT1StartWithTimeout</td>
+  <td>CS_turnOnXT1WithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_clearInterruptFlag</td>
+  <td>EUSCI_A_SPI_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_A_SPI_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_A_SPI_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_masterChangeClock</td>
+  <td>EUSCI_A_SPI_changeMasterClock</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_masterInit</td>
+  <td>EUSCI_A_SPI_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_slaveInit</td>
+  <td>EUSCI_A_SPI_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_clearInterruptFlag</td>
+  <td>EUSCI_A_UART_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_A_UART_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_A_UART_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_initAdvance</td>
+  <td>EUSCI_A_UART_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_clearInterruptFlag</td>
+  <td>EUSCI_B_I2C_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_B_I2C_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_B_I2C_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterInit</td>
+  <td>EUSCI_B_I2C_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterIsSTOPSent</td>
+  <td>EUSCI_B_I2C_masterIsStopSent</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveFinish</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteFinish</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveFinishWithTimeout</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteFinishWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveNext</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteNext</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveStop</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteStop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendFinish</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteFinish</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendFinishWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteFinishWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendNext</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteNext</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendNextWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteNextWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStart</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStart</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStartWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStartWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStop</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStopWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStopWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterSingleReceive</td>
+  <td>EUSCI_B_I2C_masterReceiveSingle</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_slaveDataGet</td>
+  <td>EUSCI_B_I2C_slaveGetData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_slaveDataPut</td>
+  <td>EUSCI_B_I2C_slavePutData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_slaveInit</td>
+  <td>EUSCI_B_I2C_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_clearInterruptFlag</td>
+  <td>EUSCI_B_SPI_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_B_SPI_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_B_SPI_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_masterChangeClock</td>
+  <td>EUSCI_B_SPI_changeMasterClock</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_masterInit</td>
+  <td>EUSCI_B_SPI_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_slaveInit</td>
+  <td>EUSCI_B_SPI_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FRAMCtl_memoryFill32</td>
+  <td>FRAMCtl_fillMemory32</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_clearInterruptFlag</td>
+  <td>GPIO_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_interruptEdgeSelect</td>
+  <td>GPIO_selectInterruptEdge</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_regOff</td>
+  <td>PMM_turnOffRegulator</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_regOn</td>
+  <td>PMM_turnOnRegulator</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_JTAGMailboxInit</td>
+  <td>SysCtl_initJTAGMailbox</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearCaptureCompareInterruptFlag</td>
+  <td>Timer_A_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearTimerInterruptFlag</td>
+  <td>Timer_A_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">WDT_A_intervalTimerInit</td>
+  <td>WDT_A_initIntervalTimer</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">WDT_A_watchdogTimerInit</td>
+  <td>WDT_A_initWatchdogTimer</td>
+ </tr>
+</tbody>
+</table>
+<br>
+<big style="font-weight: bold;">MSP430I2xx Family</big><br>
+
+ 
+<table style="border-collapse: collapse; width: 357px;" border="1" cellpadding="0" cellspacing="0">
+<col style="width: 193pt;" width="258">
+ <col style="width: 164pt;" width="219">
+ <tbody><tr style="height: 14.4pt;" height="19">
+  <td class="xl65" style="height: 14.4pt; width: 193pt; font-weight: bold;" height="19" width="258">Old API</td>
+  <td class="xl65" style="width: 164pt; font-weight: bold;" width="219">New API</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_clockSignalInit</td>
+  <td>CS_initClockSignal</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">CS_faultFlagStatus</td>
+  <td>CS_getFaultFlagStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">DMA_NMIAbortStatus</td>
+  <td>DMA_getNMIAbortStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_clearInterruptFlag</td>
+  <td>EUSCI_A_SPI_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_A_SPI_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_A_SPI_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_masterChangeClock</td>
+  <td>EUSCI_A_SPI_changeMasterClock</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_masterInit</td>
+  <td>EUSCI_A_SPI_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_SPI_slaveInit</td>
+  <td>EUSCI_A_SPI_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_clearInterruptFlag</td>
+  <td>EUSCI_A_UART_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_A_UART_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_A_UART_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_A_UART_initAdvance</td>
+  <td>EUSCI_A_UART_init</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_clearInterruptFlag</td>
+  <td>EUSCI_B_I2C_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_B_I2C_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_B_I2C_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterInit</td>
+  <td>EUSCI_B_I2C_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterIsSTOPSent</td>
+  <td>EUSCI_B_I2C_masterIsStopSent</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveFinish</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteFinish</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveFinishWithTimeout</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteFinishWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveNext</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteNext</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteReceiveStop</td>
+  <td>EUSCI_B_I2C_masterReceiveMultiByteStop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendFinish</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteFinish</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendFinishWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteFinishWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendNext</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteNext</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendNextWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteNextWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStart</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStart</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStartWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStartWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStop</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterMultiByteSendStopWithTimeout</td>
+  <td>EUSCI_B_I2C_masterSendMultiByteStopWithTimeout</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_masterSingleReceive</td>
+  <td>EUSCI_B_I2C_masterReceiveSingle</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_slaveDataGet</td>
+  <td>EUSCI_B_I2C_slaveGetData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_slaveDataPut</td>
+  <td>EUSCI_B_I2C_slavePutData</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_I2C_slaveInit</td>
+  <td>EUSCI_B_I2C_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_clearInterruptFlag</td>
+  <td>EUSCI_B_SPI_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_getReceiveBufferAddressForDMA</td>
+  <td>EUSCI_B_SPI_getReceiveBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_getTransmitBufferAddressForDMA</td>
+  <td>EUSCI_B_SPI_getTransmitBufferAddress</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_masterChangeClock</td>
+  <td>EUSCI_B_SPI_changeMasterClock</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_masterInit</td>
+  <td>EUSCI_B_SPI_initMaster</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">EUSCI_B_SPI_slaveInit</td>
+  <td>EUSCI_B_SPI_initSlave</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FlashCtl_bankErase</td>
+  <td>FlashCtl_eraseBank</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FlashCtl_eraseCheck</td>
+  <td>FlashCtl_performEraseCheck</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FlashCtl_massErase</td>
+  <td>FlashCtl_performMassErase</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FlashCtl_memoryFill32</td>
+  <td>FlashCtl_fillMemory32</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FlashCtl_segmentErase</td>
+  <td>FlashCtl_eraseSegment</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">FlashCtl_status</td>
+  <td>FlashCtl_getStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_clearInterruptFlag</td>
+  <td>GPIO_clearInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_interruptEdgeSelect</td>
+  <td>GPIO_selectInterruptEdge</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">GPIO_interruptEdgeSelect</td>
+  <td>GPIO_selectInterruptEdge</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_regOff</td>
+  <td>PMM_turnOffRegulator</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">PMM_regOn</td>
+  <td>PMM_turnOnRegulator</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">SysCtl_JTAGMailboxInit</td>
+  <td>SysCtl_initJTAGMailbox</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_clear</td>
+  <td>Timer_A_clear</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_clearCaptureCompareInterruptFlag</td>
+  <td>Timer_A_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearCaptureCompareInterruptFlag<span style="">&nbsp;</span></td>
+  <td>Timer_A_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearCaptureCompareInterruptFlag<span style="">&nbsp;</span></td>
+  <td>Timer_A_clearCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearTimerInterruptFlag</td>
+  <td>Timer_A_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_clearTimerInterruptFlag</td>
+  <td>Timer_A_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_clearTimerInterruptFlag</td>
+  <td>Timer_A_clearTimerInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_configureContinuousMode</td>
+  <td>Timer_A_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_configureContinuousMode</td>
+  <td>Timer_A_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_configureUpDownMode</td>
+  <td>Timer_A_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_configureUpDownMode</td>
+  <td>Timer_A_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_configureUpMode</td>
+  <td>Timer_A_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_configureUpMode</td>
+  <td>Timer_A_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_disableCaptureCompareInterrupt</td>
+  <td>Timer_A_disableCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_disableInterrupt</td>
+  <td>Timer_A_disableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_enableCaptureCompareInterrupt</td>
+  <td>Timer_A_enableCaptureCompareInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_enableInterrupt</td>
+  <td>Timer_A_enableInterrupt</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_generatePWM</td>
+  <td>Timer_A_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_generatePWM</td>
+  <td>Timer_A_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getCaptureCompareCount</td>
+  <td>Timer_A_getCaptureCompareCount</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getCaptureCompareInterruptStatus</td>
+  <td>Timer_A_getCaptureCompareInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getCounterValue</td>
+  <td>Timer_A_getCounterValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getInterruptStatus</td>
+  <td>Timer_A_getInterruptStatus</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getOutputForOutputModeOutBitValue</td>
+  <td>Timer_A_getOutputForOutputModeOutBitValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_getSynchronizedCaptureCompareInput</td>
+  <td>Timer_A_getSynchronizedCaptureCompareInput</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_initCapture</td>
+  <td>Timer_A_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initCapture</td>
+  <td>Timer_A_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initCaptureMode</td>
+  <td>Timer_A_initCaptureMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_initCompare</td>
+  <td>Timer_A_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initCompare</td>
+  <td>Timer_A_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initCompareMode</td>
+  <td>Timer_A_initCompareMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initContinuousMode</td>
+  <td>Timer_A_initContinuousMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initUpDownMode</td>
+  <td>Timer_A_initUpDownMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_initUpMode</td>
+  <td>Timer_A_initUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_outputPWM</td>
+  <td>Timer_A_outputPWM</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_setCompareValue</td>
+  <td>Timer_A_setCompareValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_setOutputForOutputModeOutBitValue</td>
+  <td>Timer_A_setOutputForOutputModeOutBitValue</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_startContinousMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startContinousMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_startContinuousMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startContinuousMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startCounter</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_startUpDownMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startUpDownMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">Timer_A_startUpMode</td>
+  <td>Timer_A_startCounter</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_startUpMode</td>
+  <td>Timer_A_startUpMode</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">TIMER_A_stop</td>
+  <td>Timer_A_stop</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">WDT_A_intervalTimerInit</td>
+  <td>WDT_A_initIntervalTimer</td>
+ </tr>
+ <tr style="height: 14.4pt;" height="19">
+  <td style="height: 14.4pt;" height="19">WDT_A_watchdogTimerInit</td>
+  <td>WDT_A_initWatchdogTimer</td>
+ </tr>
+</tbody>
+</table>
+<br>
+<h2><small><small>Additional Resources</small></small></h2>
+<small><big>For more information, visit <a href="http://www.ti.com">www.ti.com</a>.</big>
+</small>
+</body></html>
