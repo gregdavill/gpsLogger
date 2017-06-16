@@ -27,7 +27,12 @@ char nmea_file_name[] = "nmea/log000.txt";
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 const char NMEA_header[] =
-		"=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\r\n     gpsLogger [https://github.com/Greeeg/gpsLogger]\r\n\r\n  Version: " TOSTRING(_VCS_COMMIT_) "\r\n  Build: " __DATE__ " " __TIME__ "\r\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\r\n";
+		"=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\r\n"
+		"     gpsLogger [https://github.com/Greeeg/gpsLogger]\r\n"
+		"\r\n"
+		"  Version: " TOSTRING(_VCS_COMMIT_) "\r\n"
+		"  Build: " __DATE__ " " __TIME__
+		"\r\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\r\n";
 
 const char xml_a[] =
 		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<kml xmlns=\"http://earth.google.com/kml/2.1\">\r\n\t<Document>\r\n\t<name>"; //17-02-2016_18-58-42

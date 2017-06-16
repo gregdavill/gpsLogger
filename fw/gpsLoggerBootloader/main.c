@@ -129,9 +129,15 @@ int main (void)
 			FlashCtl_write16(page_buffer, (uint16_t*)memory_address, br);
 			memory_address += br;
 		}
+	}
 
 
+	if(rc)
+	{
+		/* Error condition */
+		/* Can we recover? */
 
+		/* Is there still a valid image on the device */
 	}
 
 
