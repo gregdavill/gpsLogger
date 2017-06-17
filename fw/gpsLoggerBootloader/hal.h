@@ -59,6 +59,11 @@ enum colours{
 	WHITE = 	RED |	GREEN |	BLUE
 };
 
+#define MCLK_FREQUENCY  8000000
+
+
+void halInit(void);
+
 void USBHAL_initPorts(void);
 void USBHAL_initClocks(uint32_t mclkFreq);
 

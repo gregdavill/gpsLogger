@@ -48,12 +48,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#include "flash.h"
 
-#include "driverlib.h"
-
-
-#include "FatFs/mmc.h"
-#include "FatFs/ff.h"
+//#include "pFatFs/mmc.h"
+#include "pFatFs/pff.h"
 #include "main.h"
 
 
@@ -63,81 +61,87 @@
  */
 #include "hal.h"
 
+/* Defines */
+#define APP_START_ADDRESS (0xE000)
 
 /* Func Prototypes */
-void initTimer(void);
-void setTimer_A_Parameters(void);
 
-volatile uint8_t bDelayDone;
-Timer_A_initUpModeParam Timer_A_params = {0};
 
+/* Local Variables */
 FATFS fatFs;
-FIL firmwareFile;
+//FIL firmwareFile;
 
+
+
+FRESULT bootLoadApp(void)
+{
+	FRESULT rc  = FR_OK;
+
+	uint16_t memory_address = APP_START_ADDRESS;
+
+	uint16_t page_buffer[64];
+	uint16_t br;
+
+	rc = pf_read(page_buffer, sizeof(page_buffer), br);
+	if(rc)
+	{
+		/* Error condition */
+		return rc;
+	}
+	else if(br != sizeof(page_buffer))
+	{
+		/* Error condition, possible end of file */
+		if(br == 0)
+			return FR_OK;
+
+		/* error? */
+
+	}
+	else
+	{
+		/* write data to memory + increment pointer */
+		flashWritePage();
+		memory_address += br;
+	}
+
+	return FR_OK;
+}
+
+
+void bootShortDelay(uint16_t delayTime)
+{
+	while(delayTime--)
+	{
+		uint16_t cnt = 4000;
+		while(cnt--){
+			asm("nop\r\n");
+		}
+	}
+}
 
 /*  
  * ======== main ========
  */
 int main (void)
 {
-    WDT_A_hold(WDT_A_BASE); // Stop watchdog timer
-
-    //PMM_setVCore(PMM_CORE_LEVEL_2);
-	USBHAL_initPorts();                // Config GPIOS for low-power (output low)
-	//USBHAL_initClocks(MCLK_FREQUENCY); // Config clocks. MCLK=SMCLK=FLL=MCLK_FREQUENCY; ACLK=REFO=32kHz
-
-
-    initTimer();
+	halInit();
 
 	hal_sd_pwr_on();
 
-	hal_led_a(0);
-	hal_led_b(0);
+	hal_led_a(RED);
 
-	Timer_A_stop(TIMER_A0_BASE);
+	bootShortDelay(100);
 
-	__enable_interrupt();       // Enable interrupts globally
-
+	hal_led_b(GREEN);
 
 	/* Init SD Media */
-	FRESULT rc = f_mount(&fatFs,"", 0);
+	FRESULT rc = pf_mount(&fatFs);
 
-	rc = f_open(&firmwareFile, "firmware.bin", FA_READ);
+	rc = pf_open("firmware.bin");
 
-	while(1)
+	if(rc == FR_OK)
 	{
-		uint16_t memory_address = 0x4400;
-
-		uint16_t page_buffer[64];
-		uint16_t br;
-
-		rc = f_read(&firmwareFile, page_buffer, sizeof(page_buffer), br);
-		if(rc)
-		{
-			/* Error condition */
-			break;
-		}
-		else if(br != sizeof(page_buffer))
-		{
-			/* Error condition, possible end of file */
-			if(br == 0)
-				break;
-		}
-		else
-		{
-			/* write data to memory + increment pointer */
-			FlashCtl_write16(page_buffer, (uint16_t*)memory_address, br);
-			memory_address += br;
-		}
-	}
-
-
-	if(rc)
-	{
-		/* Error condition */
-		/* Can we recover? */
-
-		/* Is there still a valid image on the device */
+		rc = bootLoadApp();
 	}
 
 
@@ -146,149 +150,3 @@ int main (void)
 
 
 }
-
-/*  
- * ======== TIMER0_A0_ISR ========
- */
-#if defined(__TI_COMPILER_VERSION__) || (__IAR_SYSTEMS_ICC__)
-#pragma vector=TIMER0_A0_VECTOR
-__interrupt void TIMER0_A0_ISR (void)
-#elif defined(__GNUC__) && (__MSP430__)
-void __attribute__ ((interrupt(TIMER0_A0_VECTOR))) TIMER0_A0_ISR (void)
-#else
-#error Compiler not found!
-#endif
-{
-    //Set the flag that will trigger main() to detect the card
-   // bDetectCard = 0x01;
-
-    //Wake from ISR, if sleeping
-    __bic_SR_register_on_exit(LPM0_bits);
-}
-
-
-/*
- * ======== TIMER0_A0_ISR ========
- */
-#if defined(__TI_COMPILER_VERSION__) || (__IAR_SYSTEMS_ICC__)
-#pragma vector=TIMER1_A0_VECTOR
-__interrupt void TIMER1_A0_ISR (void)
-#elif defined(__GNUC__) && (__MSP430__)
-void __attribute__ ((interrupt(TIMER1_A0_VECTOR))) TIMER1_A0_ISR (void)
-#else
-#error Compiler not found!
-#endif
-{
-    //Set the flag that will trigger main() to detect the card
-    bDelayDone = 0x01;
-
-    //Wake from ISR, if sleeping
-    __bic_SR_register_on_exit(LPM3_bits);
-}
-
-/*  
- * ======== UNMI_ISR ========
- */
-#if defined(__TI_COMPILER_VERSION__) || (__IAR_SYSTEMS_ICC__)
-#pragma vector = UNMI_VECTOR
-__interrupt void UNMI_ISR (void)
-#elif defined(__GNUC__) && (__MSP430__)
-void __attribute__ ((interrupt(UNMI_VECTOR))) UNMI_ISR (void)
-#else
-#error Compiler not found!
-#endif
-{
-    switch (__even_in_range(SYSUNIV, SYSUNIV_BUSIFG))
-    {
-        case SYSUNIV_NONE:
-            __no_operation();
-            break;
-        case SYSUNIV_NMIIFG:
-            __no_operation();
-            break;
-        case SYSUNIV_OFIFG:
-            UCS_clearFaultFlag(UCS_XT2OFFG);
-            UCS_clearFaultFlag(UCS_DCOFFG);
-            SFR_clearInterrupt(SFR_OSCILLATOR_FAULT_INTERRUPT);
-            break;
-        case SYSUNIV_ACCVIFG:
-            __no_operation();
-            break;
-        case SYSUNIV_BUSIFG:
-            // If the CPU accesses USB memory while the USB module is
-            // suspended, a "bus error" can occur.  This generates an NMI.  If
-            // USB is automatically disconnecting in your software, set a
-            // breakpoint here and see if execution hits it.  See the
-            // Programmer's Guide for more information.
-            SYSBERRIV = 0; //clear bus error flag
-    }
-}
-
-
-/*
- * ======== setTimer_A_Parameters ========
- */
-// This function sets the timer A parameters
-void setTimer_A_Parameters()
-{
-    Timer_A_params.clockSource = TIMER_A_CLOCKSOURCE_ACLK;
-	Timer_A_params.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1;
-    Timer_A_params.timerPeriod = 32768;
-	Timer_A_params.timerInterruptEnable_TAIE = TIMER_A_TAIE_INTERRUPT_DISABLE;
-	Timer_A_params.captureCompareInterruptEnable_CCR0_CCIE =
-		       TIMER_A_CAPTURECOMPARE_INTERRUPT_ENABLE;
-	Timer_A_params.timerClear = TIMER_A_DO_CLEAR;
-	Timer_A_params.startTimer = 0;
-}
-
-
-void initTimer(void)
-{
-
-    setTimer_A_Parameters();   
-
-    //start timer
-    Timer_A_clearTimerInterrupt(TIMER_A0_BASE);
-
-    Timer_A_initUpMode(TIMER_A0_BASE, &Timer_A_params);
-
-    Timer_A_startCounter(TIMER_A0_BASE,
-        TIMER_A_UP_MODE);
-
-}
-
-
-void delay_ms(uint16_t time)
-{
-
-	/* Setup timer */
-	Timer_A_initUpModeParam tParams;
-	tParams.clockSource = TIMER_A_CLOCKSOURCE_ACLK;
-	tParams.clockSourceDivider = TIMER_A_CLOCKSOURCE_DIVIDER_1;
-	tParams.timerPeriod = time * 32;
-	tParams.timerInterruptEnable_TAIE = TIMER_A_TAIE_INTERRUPT_DISABLE;
-	tParams.captureCompareInterruptEnable_CCR0_CCIE =
-		       TIMER_A_CAPTURECOMPARE_INTERRUPT_ENABLE;
-	tParams.timerClear = TIMER_A_DO_CLEAR;
-	tParams.startTimer = 0;
-
-
-    /* Start timer */
-    Timer_A_clearTimerInterrupt(TIMER_A1_BASE);
-
-    Timer_A_initUpMode(TIMER_A1_BASE, &tParams);
-
-    Timer_A_startCounter(TIMER_A1_BASE,
-        TIMER_A_UP_MODE);
-
-
-    /* Interupt will wake us */
-    bDelayDone = 0;
-    while( bDelayDone == 0)
-    	LPM3;
-
-    Timer_A_stop(TIMER_A1_BASE);
-
-}
-
-

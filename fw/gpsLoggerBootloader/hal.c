@@ -37,12 +37,23 @@
 #include "msp430.h"
 
 #include "driverlib.h"
-#include "FatFs/HAL_SDCard.h"
+#include "pFatFs/mmc.h"
 
 #include "hal.h"
 
 #define GPIO_ALL	GPIO_PIN0|GPIO_PIN1|GPIO_PIN2|GPIO_PIN3| \
 					GPIO_PIN4|GPIO_PIN5|GPIO_PIN6|GPIO_PIN7
+
+
+void halInit(void)
+{
+    WDT_A_hold(WDT_A_BASE); // Stop watchdog timer
+
+    PMM_setVCore(PMM_CORE_LEVEL_2);
+	USBHAL_initPorts();                // Config GPIOS for low-power (output low)
+	USBHAL_initClocks(MCLK_FREQUENCY); // Config clocks. MCLK=SMCLK=FLL=MCLK_FREQUENCY; ACLK=REFO=32kHz
+
+}
 
 /*
  * This function drives all the I/O's as output-low, to avoid floating inputs
@@ -137,7 +148,8 @@ void hal_sd_pwr_on()
 	 GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN1);
 
 	 /* enable IO pins and spi module */
-	 SDCard_init();
+	 init_spi();
+	 //SDCard_init();
 	 //disk_initialize(0);     //Attempt to initialize it
 }
 
