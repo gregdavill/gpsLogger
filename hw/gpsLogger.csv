@@ -1,0 +1,84 @@
+Source,C:/Users/gregd/Documents/git/gpsLogger/hw/gpsLogger.sch
+Kicad Rev,Eeschema 4.0.2-stable
+Generated Date,18/07/2016 10:34:10 AM
+
+Title,gpsLogger
+Company,Gregory S Davill
+Revision,Rev 2.0
+Date Issue,2016-07-13
+Comment,Simple GPS logger with low power features
+
+Reference,Value,#manf,Library,Library Ref
+IC1,MSP430F55xx,296-31693-1-ND ,gpsLogger,MSP430F55xx
+P1,USB_OTG, 732-2735-ND ,conn,USB_OTG
+R1,27R,device,R
+R2,27R,device,R
+R4,1k4,device,R
+R3,470k,device,R
+C2,22p,device,C
+C3,22p,device,C
+C1,10n,device,C
+FB1,1k FB,490-5215-1-ND,device,FILTER
+U2,MCP73812,MCP73832T-2ACI/OTCT-ND,gpsLogger,MCP73812
+R7,R,device,R
+C6,C,device,C
+C9,C,device,C
+SW1,SW_PUSH,P10888SCT-ND,device,SW_PUSH
+U3,uSD, 101-00303-68-1-ND ,gpsLogger,uSD
+C8,1uF,device,C
+C7,10n,device,C
+C13,1uF,device,C
+C12,10n,device,C
+C4,1uF,device,C
+Q2,FG6943010R,gpsLogger,FG6943010R
+R12,R,device,R
+R13,R,device,R
+R14,R,device,R
+U6,TPS78230, 296-24372-1-ND ,gpsLogger,TPS78230
+C14,C,device,C
+C15,C,device,C
+X1,CRYSTAL_SMD,device,CRYSTAL_SMD
+TAG1,TAG_CONNECT,gpsLogger,TAG_CONNECT
+R15,R,device,R
+D1,Led_RGB_CA,device,Led_RGB_CA
+D2,Led_RGB_CA,device,Led_RGB_CA
+R16,R,device,R
+R17,R,device,R
+R18,R,device,R
+R19,R,device,R
+R20,R,device,R
+R21,R,device,R
+C16,1uF,device,C
+C17,1uF,device,C
+U1,MAX_M8Q,gpsLogger,MAX_M8Q
+R8,10k,device,R
+R5,10k,device,R
+R6,10R,device,R
+C5,10n,device,C
+L1,27nH,712-1439-1-ND,device,L_Small
+U4,MIC2091,576-3891-1-ND,gpsLogger,MIC2091
+R9,10k,device,R
+L2,100nH,490-5215-1-ND,device,L_Small
+C10,100n,device,C
+U5,MIC2091,576-3891-1-ND,gpsLogger,MIC2091
+R11,10k,device,R
+L3,100nH,490-5215-1-ND,device,L_Small
+C18,100n,device,C
+C11,100n,device,C
+R10,1k,device,R
+ANT1,ANT, 931-1126-ND ,gpsLogger,ANT
+P2,CONN_01X02,455-1564-1-ND,conn,CONN_01X02
+R22,2k2,device,R
+R23,2k2,device,R
+R24,2k2,device,R
+R25,2k2,device,R
+R26,2k2,device,R
+R27,2k2,device,R
+R28,2k2,device,R
+C20,1nF,device,C
+L4,5.6nH,490-5215-1-ND,device,L_Small
+C19,47pF,device,C
+C22,47pF,device,C
+C21,47pF,device,C
+FLT1,B8813,gpsLogger,B8813
+U7,BGU7007,gpsLogger,BGU7007
