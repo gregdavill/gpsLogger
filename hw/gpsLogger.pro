@@ -1,4 +1,4 @@
-update=10/01/2016 4:23:05 PM
+update=4/08/2016 3:26:09 PM
 version=1
 last_client=kicad
 [pcbnew]
@@ -34,3 +34,13 @@ LibName2=device
 LibName3=conn
 LibName4=interface
 LibName5=gpsLogger
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
