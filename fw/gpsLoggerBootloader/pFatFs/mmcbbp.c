@@ -167,9 +167,10 @@ DRESULT disk_readp (
 	res = RES_ERROR;
 	if (send_cmd(CMD17, sector) == 0) {		/* READ_SINGLE_BLOCK */
 
-		bc = 40000;
+		bc = 1000;
 		do {							/* Wait for data packet */
 			rc = rcv_spi();
+			dly_100us();
 		} while (rc == 0xFF && --bc);
 
 		if (rc == 0xFE) {				/* A data packet arrived */

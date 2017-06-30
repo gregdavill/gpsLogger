@@ -64,7 +64,7 @@ void SDCard_deinit (void)
 void SDCard_fastMode (void)
 {
     UCA1CTL1 |= UCSWRST;                                    //Put state machine in reset
-    UCA1BR0 = 4;                                            //f_UCxCLK = 25MHz/2 = 12.5MHz
+    UCA1BR0 = 2;                                            //f_UCxCLK = 25MHz/2 = 12.5MHz
     UCA1BR1 = 0;
     UCA1CTL1 &= ~UCSWRST;                                   //Release USCI state machine
 }
@@ -116,7 +116,7 @@ void select (void)
 
 void xmit_spi (uint8_t d)
 {
-	UCA1TXBUF = d;
+	UCA1TXBUF = (uint8_t)d;
 	while (UCA1STAT & UCBUSY) ;
 
 }
