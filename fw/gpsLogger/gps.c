@@ -394,9 +394,9 @@ void gps_start() {
 }
 
 void gps_minute2degree(uint8_t* minute_string, uint8_t* output) {
-	_iq24 minutes = _atoIQ24(minute_string);
-	minutes /= 60;
-	_IQ24toa(output, "%0.7f", minutes);
+	//_iq24 minutes = _atoIQ24(minute_string);
+	//minutes /= 60;
+	//_IQ24toa(output, "%0.7f", minutes);
 }
 
 extern uint8_t RWbuf[512]; // make use of USB memory when USB isn't in use

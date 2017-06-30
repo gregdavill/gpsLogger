@@ -71,6 +71,9 @@
 #include "hal.h"
 
 
+const uint16_t __attribute__ ((section(".crc_val"))) crc_val = 0xABCD;
+
+
 /* Func Prototypes */
 void initTimer(void);
 void setTimer_A_Parameters(void);
