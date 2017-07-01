@@ -43,6 +43,8 @@
 
 #include "hal.h"
 
+static uint8_t bCompatibiliy = 0;
+
 #define GPIO_ALL	GPIO_PIN0|GPIO_PIN1|GPIO_PIN2|GPIO_PIN3| \
 					GPIO_PIN4|GPIO_PIN5|GPIO_PIN6|GPIO_PIN7
 
@@ -188,8 +190,39 @@ void hal_gps_rtc_off()
 
 
 
+
+void hal_compatibility_set()
+{
+	bCompatibiliy = 1;
+}
+
+uint8_t compatibility_switch(uint8_t c)
+{
+	uint8_t b = c;
+
+	if(bCompatibiliy)
+	{
+		b &= BLUE;
+
+		if(c & RED)
+		{
+			b |= GREEN;
+		}
+
+		if( c & GREEN)
+		{
+			b |= RED;
+		}
+	}
+
+	return b;
+}
+
 void hal_led_a( uint8_t c )
 {
+	c = compatibility_switch(c);
+
+
 	if(c & 2)
 	{
 		GPIO_setOutputLowOnPin(GPIO_PORT_P6, GPIO_PIN3);
@@ -221,6 +254,10 @@ void hal_led_a( uint8_t c )
 
 void hal_led_b( uint8_t c )
 {
+
+
+	c = compatibility_switch(c);
+
 	if(c & 2)
 	{
 		GPIO_setOutputLowOnPin(GPIO_PORT_P6, GPIO_PIN7);
@@ -248,6 +285,9 @@ void hal_led_b( uint8_t c )
 		GPIO_setOutputHighOnPin(GPIO_PORT_P5, GPIO_PIN1);
 	}
 }
+
+
+
 
 static uint8_t button = 0;
 

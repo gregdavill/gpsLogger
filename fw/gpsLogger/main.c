@@ -63,14 +63,9 @@
 #include "main.h"
 
 #include "gps.h"
-
-/*
- * NOTE: Modify hal.h to select a specific evaluation board and customize for
- * your own board.
- */
 #include "hal.h"
 
-
+/* Placeholder crc value */
 const uint16_t __attribute__ ((section(".crc_val"))) crc_val = 0xABCD;
 
 
@@ -78,16 +73,12 @@ const uint16_t __attribute__ ((section(".crc_val"))) crc_val = 0xABCD;
 void initTimer(void);
 void setTimer_A_Parameters(void);
 
-
-
-
 void func_StateIdle(void);
 void entry_StateIdle(void);
 void func_StateLogging(void);
 void entry_StateLogging(void);
 void func_StateUsbConnected(void);
 void entry_StateUsbConnected(void);
-
 
 
 // Global flag by which the timer ISR will trigger main() to check the
@@ -132,6 +123,10 @@ int main (void)
 
 
     initTimer();
+
+    __bis_SR_register(GIE);
+    rename_firmware();
+
     entry_StateIdle();
 
     // state machine
@@ -319,6 +314,9 @@ void func_StateUsbConnected(void)
 	/* No USB present? Why are we here, What does it all mean? */
 	if(!(USB_getConnectionInformation() & USB_VBUS_PRESENT))
 	{
+		delay_ms(10);
+		check_new_firmware();
+
 		NewState = e_StateIdle;
 		return;
 	}

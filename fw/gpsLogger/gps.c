@@ -16,11 +16,11 @@
 #include "gps.h"
 #include "hal.h"
 
-volatile uint8_t fifo_data[512];
+volatile uint8_t fifo_data[1024];
 volatile uint16_t fifo_head;
 volatile uint16_t fifo_tail;
 //volatile uint8_t* fifo_data;
-volatile uint16_t fifo_size;
+const uint16_t fifo_size = sizeof(fifo_data);
 
 char nmea_file_name[] = "nmea/log000.txt";
 
@@ -75,6 +75,7 @@ void fifo_push(uint8_t _data) {
 
 	if (next == fifo_tail) /* Overflow? */
 	{
+		fifo_init();
 		if (++fifo_tail > fifo_size) {
 			fifo_tail = 0;
 		}
@@ -106,8 +107,6 @@ uint8_t fifo_pop() {
 void fifo_init() {
 	fifo_head = 0;
 	fifo_tail = 0;
-	//fifo_data = gps_rx_buffer;
-	fifo_size = 512;
 }
 
 uint8_t bActive, b_KmlFileOpen;
@@ -293,6 +292,11 @@ void gps_do() {
 					}
 				}
 
+				if(gps_util_is_PMTK(gps_line))
+				{
+					hal_compatibility_set();
+				}
+
 				if (gps_util_is_RMC(gps_line)) {
 					/* visual indication of data */
 					static uint8_t _flipper = 0;
@@ -393,10 +397,52 @@ void gps_start() {
 
 }
 
+void check_new_firmware()
+{
+	f_mount(&FatFs, "", 0); /* Give a work area to the default drive */
+
+		FRESULT rc;
+
+			// this call will fail if the file does exist.
+			rc = f_open(&gps_log, "firmware.bin", FA_READ);
+
+			if(rc == FR_OK)
+			{
+				WDTCTL = WDT_ARST_16;
+
+				while(1);
+			}
+
+}
+
+
+void rename_firmware()
+{
+
+	hal_led_b(GREEN);
+		hal_sd_pwr_on();
+		delay_ms(100);
+		hal_led_b(0);
+
+	f_mount(&FatFs, "", 0); /* Give a work area to the default drive */
+
+		FRESULT rc;
+		rc = f_unlink("firmware.bin");
+
+
+		delay_ms(100);
+				hal_led_b(0);
+				hal_led_a(0);
+				hal_sd_pwr_off();
+}
+
+
 void gps_minute2degree(uint8_t* minute_string, uint8_t* output) {
-	//_iq24 minutes = _atoIQ24(minute_string);
-	//minutes /= 60;
-	//_IQ24toa(output, "%0.7f", minutes);
+
+
+	_iq24 minutes = _atoIQ24(minute_string);
+	minutes /= 60;
+	_IQ24toa(output, "%0.7f", minutes);
 }
 
 extern uint8_t RWbuf[512]; // make use of USB memory when USB isn't in use
@@ -497,7 +543,7 @@ void create_formated_time(char* in, char* out) {
 	out[6] = 0;
 }
 
-void create_formated_date(char* in, char* out) {
+void create_formated_date(char* out) {
 	static const char const_months[] = "JanFebMarAprMayJunJulAugSepOctNovDec";
 	/* convert ddmmyy into dd mmm yy */
 	out[0] = '0' + (gps_day / 10 % 10);
@@ -521,55 +567,84 @@ void create_formated_date(char* in, char* out) {
 	out[11] = 0;
 }
 
+void create_filename_date(char* out){
+
+	out[0]  = '0' + (gps_year / 1000 % 10);
+		out[1]  = '0' + (gps_year / 100 % 10);
+		out[2]  = '0' + (gps_year / 10 % 10);
+		out[3] = '0' + (gps_year % 10);
+
+		out[4] = '0' + (gps_month / 10 % 10);
+			out[5] = '0' + (gps_month % 10);
+
+
+			out[6] = '0' + (gps_day / 10 % 10);
+				out[7] = '0' + (gps_day % 10);
+				out[8] = '-';
+
+				out[9] = '0' + (gps_hour / 10 % 10);
+					out[10] = '0' + (gps_hour % 10);
+
+					out[11] = '0' + (gps_minute / 10 % 10);
+						out[12] = '0' + (gps_minute % 10);
+
+						out[13] = '0' + (gps_second / 10 % 10);
+							out[14] = '0' + (gps_second % 10);
+}
+
 void gps_create_kml_file() {
 
-	uint8_t short_filename[13] = "TRACK---.KML";
+	//uint8_t short_filename[13] = "TRACK---.KML";
+	uint8_t filename[26] = "YYYYMMDD-HHMMSS.KML";
+
 
 	/* Copy log number into "---" area */
-	memcpy(&short_filename[5], &nmea_file_name[8], 3);
-
+	//memcpy(&short_filename[5], &nmea_file_name[8], 3);
+	create_filename_date(filename);
 
 	uint16_t bw;
-	FRESULT rc = f_open(&kml_file, short_filename, FA_WRITE | FA_CREATE_ALWAYS);
+	FRESULT rc = f_open(&kml_file, filename, FA_WRITE | FA_CREATE_ALWAYS);
 	if (rc) {
 		/* If error creating file, early exit. It will try again next time */
 		hal_led_a(YELLOW);
 		return;
 	}
-	rc = f_write(&kml_file, xml_a, sizeof(xml_a) - 1, &bw);
+	rc |= f_write(&kml_file, xml_a, sizeof(xml_a) - 1, &bw);
 	if (rc)
 		hal_led_a(YELLOW);
 
 	// name
-	rc = f_write(&kml_file, short_filename, strlen(short_filename), &bw);
+	rc |= f_write(&kml_file, filename, strlen(filename), &bw);
 	if (rc)
 		hal_led_a(YELLOW);
 
-	rc = f_write(&kml_file, xml_b, sizeof(xml_b) - 1, &bw);
+	rc |= f_write(&kml_file, xml_b, sizeof(xml_b) - 1, &bw);
 	if (rc)
 		hal_led_a(YELLOW);
 
 	// track
 
-	rc = f_write(&kml_file, xml_c, sizeof(xml_c) - 1, &bw);
+	rc |= f_write(&kml_file, xml_c, sizeof(xml_c) - 1, &bw);
 	if (rc)
 		hal_led_a(YELLOW);
 
 	// info
 
-	rc = f_write(&kml_file, xml_d, sizeof(xml_d) - 1, &bw);
+	rc |= f_write(&kml_file, xml_d, sizeof(xml_d) - 1, &bw);
 	if (rc)
 		hal_led_a(YELLOW);
 
-	rc = f_write(&kml_file, xml_e, sizeof(xml_e) - 1, &bw);
+	rc |= f_write(&kml_file, xml_e, sizeof(xml_e) - 1, &bw);
 	if (rc)
 		hal_led_a(YELLOW);
 
-	rc = f_sync(&kml_file);
+	rc |= f_sync(&kml_file);
 	if (rc)
 		hal_led_a(YELLOW);
 
-	b_KmlFileOpen = 1;
+
+	if(rc == FR_OK)
+		b_KmlFileOpen = 1;
 
 }
 

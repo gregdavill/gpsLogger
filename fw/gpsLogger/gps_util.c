@@ -179,6 +179,19 @@ uint8_t gps_util_is_RMC(uint8_t* s)
 	return 0;
 }
 
+
+uint16_t gps_util_is_PMTK(uint8_t* s)
+{
+	if( s[1] == 'P' &&
+			s[2] == 'M' &&
+			s[3] == 'T' &&
+			s[4] == 'K')
+		{
+			return 1;
+		}
+		return 0;
+}
+
 /* only checking RMC strings */
 /* $GPRMC,220516,[A],5133.82,N,00042.24,W,173.8,231.8,130694,004.2,W*70 */
 uint8_t gps_util_fix_valid(uint8_t* s)

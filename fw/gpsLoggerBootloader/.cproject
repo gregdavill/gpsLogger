@@ -46,11 +46,11 @@
 									<listOptionValue builtIn="false" value="-mdata-region=none"/>
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DEFINE.491121204" name="Define symbols (-D)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DEFINE" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="__MSP430F5513__"/>
+									<listOptionValue builtIn="false" value="__MSP430F5514__"/>
 									<listOptionValue builtIn="false" value="_VCS_COMMIT_=$(shell C:\Program Files\Git\bin\git describe --abbrev=4 --dirty --always --tags)"/>
 									<listOptionValue builtIn="false" value="DEPRECATED"/>
 								</option>
-								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.OPT_LEVEL.1801854123" name="Optimization Level" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.OPT_LEVEL" value="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.OPT_LEVEL.2" valueType="enumerated"/>
+								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.OPT_LEVEL.1801854123" name="Optimization Level" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.OPT_LEVEL" value="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.OPT_LEVEL.3" valueType="enumerated"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.FUNCTION_SECTIONS.1324108647" name="Place each function into its own section (-ffunction-sections)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.FUNCTION_SECTIONS" value="true" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DEBUG.389809627" name="Generate debug information (-g)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DEBUG" value="true" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DWARF_VERSION.1356386111" name="Generate debug information in DWARF version (-gdwarf-)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DWARF_VERSION" value="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DWARF_VERSION.3" valueType="enumerated"/>
@@ -62,20 +62,21 @@
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DATA_SECTIONS.394100967" name="Place data items into their own section (-fdata-sections)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.DATA_SECTIONS" value="true" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.UNSIGNED_CHAR.2063458513" name="Make 'char' unsigned by default (-funsigned-char)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.UNSIGNED_CHAR" value="true" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.PROF.408773222" name="Enable function profiling (-p)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.PROF" value="false" valueType="boolean"/>
-								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.SINGLE_PRECISION_CONSTANT.1730338385" name="Convert floating point constants to single precision constants (-fsingle-precision-constant)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.SINGLE_PRECISION_CONSTANT" value="true" valueType="boolean"/>
+								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.SINGLE_PRECISION_CONSTANT.1730338385" name="Convert floating point constants to single precision constants (-fsingle-precision-constant)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.SINGLE_PRECISION_CONSTANT" value="false" valueType="boolean"/>
+								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.OPT_FOR_SPEED.726349522" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compilerID.OPT_FOR_SPEED" value="true" valueType="boolean"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compiler.inputType__C_SRCS.394550395" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compiler.inputType__C_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compiler.inputType__CPP_SRCS.50797693" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compiler.inputType__CPP_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compiler.inputType__ASM_SRCS.1508362388" name="Assembly Sources" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.compiler.inputType__ASM_SRCS"/>
 							</tool>
 							<tool id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.exe.linkerDebug.430404828" name="GNU Linker" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.exe.linkerDebug">
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.linkerID.LIBRARY.976350310" name="Libraries (-l, --library)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.linkerID.LIBRARY" valueType="libs">
-									<listOptionValue builtIn="false" value="&quot;c&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;gcc&quot;"/>
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.linkerID.OUTPUT_FILE.1010818250" name="Output file (-o)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.linkerID.OUTPUT_FILE" value="&quot;${ProjName}.out&quot;" valueType="string"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.linkerID.MAP_FILE.575879366" name="Write a map file (-Map)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.linkerID.MAP_FILE" value="&quot;${ProjName}.map&quot;" valueType="string"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.linkerID.GC_SECTIONS.813294368" name="Remove unused sections (--gc-sections)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.linkerID.GC_SECTIONS" value="true" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.linkerID.STATIC.1957250211" name="Do not link with the shared libraries (-static)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.linkerID.STATIC" value="false" valueType="boolean"/>
+								<option id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.linkerID.NODEFAULTLIBS.1351040853" name="Do not use the standard system libraries when linking (-nodefaultlibs)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.linkerID.NODEFAULTLIBS" value="false" valueType="boolean"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.exeLinker.inputType__CMD_SRCS.1720294727" name="Linker Command Files" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.exeLinker.inputType__CMD_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.exeLinker.inputType__CMD2_SRCS.302104614" name="Linker Command Files" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.exeLinker.inputType__CMD2_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.exeLinker.inputType__GEN_CMDS.847667481" name="Generated Linker Command Files" superClass="com.ti.ccstudio.buildDefinitions.MSP430_GNU_4.0.exeLinker.inputType__GEN_CMDS"/>

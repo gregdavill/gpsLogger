@@ -74,5 +74,7 @@ void hal_sd_pwr_off(void);
 
 uint8_t hal_button_event(void);
 
+void hal_compatibility_set();
+
 
 //Released_Version_5_00_01

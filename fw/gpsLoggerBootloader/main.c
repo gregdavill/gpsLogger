@@ -195,7 +195,7 @@ FRESULT bootCheckFile(void)
 
 	crcFile = (uint16_t)page_buffer[PAGE_SIZE-1] << 8 | (uint16_t)page_buffer[PAGE_SIZE-2];
 
-	if(rc || crc != 0)
+	if(crc != 0)
 	{
 		rc = FR_NOT_ENABLED;
 	}
@@ -267,7 +267,8 @@ int main(void)
 			rc = bootCheckFile(); /* Bad app? Maybe we have an app loaded already */
 			if(rc == FR_OK && crcFile != crcApp)
 			{
-				rc = pf_open("FIRMWARE.BIN"); /* Re-open file */
+				rc = pf_lseek(0);
+				//rc = pf_open("FIRMWARE.BIN"); /* Re-open file */
 							if (rc != FR_OK) {
 								bootDisplayError(rc);
 								break;

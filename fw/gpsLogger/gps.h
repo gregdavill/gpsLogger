@@ -15,4 +15,7 @@ void inc_time();
 uint32_t millis();
 
 
+void check_new_firmware();
+void rename_firmware();
+
 #endif
