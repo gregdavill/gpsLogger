@@ -283,13 +283,14 @@ int main(void)
 
 
 
-			/* Only exit bootloader if there a valid app to run */
-			if (bootValidateApp()) {
-				bootLaunchApp();
-			}
+
 
 		} while (0);
 
+		/* Only exit bootloader if there a valid app to run */
+		if (bootValidateApp()) {
+			bootLaunchApp();
+		}
 
 		while(1)
 		{
