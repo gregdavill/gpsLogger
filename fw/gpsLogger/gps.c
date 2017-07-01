@@ -346,7 +346,7 @@ void gps_start() {
 	bActive = 1;
 	b_KmlFileOpen = 0;
 
-	f_mount(&FatFs, "", 0); /* Give a work area to the default drive */
+	f_mount(&FatFs, "", 1); /* Give a work area to the default drive */
 
 	FRESULT rc;
 	/* we want to store logs into nma folder, ensure it exists */
@@ -415,26 +415,6 @@ void check_new_firmware()
 
 }
 
-
-void rename_firmware()
-{
-
-	hal_led_b(GREEN);
-		hal_sd_pwr_on();
-		delay_ms(100);
-		hal_led_b(0);
-
-	f_mount(&FatFs, "", 0); /* Give a work area to the default drive */
-
-		FRESULT rc;
-		rc = f_unlink("firmware.bin");
-
-
-		delay_ms(100);
-				hal_led_b(0);
-				hal_led_a(0);
-				hal_sd_pwr_off();
-}
 
 
 void gps_minute2degree(uint8_t* minute_string, uint8_t* output) {
@@ -687,7 +667,7 @@ void gps_stop() {
 
 	hal_led_b(0);
 	/* unmount work area */
-	f_mount(0, "", 0); /* Give a work area to the default drive */
+	f_mount(0, "", 1); /* Give a work area to the default drive */
 
 }
 

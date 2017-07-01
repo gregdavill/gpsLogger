@@ -123,10 +123,7 @@ int main (void)
 
 
     initTimer();
-
     __bis_SR_register(GIE);
-    rename_firmware();
-
     entry_StateIdle();
 
     // state machine
@@ -199,6 +196,7 @@ void func_StateIdle(void)
 
 
 	//USB_disable(); //Disable
+	hal_XT2_disable();
 	hal_gps_rtc_on(); // saves around 7uA
 	Timer_A_stop(TIMER_A0_BASE);
 
@@ -216,7 +214,7 @@ void entry_StateIdle(void)
 
 	gps_stop();
 
-	//hal_gps_pwr_off();
+	hal_gps_pwr_off();
 	hal_sd_pwr_off();
 	UCS_turnOffXT2();
 

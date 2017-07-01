@@ -66,6 +66,8 @@ void hal_led_a( uint8_t c );
 void hal_led_b( uint8_t c );
 
 
+void hal_XT2_disable();
+
 void hal_gps_pwr_on(void);
 void hal_gps_pwr_off(void);
 
