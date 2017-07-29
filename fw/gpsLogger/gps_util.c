@@ -399,7 +399,7 @@ uint8_t gps_util_extract_time(uint8_t* in, uint8_t* out)
 	do
 	{
 		if (*s_ptr == ',' || *s_ptr == '.' || *s_ptr == 0)
-			break;
+			return 0;
 
 		*out++ = *s_ptr++;
 	} while (++len < 6); /* XX.YYYYYY */
