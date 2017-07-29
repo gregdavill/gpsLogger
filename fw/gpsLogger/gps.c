@@ -158,6 +158,20 @@ void gps_puts(uint8_t* s)
 	}
 }
 
+FRESULT file_sync(FIL* file)
+{
+	FRESULT rc;
+	/* I've found that the SD card sometimes rejects a f_sync on the first try */
+		uint8_t timeout = 32;
+		while (--timeout) {
+			rc = f_sync(file);
+			if (rc == FR_OK)
+				return FR_OK;
+		}
+
+		return rc;
+}
+
 /**
  \brief ubx_transmit_message - Append checksum and transmit a UBX message to a Ublox GPS.
 
@@ -281,9 +295,14 @@ void gps_do()
 					gps_line[len]   = '\0';
 
 					rc = f_write(&gps_log, (const void*)gps_line, len, (unsigned int*)&bw); /* Write data to the file */
-					if (rc || len != bw) {
-						hal_led_a(YELLOW);
-					}
+										if (rc || len != bw) {
+											hal_led_a(YELLOW);
+										}
+
+										rc = file_sync(&gps_log);
+															if (rc) {
+																hal_led_a(YELLOW);
+															}
 				}
 
 				if (gps_util_is_PMTK(gps_line)) {
@@ -363,14 +382,9 @@ void gps_start()
 	if (rc)
 		hal_led_a(RED);
 
-	/* I've found that the SD card takes awhile to do the first write form a cold boot. */
-	uint8_t timeout = 32;
-	while (--timeout) {
-		rc = f_sync(&gps_log);
-		if (rc == FR_OK)
-			break;
-	}
-	if (timeout == 0) {
+
+	rc = file_sync(&gps_log);
+	if (rc) {
 		hal_led_a(RED);
 	}
 
@@ -421,7 +435,7 @@ void gps_convert_NMEA2coords1(char* gps_line)
 		hal_led_a(RED);
 	}
 
-	rc = f_sync(&kml_file);
+	rc = file_sync(&kml_file);
 	if (rc) {
 		hal_led_a(RED);
 	}
@@ -486,7 +500,7 @@ void gps_convert_NMEA2coords(char* gps_line)
 		hal_led_a(RED);
 	}
 
-	rc = f_sync(&kml_file);
+	rc = file_sync(&kml_file);
 	if (rc) {
 		hal_led_a(YELLOW);
 	}
