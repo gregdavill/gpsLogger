@@ -1,9 +1,6 @@
-(kicad_pcb (version 4) (host pcbnew 4.0.2-stable)
+(kicad_pcb (version 20171130) (host pcbnew "(5.0.0-rc2-dev-321-g78161b592)")
 
   (general
-    (links 342)
-    (no_connects 0)
-    (area -81.418183 56.392421 174.000001 148.634556)
     (thickness 1.6)
     (drawings 28)
     (tracks 1093)
@@ -39,7 +36,7 @@
     (46 B.CrtYd user)
     (47 F.CrtYd user)
     (48 B.Fab user)
-    (49 F.Fab user)
+    (49 F.Fab user hide)
   )
 
   (setup
@@ -66,12 +63,15 @@
     (mod_text_width 0)
     (pad_size 1.8375 1.8375)
     (pad_drill 0)
-    (pad_to_mask_clearance 0.2)
+    (pad_to_mask_clearance 0.05)
     (aux_axis_origin 151.5 102.5)
     (visible_elements 7FFFFFFF)
     (pcbplotparams
       (layerselection 0x01000_80000000)
       (usegerberextensions false)
+      (usegerberattributes false)
+      (usegerberadvancedattributes false)
+      (creategerberjobfile false)
       (excludeedgelayer true)
       (linewidth 0.100000)
       (plotframeref false)
@@ -81,7 +81,6 @@
       (hpglpennumber 1)
       (hpglpenspeed 20)
       (hpglpendiameter 15)
-      (hpglpenoverlay 2)
       (psnegative false)
       (psa4output false)
       (plotreference false)
@@ -3151,7 +3150,7 @@
       (net 2 GND))
     (pad 6 thru_hole oval (at 3.65 0.7 355) (size 1 1) (drill 0.65) (layers *.Cu *.Mask)
       (net 2 GND))
-    (pad 6 thru_hole oval (at 3.65 -0.95 355) (size 1 1) (drill 0.65) (layers *.Cu *.Mask)
+    (pad 6 thru_hole oval (at 3.65 -0.950001 355) (size 1 1) (drill 0.65) (layers *.Cu *.Mask)
       (net 2 GND))
     (pad 6 thru_hole oval (at 3.65 0.35 355) (size 1 1) (drill 0.65) (layers *.Cu *.Mask)
       (net 2 GND))
