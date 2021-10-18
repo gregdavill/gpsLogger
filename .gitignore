@@ -39,3 +39,7 @@ Release/
 
 #kicad cache
 *-cache*
+
+*-backups
+rescue-backup/
+_autosave*
