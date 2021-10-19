@@ -39,9 +39,9 @@
         },
         "silk_line_width": 0.15,
         "silk_text_italic": false,
-        "silk_text_size_h": 0.0,
-        "silk_text_size_v": 0.0,
-        "silk_text_thickness": 0.0,
+        "silk_text_size_h": 1.0,
+        "silk_text_size_v": 1.0,
+        "silk_text_thickness": 0.15,
         "silk_text_upright": false,
         "zones": {
           "45_degree_only": false,
@@ -340,7 +340,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "gpsDaughterBoard.kicad_pro",
+    "filename": "gps-logger-gnss.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -374,7 +374,7 @@
       "idf": "",
       "netlist": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "gps-logger-gnss.step",
       "vrml": ""
     },
     "page_layout_descr_file": ""
