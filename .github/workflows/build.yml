@@ -1,0 +1,25 @@
+name: build
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:    
+      # Checkout Repository
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+
+      
+      # gcc setup
+      - name: Gcc setup
+        run: |
+          wget http://software-dl.ti.com/msp430/msp430_public_sw/mcu/msp430/MSPGCC/9_3_1_2/export/msp430-gcc-9.3.1.11_linux64.tar.bz2
+          tar xjvf msp430-gcc-9.3.1.11_linux64.tar.bz2
+          ls
+          ls msp430-gcc-9.3.1.11_linux64
+          ls msp430-gcc-9.3.1.11_linux64/bin
+
