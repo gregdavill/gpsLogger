@@ -1,0 +1,6 @@
+<projectSpec>
+  <project compilerBuildOptions="-I${IQMATHLIB_ROOT}/include --advice:power=&quot;none&quot;" device="MSP430F4794" linkerBuildOptions="-l ${IQMATHLIB_ROOT}/libraries/CCS/MPY32/4xx/IQmathLib.a" name="IQmathLib_empty_ex2_MPY32_4xx">
+    <file action="copy" path="../../../msp430/IQmathLib_empty_ex2.c" targetDirectory="." />
+    <buildVariable name="IQMATHLIB_ROOT" scope="project" type="dir" value="../../../.." />
+  </project>
+</projectSpec>

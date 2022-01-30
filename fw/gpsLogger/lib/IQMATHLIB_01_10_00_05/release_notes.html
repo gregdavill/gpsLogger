@@ -1,0 +1,197 @@
+<!-- --COPYRIGHT--,BSD
+ *  Copyright (c) 2015, Texas Instruments Incorporated
+ *  All rights reserved.
+ * 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ * 
+ *  *  Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ * 
+ *  *  Redistributions in binary form must reproduce the above copyright
+ *     notice, this list of conditions and the following disclaimer in the
+ *     documentation and/or other materials provided with the distribution.
+ * 
+ *  *  Neither the name of Texas Instruments Incorporated nor the names of
+ *     its contributors may be used to endorse or promote products derived
+ *     from this software without specific prior written permission.
+ * 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ *  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ *  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ *  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ *  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ *  OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ *  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * --/COPYRIGHT-- -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+<meta content="HTML Tidy for Windows (vers 15 August 2007), see www.w3.org" name="generator">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii"><!-- /* * Copyright 2007 by Texas Instruments Incorporated. * All rights reserved. Property of Texas Instruments Incorporated. * Restricted rights to use, duplicate or disclose this code are * granted through contract. * * */ --><title>IQMATHLIB for MSP430</title><!-- For now, we use the doxygen style sheet -->
+
+<link href="docs/html/doxygen.css" rel="stylesheet" type="text/css"></head><body>
+<table width="100%">
+<tbody>
+<tr>
+<td bgcolor="black" width="1"><a href="http://www.ti.com"><img src="docs/tilogo.gif" alt="Texas Instruments" border="0"></a></td>
+<td bgcolor="red"><img src="docs/titagline.gif"></td>
+</tr>
+</tbody>
+</table>
+<h1>IQmathLib for MSP430 and MSP432 version 01.10.00.05</h1>
+<h2>Release Notes&nbsp;</h2>
+
+<h2><a name="Introduction" id="Introduction">Introduction</a></h2>
+<p>The Texas Instruments IQmath and Qmath Libraries are a collection of highly optimized and
+high-precision mathematical functions for C programmers to seamlessly port a floating-point algorithm
+into fixed-point code on MSP430 and MSP432 devices. These routines are typically used
+in computationally intensive real-time applications where optimal execution speed, high accuracy
+and ultra low energy are critical. By using the IQmath and Qmath libraries, it is possible to achieve
+execution speeds considerably faster and energy consumption considerably lower than equivalent
+code written using floating-point math.</p>
+<p>The Qmath library provides functions for use with 16-bit fixed point data types. These functions
+have been optimized for all devices and can efficiently be used with or without a hardware multiplier.
+The functions provide up to 16 bits of accuracy to satisfy the majority of applications on MSP430
+devices.</p>
+<p>The IQmath library provides the same functions as the Qmath library with 32-bit data types and
+higher accuracy. These functions are provided for when an application requires accuracy comparable
+or greater than the equivalent floating point math functions.</p>
+The following tool chains are officially supported:
+<ul>
+<li>Texas Instruments Code Composer Studio version 5.5.0 and newer.</li>
+<li>IAR Embedded Workbench version 5.60 and newer.</li>
+</ul>
+This document is divided into the following sections:
+<ul>
+
+<li><a href="#Documentation">Documentation</a></li>
+<li><a href="#Devices_Supported">Devices Supported</a></li>
+<li><a href="#Whats_New">What's New</a></li>
+<li><a href="#Revision_History">Version History</a></li>
+<li><a href="#Versioning">Versioning</a></li>
+<li><a href="#Technical_Support">Technical Support and Product Updates</a></li>
+</ul>
+
+<h2><a name="Documentation" id="Documentation">Documentation<br></a></h2>
+<ul>
+<li><a href="MSP430-IQmathLib-UsersGuide.pdf">IQmathLib User's Guide</a></li>
+</ul>
+
+<h2><a name="Devices_Supported" id="Devices_Supported">Devices Supported</a></h2>
+<p>The IQmathLib supports the following devices with software and hardware multiply libraries:</p>
+<table border="1" style="width:500px">
+<tr>
+  <th>Device</th>
+  <th>Software multiply support</th> 
+  <th>MPY32 multiply support</th>
+</tr>
+<tr>
+  <td>MSP430F1xxx</td>
+  <td align="center">Yes</td> 
+  <td align="center">No</td>
+</tr>
+<tr>
+  <td>MSP430F2xxx</td>
+  <td align="center">Yes</td> 
+  <td align="center">No</td>
+</tr>
+<tr>
+  <td>MSP430G2xxx</td>
+  <td align="center">Yes</td> 
+  <td align="center">No</td>
+</tr>
+<tr>
+  <td>MSP430F4xxx</td>
+  <td align="center">Yes</td> 
+  <td align="center">Yes</td> 
+</tr>
+<tr>
+  <td>MSP430F5xxx</td>
+  <td align="center">Yes</td> 
+  <td align="center">Yes</td> 
+</tr>
+<tr>
+  <td>MSP430F6xxx</td>
+  <td align="center">Yes</td> 
+  <td align="center">Yes</td> 
+</tr>
+<tr>
+  <td>MSP430FR5xxx</td>
+  <td align="center">Yes</td> 
+  <td align="center">Yes</td> 
+</tr>
+<tr>
+  <td>MSP430FR6xxx</td>
+  <td align="center">Yes</td> 
+  <td align="center">Yes</td> 
+</tr>
+<tr>
+  <td>MSP432P4xxx</td>
+  <td align="center" colspan="2">n/a</td>
+</tr>
+</table>
+
+<h2><a name="Whats_New" id="Whats_New">What's New</a></h2>
+<span style="font-weight: bold;">01.10.00.05:</span>
+<ul>
+<li>Added support for ARM Cortex M4 based MSP432 devices.
+</ul>
+
+</ul><h2><a name="Revision_History" id="Revision_History"></a>Version History</h2>
+<span style="font-weight: bold;">01.00.02.07:</span>
+<p>This release addresses several bugs found in previous versions of the
+libraries. The type and function names remain unchanged and this release
+does not break compatibility with any previous releases.</p>
+<ul>
+<li>Updated the release notes with introduction, versioning information and support.
+<li>Fixed bug ID 7989 which caused a compiler warning due to redefined macro when including both QmathLib.h and IQmathLib.h.
+<li>Fixed bug ID 7946 which caused _atoQ and _atoIQ functions to fail when a decimal point is not provided in the input string.
+<li>Fixed bug ID 7947 which caused _Qtoa and _IQtoa functions to generate incorrect string characters when the input argument is the minimum signed integer.
+<li>Fixed bug ID 8143 which caused _IQdiv functions to fail on certain combinations of input arguments.
+<li>Fixed bug ID 8183 which caused an IAR linker error for redefined module when using both QmathLib and IQmathLib libraries.
+</ul>
+
+<span style="font-weight: bold;">01.00.01.12:</span>
+<ul>
+<li>Added support for new code model option in IAR Embedded Workbench for MSP430 version 6.10.
+<li>New library directory structure to support all MSP430 devices and models.
+<li>New example project (QmathLib_functional_ex3) to demonstrate basic functionality of the libraries.
+<li>Removed SFR dependencies for MPY32 peripheral to enable GCC support with libraries built for the TI tool chain (see section 2.4 in the <a href="MSP430-IQmathLib-UsersGuide.pdf">IQmathLib User's Guide</a> for more details).
+<li>Changed the license from TI proprietary to BSD.
+</ul>
+<span style="font-weight: bold;">01.00.00.00:</span>
+<ul>
+<li>Initial release of the IQmathLib for MSP430 devices.
+</ul>
+
+</ul><h2><a name="Versioning" id="Versioning"></a>Versioning</h2>
+<p>All releases have 4 digits (M.mm.pp.bb). This includes GA and
+pre-releases (engineering, alpha/EA, beta, etc.). Pre-releases are
+denoted with a suffix (e.g. 6.30.00.00-eng or 6.30.00.10-beta).</p>
+<p>This product's version follows a version format, M.mm.pp.bb, where M is
+a single digit Major number, mm is 2 digit minor number, pp is a 2
+digit patch number, and b is an unrestricted set of digits used as an
+incrementing build counter.</p>
+<p>To support multiple side-by-side installations of the product, the
+product version is encoded in the top level directory (e.g.
+IQMATHLIB_01_00_00_00).</p>
+<p>Subsequent releases of patch upgrades will be identified by the patch
+number, ex. 1.0.1.05 with directory
+IQMATHLIB_01_00_01_05. Typically, these patches only
+include critical bug fixes.</p>
+
+<h2><a name="Technical_Support" id="Technical_Support">Technical Support and Product Updates</a></h2>
+<ul>
+<li>Please visit the <a href="http://e2e.ti.com/support/microcontrollers/msp430/default.aspx">MSP430 E2E forum</a> for IQmathLib support.</li>
+<li>For any unanswered questions, please visit <a href="http://support.ti.com/">support.ti.com</a>.</li>
+</ul>
+<h2>Additional Resources</h2>
+For more information, visit <a href="http://www.ti.com">www.ti.com</a>.
+
+</body></html>
