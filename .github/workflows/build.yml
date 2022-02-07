@@ -21,10 +21,9 @@ jobs:
           tar xjf msp430-gcc-9.3.1.11_linux64.tar.bz2
           ls
           ls msp430-gcc-9.3.1.11_linux64/bin
-          echo "`pwd`/msp430-gcc-9.3.1.11_linux64/bin" >> $GITHUB_PATH
+          echo "$GITHUB_WORKSPACE/msp430-gcc-9.3.1.11_linux64/bin" >> $GITHUB_PATH
           msp430-elf-gcc --version
-          ls `pwd`/msp430-gcc-9.3.1.11_linux64/bin
-
+          
           pushd fw/gpsLogger
           make
           popd
