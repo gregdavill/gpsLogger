@@ -20,8 +20,8 @@ jobs:
           wget -q http://software-dl.ti.com/msp430/msp430_public_sw/mcu/msp430/MSPGCC/9_3_1_2/export/msp430-gcc-9.3.1.11_linux64.tar.bz2
           tar xjf msp430-gcc-9.3.1.11_linux64.tar.bz2  
           echo "${{github.workspace}}/msp430-gcc-9.3.1.11_linux64/bin" >> $GITHUB_PATH
-      - name: gcc_nest
-          msp430-elf-gcc --version
+      - name: gcc_test
+        run: msp430-elf-gcc --version
       
       - name: main_fw_compile
         run: |
