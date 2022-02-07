@@ -9,7 +9,7 @@ SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c -or -name *.s)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
-INC_DIRS := $(shell find $(SRC_DIRS) -type d) lib/headers lib/IQMATHLIB_01_10_00_05/include /opt/ti/msp430-gcc/lib/gcc/msp430-elf/9.3.1/include /opt/ti/msp430-gcc/msp430-elf/include /opt/ti/msp430-gcc/include ./src/driverlib/MSP430F5xx_6xx
+INC_DIRS := $(shell find $(SRC_DIRS) -type d) lib/headers lib/IQMATHLIB_01_10_00_05/include   /opt/ti/msp430-gcc/lib/gcc/msp430-elf/9.3.1/include 
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
 VCS_COMMIT := $(shell git describe --abbrev=4 --dirty --always --tags)
