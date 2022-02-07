@@ -15,7 +15,7 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
 VCS_COMMIT := $(shell git describe --abbrev=4 --dirty --always --tags)
 
-CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -Os -ffunction-sections -fdata-sections -Wl,-gc-sections -D__MSP430F5514__ -D__MSP430__ -std=gnu18 -D_VCS_COMMIT_=$(VCS_COMMIT) 
+CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -Os -g3 -ffunction-sections -fdata-sections -Wl,-gc-sections -D__MSP430F5514__ -D__MSP430__ -std=gnu18 -D_VCS_COMMIT_=$(VCS_COMMIT) 
 LDFLAGS ?= $(CPPFLAGS) -Wl,--Map=build/out.map -L ./$(LIB_DIR)/headers -T msp430f5514.ld
 
 

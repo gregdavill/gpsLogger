@@ -1,6 +1,8 @@
 CC := msp430-elf-gcc
 SIZE := msp430-elf-size
-TARGET_EXEC ?= gpslogger.elf
+OBJCOPY := msp430-elf-objcopy
+OBJDUMP := msp430-elf-objdump
+TARGET_EXEC ?= gpslogger
 
 BUILD_DIR ?= ./build
 LIB_DIR ?= ../lib
@@ -18,10 +20,21 @@ VCS_COMMIT := $(shell git describe --abbrev=4 --dirty --always --tags)
 CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -Os -ffunction-sections -fdata-sections -Wl,-gc-sections -D__MSP430F5514__ -D__MSP430__ -std=gnu18 -D_VCS_COMMIT_=$(VCS_COMMIT) 
 LDFLAGS ?= $(CPPFLAGS) -Wl,--Map=build/out.map -L ./$(LIB_DIR)/headers -T msp430f5514.ld -T src/USB_API/msp430USB.ld $(LIB_DIR)/IQMATHLIB_01_10_00_05/libraries/CCS/MPY32/5xx_6xx/IQmathLib_CCS_MPY32_5xx_6xx_CPUX_small_code_small_data.lib
 
+all: $(BUILD_DIR)/$(TARGET_EXEC).elf $(BUILD_DIR)/$(TARGET_EXEC).bin $(BUILD_DIR)/$(TARGET_EXEC).lst $(BUILD_DIR)/$(TARGET_EXEC).dmp
 
-$(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
+$(BUILD_DIR)/$(TARGET_EXEC).elf: $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
 	$(SIZE) $@
+
+%.dmp: %.bin
+	xxd -o 0x4400 $< $@
+
+%.lst : %.elf
+	$(OBJDUMP) -DS $< > $@ 
+
+%.bin: %.elf
+	$(OBJCOPY) -O binary $< $@
+	./append_crc.py $@
 
 # assembly
 $(BUILD_DIR)/%.s.o: %.s
@@ -48,3 +61,4 @@ clean:
 
 MKDIR_P ?= mkdir -p
 
+ 
