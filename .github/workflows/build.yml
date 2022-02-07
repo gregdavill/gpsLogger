@@ -23,6 +23,9 @@ jobs:
       - name: gcc_test
         run: msp430-elf-gcc --version
       
+      - name: python_setup
+        run: python -m pip install crc
+      
       - name: main_fw_compile
         run: |
           pushd fw/gpsLogger
