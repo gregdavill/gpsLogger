@@ -187,6 +187,12 @@ SECTIONS
     KEEP (*(.resetvec))
   } > RESETVEC
 
+
+  /DISCARD/ : {
+  *(.text:_IQ3toa .text:_IQ4toa .text:_IQ5toa .text:_IQ6toa .text:_IQ7toa .text:_IQ8toa .text:_IQ9toa .text:_IQ10toa .text:_IQ11toa .text:_IQ12toa .text:_IQ13toa .text:_IQ14toa .text:_IQ15toa .text:_IQ16toa .text:_IQ17toa .text:_IQ18toa .text:_IQ19toa .text:_IQ20toa .text:_IQ21toa .text:_IQ22toa .text:_IQ23toa /*.text:_IQ24toa*/ .text:_IQ25toa .text:_IQ26toa .text:_IQ27toa .text:_IQ28toa .text:_IQ29toa .text:_IQ30toa .text:_IQ31toa)
+  *(.text:_atoIQ3 .text:_atoIQ4 .text:_atoIQ5 .text:_atoIQ6 .text:_atoIQ7 .text:_atoIQ8 .text:_atoIQ9 .text:_atoIQ10 .text:_atoIQ11 .text:_atoIQ12 .text:_atoIQ13 .text:_atoIQ14 .text:_atoIQ15 .text:_atoIQ16 .text:_atoIQ17 .text:_atoIQ18 .text:_atoIQ19 .text:_atoIQ20 .text:_atoIQ21 .text:_atoIQ22 .text:_atoIQ23 /*.text:_atoIQ24*/ .text:_atoIQ25 .text:_atoIQ26 .text:_atoIQ27 .text:_atoIQ28 .text:_atoIQ29 .text:_atoIQ30 .text:_atoIQ31 )
+  }
+
   .lower.rodata :
   {
     . = ALIGN(2);
@@ -361,16 +367,13 @@ SECTIONS
   {
     . = ALIGN(2);
     *(.lower.text.* .lower.text)
-    KEEP(*(.either.text.__mspabi_slll_*))
-    *(.either.text.* .either.text)
   } > ROM
 
   .text :
   {
     . = ALIGN(2);
     *(.text .stub .text.* .gnu.linkonce.t.* .text:*)
-
-    *(.text:_atoIQ24) *(.text:_IQ24toa)
+    KEEP (*(.text.__mspabi_slll_n .text:_IQ24toa .text:_atoIQ24))
 
     KEEP (*(.text.*personality*))
     /* .gnu.warning sections are handled specially by elf32.em.  */
@@ -452,7 +455,7 @@ SECTIONS
   /* DWARF Extension.  */
   .debug_macro    0 : { *(.debug_macro) }
 
-  /DISCARD/ : { *(.note.GNU-stack) *(.either.text:_atoIQ*) *(.either.text:_IQ*toa) *(.text:__FDtest) *(.text:__Dtest) *(.text:__IQNtoa)}
+  /DISCARD/ : { *(.note.GNU-stack) }
 }
 
 
