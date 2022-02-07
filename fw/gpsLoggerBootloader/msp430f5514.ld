@@ -1,5 +1,5 @@
 /* ============================================================================ */
-/* Copyright (c) 2015, Texas Instruments Incorporated                           */
+/* Copyright (c) 2021, Texas Instruments Incorporated                           */
 /*  All rights reserved.                                                        */
 /*                                                                              */
 /*  Redistribution and use in source and binary forms, with or without          */
@@ -31,7 +31,7 @@
 /* ============================================================================ */
 
 /* This file supports MSP430F5514 devices. */
-/* Version: 1.159 */
+/* Version: 1.212 */
 /* Default linker script, for normal executables */
 
 OUTPUT_ARCH(msp430)
@@ -39,55 +39,193 @@ ENTRY(_start)
 
 MEMORY {
   SFR              : ORIGIN = 0x0000, LENGTH = 0x0010 /* END=0x0010, size 16 */
-  PERIPHERAL_8BIT  : ORIGIN = 0x0010, LENGTH = 0x00F0 /* END=0x0100, size 240 */
-  PERIPHERAL_16BIT : ORIGIN = 0x0100, LENGTH = 0x0100 /* END=0x0200, size 256 */
+  BSL              : ORIGIN = 0x1000, LENGTH = 0x0800
   RAM              : ORIGIN = 0x2400, LENGTH = 0x1000 /* END=0x33FF, size 4096 */
+  USBRAM           : ORIGIN = 0x1C00, LENGTH = 0x0800
   INFOMEM          : ORIGIN = 0x1800, LENGTH = 0x0200 /* END=0x19FF, size 512 as 4 128-byte segments */
   INFOA            : ORIGIN = 0x1980, LENGTH = 0x0080 /* END=0x19FF, size 128 */
   INFOB            : ORIGIN = 0x1900, LENGTH = 0x0080 /* END=0x197F, size 128 */
   INFOC            : ORIGIN = 0x1880, LENGTH = 0x0080 /* END=0x18FF, size 128 */
   INFOD            : ORIGIN = 0x1800, LENGTH = 0x0080 /* END=0x187F, size 128 */
-  ROM (rx)         : ORIGIN = 0xE000, LENGTH = 0x2000 /* END=0xFF7F, size 8192 */
-  RESETVEC         : ORIGIN = 0xFFFE, LENGTH = 0x0002
-  BSL              : ORIGIN = 0x1000, LENGTH = 0x0800
-  USBRAM           : ORIGIN = 0x1C00, LENGTH = 0x0800
-  HIROM (rx)       : ORIGIN = 0x00010000, LENGTH = 0x000043FF
+  ROM (rx)         : ORIGIN = 0x4400, LENGTH = 0x9B80 /* END=0xDF7F, size 48000 */
+  HIROM (rx)       : ORIGIN = 0x00010000, LENGTH = 0x000043F7 /* Boundaries changed to fix CPU47 */
+  VECT1            : ORIGIN = 0xDF80, LENGTH = 0x0002
+  VECT2            : ORIGIN = 0xDF82, LENGTH = 0x0002
+  VECT3            : ORIGIN = 0xDF84, LENGTH = 0x0002
+  VECT4            : ORIGIN = 0xDF86, LENGTH = 0x0002
+  VECT5            : ORIGIN = 0xDF88, LENGTH = 0x0002
+  VECT6            : ORIGIN = 0xDF8A, LENGTH = 0x0002
+  VECT7            : ORIGIN = 0xDF8C, LENGTH = 0x0002
+  VECT8            : ORIGIN = 0xDF8E, LENGTH = 0x0002
+  VECT9            : ORIGIN = 0xDF90, LENGTH = 0x0002
+  VECT10           : ORIGIN = 0xDF92, LENGTH = 0x0002
+  VECT11           : ORIGIN = 0xDF94, LENGTH = 0x0002
+  VECT12           : ORIGIN = 0xDF96, LENGTH = 0x0002
+  VECT13           : ORIGIN = 0xDF98, LENGTH = 0x0002
+  VECT14           : ORIGIN = 0xDF9A, LENGTH = 0x0002
+  VECT15           : ORIGIN = 0xDF9C, LENGTH = 0x0002
+  VECT16           : ORIGIN = 0xDF9E, LENGTH = 0x0002
+  VECT17           : ORIGIN = 0xDFA0, LENGTH = 0x0002
+  VECT18           : ORIGIN = 0xDFA2, LENGTH = 0x0002
+  VECT19           : ORIGIN = 0xDFA4, LENGTH = 0x0002
+  VECT20           : ORIGIN = 0xDFA6, LENGTH = 0x0002
+  VECT21           : ORIGIN = 0xDFA8, LENGTH = 0x0002
+  VECT22           : ORIGIN = 0xDFAA, LENGTH = 0x0002
+  VECT23           : ORIGIN = 0xDFAC, LENGTH = 0x0002
+  VECT24           : ORIGIN = 0xDFAE, LENGTH = 0x0002
+  VECT25           : ORIGIN = 0xDFB0, LENGTH = 0x0002
+  VECT26           : ORIGIN = 0xDFB2, LENGTH = 0x0002
+  VECT27           : ORIGIN = 0xDFB4, LENGTH = 0x0002
+  VECT28           : ORIGIN = 0xDFB6, LENGTH = 0x0002
+  VECT29           : ORIGIN = 0xDFB8, LENGTH = 0x0002
+  VECT30           : ORIGIN = 0xDFBA, LENGTH = 0x0002
+  VECT31           : ORIGIN = 0xDFBC, LENGTH = 0x0002
+  VECT32           : ORIGIN = 0xDFBE, LENGTH = 0x0002
+  VECT33           : ORIGIN = 0xDFC0, LENGTH = 0x0002
+  VECT34           : ORIGIN = 0xDFC2, LENGTH = 0x0002
+  VECT35           : ORIGIN = 0xDFC4, LENGTH = 0x0002
+  VECT36           : ORIGIN = 0xDFC6, LENGTH = 0x0002
+  VECT37           : ORIGIN = 0xDFC8, LENGTH = 0x0002
+  VECT38           : ORIGIN = 0xDFCA, LENGTH = 0x0002
+  VECT39           : ORIGIN = 0xDFCC, LENGTH = 0x0002
+  VECT40           : ORIGIN = 0xDFCE, LENGTH = 0x0002
+  VECT41           : ORIGIN = 0xDFD0, LENGTH = 0x0002
+  VECT42           : ORIGIN = 0xDFD2, LENGTH = 0x0002
+  VECT43           : ORIGIN = 0xDFD4, LENGTH = 0x0002
+  VECT44           : ORIGIN = 0xDFD6, LENGTH = 0x0002
+  VECT45           : ORIGIN = 0xDFD8, LENGTH = 0x0002
+  VECT46           : ORIGIN = 0xDFDA, LENGTH = 0x0002
+  VECT47           : ORIGIN = 0xDFDC, LENGTH = 0x0002
+  VECT48           : ORIGIN = 0xDFDE, LENGTH = 0x0002
+  VECT49           : ORIGIN = 0xDFE0, LENGTH = 0x0002
+  VECT50           : ORIGIN = 0xDFE2, LENGTH = 0x0002
+  VECT51           : ORIGIN = 0xDFE4, LENGTH = 0x0002
+  VECT52           : ORIGIN = 0xDFE6, LENGTH = 0x0002
+  VECT53           : ORIGIN = 0xDFE8, LENGTH = 0x0002
+  VECT54           : ORIGIN = 0xDFEA, LENGTH = 0x0002
+  VECT55           : ORIGIN = 0xDFEC, LENGTH = 0x0002
+  VECT56           : ORIGIN = 0xDFEE, LENGTH = 0x0002
+  VECT57           : ORIGIN = 0xDFF0, LENGTH = 0x0002
+  VECT58           : ORIGIN = 0xDFF2, LENGTH = 0x0002
+  VECT59           : ORIGIN = 0xDFF4, LENGTH = 0x0002
+  VECT60           : ORIGIN = 0xDFF6, LENGTH = 0x0002
+  VECT61           : ORIGIN = 0xDFF8, LENGTH = 0x0002
+  VECT62           : ORIGIN = 0xDFFA, LENGTH = 0x0002
+  VECT63           : ORIGIN = 0xDFFC, LENGTH = 0x0002
+  RESETVEC         : ORIGIN = 0xDFFE, LENGTH = 0x0002
 }
 
 SECTIONS
 {
-  __reset_vector : 
-  { 
-    KEEP (*(__interrupt_vector_64)) 
+  __interrupt_vector_1   : { KEEP (*(__interrupt_vector_1 )) } > VECT1
+  __interrupt_vector_2   : { KEEP (*(__interrupt_vector_2 )) } > VECT2
+  __interrupt_vector_3   : { KEEP (*(__interrupt_vector_3 )) } > VECT3
+  __interrupt_vector_4   : { KEEP (*(__interrupt_vector_4 )) } > VECT4
+  __interrupt_vector_5   : { KEEP (*(__interrupt_vector_5 )) } > VECT5
+  __interrupt_vector_6   : { KEEP (*(__interrupt_vector_6 )) } > VECT6
+  __interrupt_vector_7   : { KEEP (*(__interrupt_vector_7 )) } > VECT7
+  __interrupt_vector_8   : { KEEP (*(__interrupt_vector_8 )) } > VECT8
+  __interrupt_vector_9   : { KEEP (*(__interrupt_vector_9 )) } > VECT9
+  __interrupt_vector_10  : { KEEP (*(__interrupt_vector_10)) } > VECT10
+  __interrupt_vector_11  : { KEEP (*(__interrupt_vector_11)) } > VECT11
+  __interrupt_vector_12  : { KEEP (*(__interrupt_vector_12)) } > VECT12
+  __interrupt_vector_13  : { KEEP (*(__interrupt_vector_13)) } > VECT13
+  __interrupt_vector_14  : { KEEP (*(__interrupt_vector_14)) } > VECT14
+  __interrupt_vector_15  : { KEEP (*(__interrupt_vector_15)) } > VECT15
+  __interrupt_vector_16  : { KEEP (*(__interrupt_vector_16)) } > VECT16
+  __interrupt_vector_17  : { KEEP (*(__interrupt_vector_17)) } > VECT17
+  __interrupt_vector_18  : { KEEP (*(__interrupt_vector_18)) } > VECT18
+  __interrupt_vector_19  : { KEEP (*(__interrupt_vector_19)) } > VECT19
+  __interrupt_vector_20  : { KEEP (*(__interrupt_vector_20)) } > VECT20
+  __interrupt_vector_21  : { KEEP (*(__interrupt_vector_21)) } > VECT21
+  __interrupt_vector_22  : { KEEP (*(__interrupt_vector_22)) } > VECT22
+  __interrupt_vector_23  : { KEEP (*(__interrupt_vector_23)) } > VECT23
+  __interrupt_vector_24  : { KEEP (*(__interrupt_vector_24)) } > VECT24
+  __interrupt_vector_25  : { KEEP (*(__interrupt_vector_25)) } > VECT25
+  __interrupt_vector_26  : { KEEP (*(__interrupt_vector_26)) } > VECT26
+  __interrupt_vector_27  : { KEEP (*(__interrupt_vector_27)) } > VECT27
+  __interrupt_vector_28  : { KEEP (*(__interrupt_vector_28)) } > VECT28
+  __interrupt_vector_29  : { KEEP (*(__interrupt_vector_29)) } > VECT29
+  __interrupt_vector_30  : { KEEP (*(__interrupt_vector_30)) } > VECT30
+  __interrupt_vector_31  : { KEEP (*(__interrupt_vector_31)) } > VECT31
+  __interrupt_vector_32  : { KEEP (*(__interrupt_vector_32)) } > VECT32
+  __interrupt_vector_33  : { KEEP (*(__interrupt_vector_33)) } > VECT33
+  __interrupt_vector_34  : { KEEP (*(__interrupt_vector_34)) } > VECT34
+  __interrupt_vector_35  : { KEEP (*(__interrupt_vector_35)) } > VECT35
+  __interrupt_vector_36  : { KEEP (*(__interrupt_vector_36)) } > VECT36
+  __interrupt_vector_37  : { KEEP (*(__interrupt_vector_37)) } > VECT37
+  __interrupt_vector_38  : { KEEP (*(__interrupt_vector_38)) } > VECT38
+  __interrupt_vector_39  : { KEEP (*(__interrupt_vector_39)) } > VECT39
+  __interrupt_vector_40  : { KEEP (*(__interrupt_vector_40)) } > VECT40
+  __interrupt_vector_41  : { KEEP (*(__interrupt_vector_41)) } > VECT41
+  __interrupt_vector_42  : { KEEP (*(__interrupt_vector_42)) KEEP (*(__interrupt_vector_rtc)) } > VECT42
+  __interrupt_vector_43  : { KEEP (*(__interrupt_vector_43)) KEEP (*(__interrupt_vector_port2)) } > VECT43
+  __interrupt_vector_44  : { KEEP (*(__interrupt_vector_44)) KEEP (*(__interrupt_vector_timer2_a1)) } > VECT44
+  __interrupt_vector_45  : { KEEP (*(__interrupt_vector_45)) KEEP (*(__interrupt_vector_timer2_a0)) } > VECT45
+  __interrupt_vector_46  : { KEEP (*(__interrupt_vector_46)) KEEP (*(__interrupt_vector_usci_b1)) } > VECT46
+  __interrupt_vector_47  : { KEEP (*(__interrupt_vector_47)) KEEP (*(__interrupt_vector_usci_a1)) } > VECT47
+  __interrupt_vector_48  : { KEEP (*(__interrupt_vector_48)) KEEP (*(__interrupt_vector_port1)) } > VECT48
+  __interrupt_vector_49  : { KEEP (*(__interrupt_vector_49)) KEEP (*(__interrupt_vector_timer1_a1)) } > VECT49
+  __interrupt_vector_50  : { KEEP (*(__interrupt_vector_50)) KEEP (*(__interrupt_vector_timer1_a0)) } > VECT50
+  __interrupt_vector_51  : { KEEP (*(__interrupt_vector_51)) KEEP (*(__interrupt_vector_dma)) } > VECT51
+  __interrupt_vector_52  : { KEEP (*(__interrupt_vector_52)) KEEP (*(__interrupt_vector_usb_ubm)) } > VECT52
+  __interrupt_vector_53  : { KEEP (*(__interrupt_vector_53)) KEEP (*(__interrupt_vector_timer0_a1)) } > VECT53
+  __interrupt_vector_54  : { KEEP (*(__interrupt_vector_54)) KEEP (*(__interrupt_vector_timer0_a0)) } > VECT54
+  __interrupt_vector_55  : { KEEP (*(__interrupt_vector_55)) } > VECT55
+  __interrupt_vector_56  : { KEEP (*(__interrupt_vector_56)) KEEP (*(__interrupt_vector_usci_b0)) } > VECT56
+  __interrupt_vector_57  : { KEEP (*(__interrupt_vector_57)) KEEP (*(__interrupt_vector_usci_a0)) } > VECT57
+  __interrupt_vector_58  : { KEEP (*(__interrupt_vector_58)) KEEP (*(__interrupt_vector_wdt)) } > VECT58
+  __interrupt_vector_59  : { KEEP (*(__interrupt_vector_59)) KEEP (*(__interrupt_vector_timer0_b1)) } > VECT59
+  __interrupt_vector_60  : { KEEP (*(__interrupt_vector_60)) KEEP (*(__interrupt_vector_timer0_b0)) } > VECT60
+  __interrupt_vector_61  : { KEEP (*(__interrupt_vector_61)) KEEP (*(__interrupt_vector_comp_b)) } > VECT61
+  __interrupt_vector_62  : { KEEP (*(__interrupt_vector_62)) KEEP (*(__interrupt_vector_unmi)) } > VECT62
+  __interrupt_vector_63  : { KEEP (*(__interrupt_vector_63)) KEEP (*(__interrupt_vector_sysnmi)) } > VECT63
+  __reset_vector :
+  {
+    KEEP (*(__interrupt_vector_64))
     KEEP (*(__interrupt_vector_reset))
     KEEP (*(.resetvec))
   } > RESETVEC
+
+  .lower.rodata :
+  {
+    . = ALIGN(2);
+    *(.lower.rodata.* .lower.rodata)
+  } > ROM
 
   .rodata :
   {
     . = ALIGN(2);
     *(.plt)
     . = ALIGN(2);
-    *(.lower.rodata.* .lower.rodata)
-    . = ALIGN(2);
     *(.rodata .rodata.* .gnu.linkonce.r.* .const .const:*)
     *(.rodata1)
-
-    *(.eh_frame_hdr)
-    KEEP (*(.eh_frame))
     KEEP (*(.gcc_except_table)) *(.gcc_except_table.*)
+  } > ROM
+
+  /* Note: This is a separate .rodata section for sections which are
+     read only but which older linkers treat as read-write.
+     This prevents older linkers from marking the entire .rodata
+     section as read-write.  */
+  .rodata2 :
+  {
+    . = ALIGN(2);
     PROVIDE (__preinit_array_start = .);
     KEEP (*(.preinit_array))
     PROVIDE (__preinit_array_end = .);
+    . = ALIGN(2);
     PROVIDE (__init_array_start = .);
     KEEP (*(SORT(.init_array.*)))
     KEEP (*(.init_array))
     PROVIDE (__init_array_end = .);
+    . = ALIGN(2);
     PROVIDE (__fini_array_start = .);
     KEEP (*(.fini_array))
     KEEP (*(SORT(.fini_array.*)))
     PROVIDE (__fini_array_end = .);
-    LONG(0); /* Sentinel.  */
+    . = ALIGN(2);
+    *(.eh_frame_hdr)
+    KEEP (*(.eh_frame))
 
     /* gcc uses crtbegin.o to find the start of the constructors, so
        we make sure it is first.  Because this is a wildcard, it
@@ -97,10 +235,10 @@ SECTIONS
        directory crtbegin.o is in.  */
     KEEP (*crtbegin*.o(.ctors))
 
-    /* We don't want to include the .ctor section from from the
-       crtend.o file until after the sorted ctors.  The .ctor section
-       from the crtend file contains the end of ctors marker and it
-       must be last */
+    /* We don't want to include the .ctor section from the crtend.o
+       file until after the sorted ctors.  The .ctor section from
+       the crtend file contains the end of ctors marker and it must
+       be last */
     KEEP (*(EXCLUDE_FILE (*crtend*.o ) .ctors))
     KEEP (*(SORT(.ctors.*)))
     KEEP (*(.ctors))
@@ -170,8 +308,9 @@ SECTIONS
   } > RAM
   PROVIDE (__bsssize = SIZEOF(.bss));
 
-  /* This section contains data that is not initialised at startup.  */
-  .noinit :
+  /* This section contains data that is not initialised during load
+     or application reset.  */
+  .noinit (NOLOAD) :
   {
     . = ALIGN(2);
     PROVIDE (__noinit_start = .);
@@ -180,8 +319,28 @@ SECTIONS
     PROVIDE (__noinit_end = .);
   } > RAM
 
-  _end = .;
-  PROVIDE (end = .);
+  /* We create this section so that "end" will always be in the
+     RAM region (matching .stack below), even if the .bss
+     section is empty.  */
+  .heap (NOLOAD) :
+  {
+    . = ALIGN(2);
+    __heap_start__ = .;
+    _end = __heap_start__;
+    PROVIDE (end = .);
+    KEEP (*(.heap))
+    _end = .;
+    PROVIDE (end = .);
+    /* This word is here so that the section is not empty, and thus
+       not discarded by the linker.  The actual value does not matter
+       and is ignored.  */
+    LONG(0);
+    __heap_end__ = .;
+    __HeapLimit = __heap_end__;
+  } > RAM
+  /* WARNING: Do not place anything in RAM here.
+     The heap section must be the last section in RAM and the stack
+     section must be placed at the very end of the RAM region.  */
 
   .stack (ORIGIN (RAM) + LENGTH(RAM)) :
   {
@@ -198,11 +357,14 @@ SECTIONS
     KEEP (*(.lowtext))
   } > ROM
 
-  .text :
+  .lower.text :
   {
     . = ALIGN(2);
     *(.lower.text.* .lower.text)
+  } > ROM
 
+  .text :
+  {
     . = ALIGN(2);
     *(.text .stub .text.* .gnu.linkonce.t.* .text:*)
 
@@ -236,11 +398,11 @@ SECTIONS
     *(.upper.bss.* .upper.bss)
     *(.upper.data.* .upper.data)
     ASSERT (SIZEOF(.upper) == 0, "This MCU does not support placing read/write data into high memory");
-  }
+  } > HIROM
 
   /* The rest are all not normally part of the runtime image.  */
 
-  .MP430.attributes 0 :
+  .MSP430.attributes 0 :
   {
     KEEP (*(.MSP430.attributes))
     KEEP (*(.gnu.attributes))
@@ -288,4 +450,11 @@ SECTIONS
 
   /DISCARD/ : { *(.note.GNU-stack) }
 }
+
+
+/****************************************************************************/
+/* Include peripherals memory map                                           */
+/****************************************************************************/
+
+INCLUDE msp430f5514_symbols.ld
 

@@ -10,5 +10,5 @@
 	<rts value=""/>
 	<createSlaveProjects value=""/>
 	<templateProperties value="id=M2_SDCardReader_gcc_.projectspec.M2_SDCardReader_gcc_,"/>
-	<isTargetManual value="false"/>
+	<isTargetManual value="true"/>
 </projectOptions>
