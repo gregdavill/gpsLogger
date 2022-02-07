@@ -26,11 +26,11 @@ jobs:
       - name: main_fw_compile
         run: |
           pushd fw/gpsLogger
-          make
+          make -j8
           popd
       
       - name: bootloader_fw_compile
         run: |
           pushd fw/gpsLoggerBootloader
-          make
+          make -j8
           popd
