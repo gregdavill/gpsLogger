@@ -15,22 +15,22 @@ jobs:
 
       
       # gcc setup
-      - name: Gcc setup
+      - name: gcc_setup
         run: |
           wget -q http://software-dl.ti.com/msp430/msp430_public_sw/mcu/msp430/MSPGCC/9_3_1_2/export/msp430-gcc-9.3.1.11_linux64.tar.bz2
           tar xjf msp430-gcc-9.3.1.11_linux64.tar.bz2  
           echo "${{github.workspace}}/msp430-gcc-9.3.1.11_linux64/bin" >> $GITHUB_PATH
-        
-        run: |
-          echo "$PATH"
-          
+      - name: gcc_nest
           msp430-elf-gcc --version
-        
+      
+      - name: main_fw_compile
         run: |
           pushd fw/gpsLogger
           make
           popd
-          
+      
+      - name: bootloader_fw_compile
+        run: |
           pushd fw/gpsLoggerBootloader
           make
           popd
