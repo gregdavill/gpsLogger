@@ -12,9 +12,7 @@ with open(sys.argv[1], 'rb') as f:
     v = c.calculate_checksum(bytes(data))
     print("crc: 0x{:04X}".format(v))
 
-#    data = bytes(struct.pack(">H", v))
-
-with open(sys.argv[1], 'wb') as f:
-    f.write(data + struct.pack(">H", v))
+with open('{}.crc'.format(sys.argv[1]), 'wb') as f:
+    f.write(struct.pack(">H", v))
 
     

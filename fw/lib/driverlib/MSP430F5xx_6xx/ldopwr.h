@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -463,4 +463,4 @@ extern uint8_t LDOPWR_getOverloadAutoOffStatus(uint16_t baseAddress);
 
 #endif
 #endif // __MSP430WARE_LDOPWR_H__
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

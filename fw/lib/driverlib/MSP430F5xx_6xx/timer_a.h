@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ extern "C"
 {
 #endif
 
-#include "inc/hw_regaccess.h"
+#include "inc/hw_memmap.h"
 //*****************************************************************************
 //
 // The following is a parameter used for Timer_A_getCounterValue that
@@ -498,7 +498,8 @@ typedef struct Timer_A_initCompareModeParam
 
 //*****************************************************************************
 //
-// The following are values that can be passed to the param parameter for
+// The following are values that can be passed to the compareOutputMode
+// parameter for functions: Timer_A_setOutputMode(); the param parameter for
 // functions: Timer_A_initCaptureMode(), Timer_A_initCompareMode(), and
 // Timer_A_outputPWM().
 //
@@ -515,8 +516,9 @@ typedef struct Timer_A_initCompareModeParam
 //*****************************************************************************
 //
 // The following are values that can be passed to the compareRegister parameter
-// for functions: Timer_A_setCompareValue(); the captureCompareRegister
-// parameter for functions: Timer_A_enableCaptureCompareInterrupt(),
+// for functions: Timer_A_setCompareValue(), and Timer_A_setOutputMode(); the
+// captureCompareRegister parameter for functions:
+// Timer_A_enableCaptureCompareInterrupt(),
 // Timer_A_disableCaptureCompareInterrupt(),
 // Timer_A_getCaptureCompareInterruptStatus(),
 // Timer_A_getSynchronizedCaptureCompareInput(),
@@ -615,8 +617,7 @@ typedef struct Timer_A_initCompareModeParam
 //! \brief Starts Timer_A counter
 //!
 //! This function assumes that the timer has been previously configured using
-//! Timer_A_configureContinuousMode, Timer_A_configureUpMode or
-//! Timer_A_configureUpDownMode.
+//! Timer_A_initContinuousMode, Timer_A_initUpMode or Timer_A_initUpDownMode.
 //!
 //! \param baseAddress is the base address of the TIMER_A module.
 //! \param timerMode mode to put the timer in
@@ -1001,6 +1002,42 @@ extern void Timer_A_setCompareValue(uint16_t baseAddress,
 
 //*****************************************************************************
 //
+//! \brief Sets the output mode
+//!
+//! Sets the output mode for the timer even the timer is already running.
+//!
+//! \param baseAddress is the base address of the TIMER_A module.
+//! \param compareRegister selects the compare register being used.
+//!        Valid values are:
+//!        - \b TIMER_A_CAPTURECOMPARE_REGISTER_0
+//!        - \b TIMER_A_CAPTURECOMPARE_REGISTER_1
+//!        - \b TIMER_A_CAPTURECOMPARE_REGISTER_2
+//!        - \b TIMER_A_CAPTURECOMPARE_REGISTER_3
+//!        - \b TIMER_A_CAPTURECOMPARE_REGISTER_4
+//!        - \b TIMER_A_CAPTURECOMPARE_REGISTER_5
+//!        - \b TIMER_A_CAPTURECOMPARE_REGISTER_6
+//! \param compareOutputMode specifies the output mode.
+//!        Valid values are:
+//!        - \b TIMER_A_OUTPUTMODE_OUTBITVALUE [Default]
+//!        - \b TIMER_A_OUTPUTMODE_SET
+//!        - \b TIMER_A_OUTPUTMODE_TOGGLE_RESET
+//!        - \b TIMER_A_OUTPUTMODE_SET_RESET
+//!        - \b TIMER_A_OUTPUTMODE_TOGGLE
+//!        - \b TIMER_A_OUTPUTMODE_RESET
+//!        - \b TIMER_A_OUTPUTMODE_TOGGLE_SET
+//!        - \b TIMER_A_OUTPUTMODE_RESET_SET
+//!
+//! Modified bits are \b OUTMOD of \b TAxCCTLn register.
+//!
+//! \return None
+//
+//*****************************************************************************
+extern void Timer_A_setOutputMode(uint16_t baseAddress,
+                                  uint16_t compareRegister,
+                                  uint16_t compareOutputMode);
+
+//*****************************************************************************
+//
 //! \brief Clears the Timer TAIFG interrupt flag
 //!
 //! \param baseAddress is the base address of the TIMER_A module.
@@ -1063,4 +1100,4 @@ extern uint16_t Timer_A_getCounterValue(uint16_t baseAddress);
 
 #endif
 #endif // __MSP430WARE_TIMER_A_H__
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

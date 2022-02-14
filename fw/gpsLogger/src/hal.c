@@ -71,11 +71,13 @@ void USBHAL_initPorts(void)
     GPIO_setAsInputPinWithPullDownResistor(GPIO_PORT_P2, GPIO_PIN6|GPIO_PIN7);
     GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN0|GPIO_PIN1|GPIO_PIN2|GPIO_PIN3|GPIO_PIN4|GPIO_PIN5);
 
-    GPIO_setOutputLowOnPin(GPIO_PORT_P3, GPIO_PIN0|GPIO_PIN2|GPIO_PIN3|GPIO_PIN5|GPIO_PIN6|GPIO_PIN7);
+    GPIO_setOutputLowOnPin(GPIO_PORT_P3, GPIO_PIN2|GPIO_PIN3|GPIO_PIN5|GPIO_PIN6|GPIO_PIN7);
+	GPIO_setOutputHighOnPin(GPIO_PORT_P3, GPIO_PIN0);
     GPIO_setAsInputPinWithPullDownResistor(GPIO_PORT_P3, GPIO_PIN4); // GPS RX.
     GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN0|GPIO_PIN2|GPIO_PIN3|GPIO_PIN5|GPIO_PIN6|GPIO_PIN7);
 
-    GPIO_setOutputLowOnPin(GPIO_PORT_P4, GPIO_PIN1|GPIO_PIN6|GPIO_PIN7);
+    GPIO_setOutputLowOnPin(GPIO_PORT_P4, GPIO_PIN6|GPIO_PIN7);
+	GPIO_setOutputHighOnPin(GPIO_PORT_P4, GPIO_PIN1);
     GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN1|GPIO_PIN6|GPIO_PIN7);
 
     /* PWR Fault connections (HW Pull-ups) */
@@ -147,9 +149,10 @@ void hal_XT2_disable()
 
 void hal_sd_pwr_on()
 {
-	 GPIO_setOutputHighOnPin(GPIO_PORT_P4, GPIO_PIN1);
+	 GPIO_setOutputLowOnPin(GPIO_PORT_P4, GPIO_PIN1);
 	 GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN1);
 
+	delay_ms(100);
 	 /* enable IO pins and spi module */
 	 SDCard_init();
 	 //disk_initialize(0);     //Attempt to initialize it
@@ -161,13 +164,13 @@ void hal_sd_pwr_off()
 	/* Set all connected IO pins to pull-down (low outputs?) */
 	SDCard_deinit();
 
-	 GPIO_setOutputLowOnPin(GPIO_PORT_P4, GPIO_PIN1);
+	 GPIO_setOutputHighOnPin(GPIO_PORT_P4, GPIO_PIN1);
 	 GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN1);
 }
 
 void hal_gps_pwr_on()
 {
-	 GPIO_setOutputHighOnPin(GPIO_PORT_P3, GPIO_PIN0);
+	 GPIO_setOutputLowOnPin(GPIO_PORT_P3, GPIO_PIN0);
 	 GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN0);
 
 	 GPS_init();
@@ -176,7 +179,7 @@ void hal_gps_pwr_on()
 void hal_gps_pwr_off()
 {
 	/* turn off high side switch */
-	GPIO_setOutputLowOnPin(GPIO_PORT_P3, GPIO_PIN0);
+	GPIO_setOutputHighOnPin(GPIO_PORT_P3, GPIO_PIN0);
 	GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN0);
 
 	GPS_deinit();

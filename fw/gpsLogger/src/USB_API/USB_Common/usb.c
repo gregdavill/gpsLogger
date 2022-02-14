@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,21 +39,31 @@
  | Include files                                                               |
  +----------------------------------------------------------------------------*/
 
-//
-//! \cond
-//
 #include <string.h>
 #include "driverlib.h"
 
 #include "../USB_Common/device.h"
 #include "../USB_Common/defMSP430USB.h"
 #include "../USB_Common/usb.h"      //USB-specific Data Structures
-#include "../USB_CDC_API/UsbCdc.h"
-#include "../USB_PHDC_API/UsbPHDC.h"
-#include "../USB_HID_API/UsbHidReq.h"
-#include "../USB_MSC_API/UsbMscScsi.h"
-#include "../USB_Common/UsbIsr.h"
 #include <descriptors.h>
+#ifdef _CDC_
+#include "../USB_CDC_API/UsbCdc.h"
+#endif
+
+#ifdef _PHDC_
+#include "../USB_PHDC_API/UsbPHDC.h"
+#endif
+
+#ifdef _HID_
+#include "../USB_HID_API/UsbHidReq.h"
+#endif
+
+#ifdef _MSC_
+#include "../USB_MSC_API/UsbMscScsi.h"
+#endif
+
+#include "../USB_Common/UsbIsr.h"
+
 
 
 /*----------------------------------------------------------------------------+
@@ -65,6 +75,34 @@
 
 #define DIRECTION_IN    0x80
 #define DIRECTION_OUT   0x00
+
+//24MHz will be detected
+#define AUTO_DETECT_XT2_SPEED_1          24000000
+
+//16MHz will be detected
+#define AUTO_DETECT_XT2_SPEED_2          16000000
+
+//12MHz will be detected
+#define AUTO_DETECT_XT2_SPEED_3          12000000
+
+//8MHz will be detected
+#define AUTO_DETECT_XT2_SPEED_4          8000000
+
+//4MHz will be detected
+#define AUTO_DETECT_XT2_SPEED_5          4000000
+
+#define REFO_CLK_FREQ					32768
+
+// Timer A1 Settings - Used for XT2 Frequency Auto Detect
+#define TIMER_CTL           TA1CTL
+#define TIMER_CTL_SETTINGS  TASSEL_2 + MC_2 + CNTL_0
+#define TIMER_CTL_CLR       TACLR
+#define TIMER_CCTL          TA1CCTL2
+#define TIMER_CCTL_SETTINGS CM_1 + CCIS_1+ CAP
+#define TIMER_CCTL_IFG      CCIFG
+#define TIMER_CCTL_CM       CM_1
+#define TIMER_CCR           TA1R
+
 
 #if defined(__TI_COMPILER_VERSION__)  || defined(__GNUC__)
 #define __no_init
@@ -116,6 +154,9 @@ uint8_t bEnumerationStatus = 0;        //is 0 if not enumerated
 static uint8_t bRemoteWakeup;
 
 uint16_t wUsbEventMask;                 //used by USB_getEnabledEvents() and USB_setEnabledEvents()
+
+static uint16_t USB_XT2Freq;
+static uint16_t USB_XT2PLL;
 
 #ifdef _MSC_
 extern uint8_t USBMSC_reset (void);
@@ -286,40 +327,25 @@ void PHDCResetData();
 void USB_InitSerialStringDescriptor (void);
 void USB_initMemcpy (void);
 uint16_t USB_determineFreq(void);
+uint16_t USB_determineXT2Freq(void);
+uint16_t USB_lookUpPll(uint16_t xt2Freq);
 
 /* Version string to embed in executable. May need to change for ELF compiler */
-const char *VERSION = "USB_DEVELOPERS_PACKAGE_5_00_01";
+const char *VERSION = "USB_DEVELOPERS_PACKAGE_5_20_06_03";
 char *USB_getVersion(void)
 {
 	return ((char *)&VERSION);
 }
 
-//
-//! \endcond
-//
 
-//*****************************************************************************
-//
-//! Initializes the USB Module.
-//!
-//! 
-//! Initializes the USB module by configuring power and clocks, and configures
-//! pins that are critical for USB. This should be called very soon after the 
-//! beginning of program execution. 
-//! 
-//! Note that this does not enable the USB module (that is, does not set 
-//! USB_EN bit). Rather, it prepares the USB module to detect the application of
-//! power to VBUS, after which the application may choose to enable the module
-//! and connect to USB. Calling this function is necessary to achieve expected 
-//! LPM3 current consumption into DVCC.
-//!
-//! \return \b USB_SUCCEED
-//
-//*****************************************************************************
-
+/**
+ * Init the USB HW interface.
+ */
 uint8_t USB_init (void)
 {
     uint16_t bGIE  = __get_SR_register() & GIE;                                 //save interrupt status
+    USB_XT2Freq = 8;//USB_determineXT2Freq();
+    USB_XT2PLL = USB_lookUpPll(USB_XT2Freq);
     uint16_t MCLKFreq = USB_determineFreq();
     uint16_t DelayConstant_250us = ((MCLKFreq >> 6) + (MCLKFreq >> 7) + (MCLKFreq >> 9));
     volatile uint16_t i, j;
@@ -357,6 +383,7 @@ uint8_t USB_init (void)
     for (j = 0; j < 20; j++) {
         for (i = 0; i < (DelayConstant_250us); i++) {//wait some time for LDOs (5ms delay)
             _NOP();
+            __asm__ __volatile__("");
         }
     }
 
@@ -381,28 +408,9 @@ uint8_t USB_init (void)
     return (USB_SUCCEED);
 }
 
-//*****************************************************************************
-//
-//! Initializes the USB Module. Also enables events and connects.
-//!
-//! 
-//! Initializes the USB module by configuring power and clocks, and configures
-//! pins that are critical for USB. This should be called very soon after the 
-//! beginning of program execution. 
-//!
-//! If connectEnable is TRUE, then this API then enables the USB module, which 
-//! includes activating the PLL and setting the USB_EN bit. AFter enabling the
-//! USB module, this API will connect to the host if VBUS is present.
-//!
-//! If eventsEnable is set to TRUE then all USB events are enabled by this API.
-//!
-//! \param	connectEnable	If TRUE, Connect to host if VBUS is present by 
-//!							pulling the D+ signal high using the PUR pin.
-//! \param  eventsEnable	If TRUE, all USB events handlers are enabled
-//! \return \b USB_SUCCEED
-//
-//*****************************************************************************
-
+/**
+ * Init the USB HW interface, enable events and connect
+ */
 uint8_t USB_setup(uint8_t connectEnable, uint8_t eventsEnable)
 {
 	uint8_t status;
@@ -424,9 +432,6 @@ uint8_t USB_setup(uint8_t connectEnable, uint8_t eventsEnable)
     return (status);
 }
 
-//
-//! \cond
-//
 
 //----------------------------------------------------------------------------
 //This function will be compiled only if
@@ -471,26 +476,10 @@ void USB_InitSerialStringDescriptor (void)
 
 #endif
 
-//
-//! \endcond
-//
 
-//*****************************************************************************
-//
-//! Enables the USB Module.
-//!
-//! Enables the USB module, which includes activating the PLL and setting the 
-//! USB_EN bit. Power consumption increases as a result of this operation (see 
-//! device datasheet for specifics). This call should only be made after an 
-//! earlier call to USB_init(), and prior to any other call except than 
-//! USB_setEnabledEvents(), or USB_getEnabledEvents(). It is usually called just
-//! prior to attempting to connect with a host after a bus connection has 
-//! already been detected.
-//! 
-//! \return \b USB_SUCCEED
-//
-//*****************************************************************************
-
+/**
+ * Init and start the USB PLL.
+ */
 uint8_t USB_enable ()
 {
 #ifdef USE_TIMER_FOR_RESUME
@@ -520,18 +509,20 @@ uint8_t USB_enable ()
 	GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P7, GPIO_PIN2);
 	GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P7, GPIO_PIN3);
 #endif
-    USBKEYPID = 0x9628;                                                         //set KEY and PID to 0x9628 -> access to
+    USBKEYPID = 0x9628;                                                       //set KEY and PID to 0x9628 -> access to
                                                                                 //configuration registers enabled
+
+
     if(USB_XT2_BYPASS_MODE == FALSE){					//XT2 not in bypass mode
-    	if (USB_XT_FREQ_VALUE >= 24) {
+    	if (USB_XT2Freq >= 24) {
     		status = UCS_turnOnXT2WithTimeout(
     	   			XT2DRIVE_3, 50000);
     	}
-    	else if(USB_XT_FREQ_VALUE >= 16) {
+    	else if(USB_XT2Freq >= 16) {
     		status = UCS_turnOnXT2WithTimeout(
     	  			XT2DRIVE_2, 50000);
     	}
-    	else if(USB_XT_FREQ_VALUE >= 8) {
+    	else if(USB_XT2Freq >= 8) {
     		status = UCS_turnOnXT2WithTimeout(
     	   			XT2DRIVE_1, 50000);
     	}
@@ -542,15 +533,15 @@ uint8_t USB_enable ()
 
     }
     else{												//XT2 in bypass mode
-    	if (USB_XT_FREQ_VALUE >= 24) {
+    	if (USB_XT2Freq >= 24) {
     		status = UCS_bypassXT2WithTimeout(
     			50000);
      	}
-    	else if(USB_XT_FREQ_VALUE >= 16) {
+    	else if(USB_XT2Freq >= 16) {
     		status = UCS_bypassXT2WithTimeout(
     			 50000);
     	}
-    	else if(USB_XT_FREQ_VALUE >= 8) {
+    	else if(USB_XT2Freq >= 8) {
     		status = UCS_bypassXT2WithTimeout(
     			50000);
     	}
@@ -564,7 +555,7 @@ uint8_t USB_enable ()
 		return (USB_GENERAL_ERROR);
 	}
 	
-    USBPLLDIVB = USB_XT_FREQ;                                                   //Settings desired frequency
+    USBPLLDIVB = USB_XT2PLL;                                                   //Settings desired frequency
 
     USBPLLCTL = UPFDEN + UPLLEN;                                    		    //Select XT2 as Ref / Select PLL for USB / Discrim.
                                                                                 //on, enable PLL
@@ -590,6 +581,7 @@ uint8_t USB_enable ()
             {
                 for (i = 0; i < (DelayConstant_250us); i++){
                    _NOP();
+                   __asm__ __volatile__("");
                 }
             }        
 #endif
@@ -609,23 +601,9 @@ uint8_t USB_enable ()
 
 #ifdef USE_TIMER_FOR_RESUME
 
-//*****************************************************************************
-//
-//! First phase of enabling the USB Module when USE_TIMER_FOR_RESUME is defined
-//!
-//! This functions is only used by USB_resume to reduce the interrupt latency
-//! of the resume interrupt.
-//! This function starts the XT2 crystal and then calls an event handler
-//! USB_handleCrystalStartedEvent() to allow the application to get control. The
-//! application can use a timer or other peripheral to "wait" for the XT2
-//! crystal to stabilize. See the crystal datasheet for typical wait times.
-//! The application then informs the stack of XT2
-//! stabilization by calling USB_enable_PLL().
-//!
-//! \return \b USB_SUCCEED or USB_GENERAL_ERROR
-//
-//*****************************************************************************
-
+/**
+ * First phase of enable in the case where a timer is used to stabilize crystal and PLL
+ */
 uint8_t USB_enable_crystal (void)
 {
     volatile uint16_t i, k;
@@ -649,15 +627,15 @@ uint8_t USB_enable_crystal (void)
 #endif
  
     if(USB_XT2_BYPASS_MODE == FALSE){					//XT2 not in bypass mode
-    	if (USB_XT_FREQ_VALUE >= 24) {
+    	if (USB_XT2Freq >= 24) {
     		UCS_turnOnXT2WithTimeout(
     	   			XT2DRIVE_3, 50000);
     	}
-    	else if(USB_XT_FREQ_VALUE >= 16) {
+    	else if(USB_XT2Freq >= 16) {
     		UCS_turnOnXT2WithTimeout(
     	  			XT2DRIVE_2, 50000);
     	}
-    	else if(USB_XT_FREQ_VALUE >= 8) {
+    	else if(USB_XT2Freq >= 8) {
     		UCS_turnOnXT2WithTimeout(
     	   			XT2DRIVE_1, 50000);
     	}
@@ -668,15 +646,15 @@ uint8_t USB_enable_crystal (void)
 
     }
     else{												//XT2 in bypass mode
-    	if (USB_XT_FREQ_VALUE >= 24) {
+    	if (USB_XT2Freq >= 24) {
     		 UCS_bypassXT2WithTimeout(
     			50000);
      	}
-    	else if(USB_XT_FREQ_VALUE >= 16) {
+    	else if(USB_XT2Freq >= 16) {
     		 UCS_bypassXT2WithTimeout(
     			 50000);
     	}
-    	else if(USB_XT_FREQ_VALUE >= 8) {
+    	else if(USB_XT2Freq >= 8) {
     		 UCS_bypassXT2WithTimeout(
     			50000);
     	}
@@ -691,27 +669,14 @@ uint8_t USB_enable_crystal (void)
     return (USB_SUCCEED);
 }
 
-//*****************************************************************************
-//
-//! Second phase of enabling the USB Module when USE_TIMER_FOR_RESUME is defined
-//!
-//! This functions is only used by USB_resume to reduce the interrupt latency
-//! of the resume interrupt.
-//! This function starts the PLL and then calls an event handler
-//! USB_handlePLLStartedEvent() to allow the application to get control. The
-//! application can use a timer or other peripheral to "wait" for the USB PLL
-//! to stabilize. See the datasheet for typical PLL wait times.
-//! The application then informs the stack of XT2
-//! stabilization by calling USB_enable_final().
-//!
-//! \return \b USB_SUCCEED or USB_GENERAL_ERROR
-//
-//*****************************************************************************
+/**
+ * Second phase of enable in the case where a timer is used to stabilize crystal and PLL
+ */
 void USB_enable_PLL(void)
 {
     USBKEYPID = 0x9628;                                                         //set KEY and PID to 0x9628 -> access to
                                                                                 //configuration registers enabled
-    USBPLLDIVB = USB_XT_FREQ;                                                   //Settings desired frequency
+    USBPLLDIVB = USB_XT2PLL;                                                   	//Settings desired frequency
 
     USBPLLCTL = UPFDEN + UPLLEN;                                               //Select XT2 as Ref / Select PLL for USB / Discrim.
                                                                                 //on, enable PLL
@@ -719,17 +684,9 @@ void USB_enable_PLL(void)
     USB_handlePLLStartedEvent();
 }
 
-//*****************************************************************************
-//
-//! Final phase of enabling the USB Module when USE_TIMER_FOR_RESUME is defined
-//!
-//! This function is only used by USB_resume to reduce the interrupt latency
-//! of the resume interrupt.
-//! This function gets called by the application when thye USB PLL has stabilized
-//! to allow the resume process to finish.
-//!
-//
-//*****************************************************************************
+/**
+ * Final phase of enable in the case where a timer is used to stabilize crystal and PLL
+ */
 void USB_enable_final(void)
 {
     USBCNF     |=    USB_EN;                                                    //enable USB module
@@ -742,21 +699,9 @@ void USB_enable_final(void)
 
 #endif
 
-//*****************************************************************************
-//
-//! Disables the USB Module and PLL.
-//!
-//!
-//! Disables the USB module and PLL. If USB is not enabled when this call is 
-//! made, no error is returned - the call simply exits with success.
-//! 
-//! If a handleVbusOffEvent() occurs, or if USB_getConnectionState() begins 
-//! returning ST_USB_DISCONNECTED, this function should be called (following a 
-//! call to USB_disconnect()), in order to avoid unnecessary current draw.
-//!
-//! \return \b USB_SUCCEED
-//
-//*****************************************************************************
+/**
+ * Disables the USB module and PLL.
+ */
 
 uint8_t USB_disable (void)
 {
@@ -770,89 +715,26 @@ uint8_t USB_disable (void)
     return (USB_SUCCEED);
 }
 
-//*****************************************************************************
-//
-//! Enables/Disables the Various USB Events.
-//!
-//! \param events is the mask for what is to be enabled/disabled.
-//!       - Valid values are:
-//!        		- \b USB_CLOCK_FAULT_EVENT
-//!        		- \b USB_VBUS_ON_EVENT
-//!        		- \b USB_VBUS_OFF_EVENT
-//!        		- \b USB_RESET_EVENT
-//!        		- \b USB_SUSPENDED_EVENT
-//!        		- \b USB_RESUME_EVENT
-//!        		- \b USB_DATA_RECEIVED_EVENT
-//!        		- \b USB_SEND_COMPLETED_EVENT
-//!        		- \b USB_RECEIVED_COMPLETED_EVENT
-//!        		- \b USB_ALL_USB_EVENTS
-//!
-//! Enables/disables various USB events. Within the events byte, all bits with
-//! '1' values will be enabled, and all bits with '0' values will be disabled.
-//! (There are no bit-wise operations). By default (that is, prior to any call 
-//! to this function), all events are disabled.
-//! 
-//! The status of event enabling can be read with the USB_getEnabledEvents() 
-//! function. This call can be made at any time after a call to USB_init().
-//! 
-//! USB_setEnabledEvents() can be thought of in a similar fashion to 
-//! setting/clearing interrupt enable bits. The only benefit in keeping an event 
-//! disabled is to save the unnecessary execution cycles incurred from running 
-//! an "empty" event handler.
-//! 
-//! The mask constant \b USB_ALL_USB_EVENTS is used to enable/disable all events 
-//! pertaining to core USB functions; in other words, it enables all those with 
-//! a \b kUSB_ prefix. 
-//! 
-//! See Sec. 10 of \e "Programmer's Guide: MSP430 USB API Stack for CDC/PHDC/HID/MSC" for more information about
-//! events.
-//! 
-//! \return \b USB_SUCCEED
-//
-//*****************************************************************************
-
+/*
+ * Enables/disables various USB events.
+ */
 uint8_t USB_setEnabledEvents (uint16_t events)
 {
     wUsbEventMask = events;
     return (USB_SUCCEED);
 }
 
-//*****************************************************************************
-//
-//! Returns Which Events are Enabled/Disabled.
-//!
-//! Returns which events are enabled and which are disabled. The definition of 
-//! events is the same as for USB_enableEvents() above.
-//! 
-//! If the bit is set, the event is enabled. If cleared, the event is disabled. 
-//! By default (that is, prior to calling USB_setEnabledEvents() ), all events 
-//! are disabled. This call can be made at any time after a call to USB_init().
-//! 
-//! \return \b Events
-//
-//*****************************************************************************
-
+/*
+ * Returns which events are enabled and which are disabled.
+ */
 uint16_t USB_getEnabledEvents ()
 {
     return (wUsbEventMask);
 }
 
-//*****************************************************************************
-//
-//! Resets the USB Module and the Internal State of the API.
-//!
-//! Resets the USB module and also the internal state of the API. The interrupt 
-//! register is cleared to make sure no interrupts are pending. If the device 
-//! had been enumerated, the enumeration is now lost. All open send/receive 
-//! operations are aborted. 
-//! 
-//! This function is most often called immediately before a call to 
-//! USB_connect(). It should not be called prior to USB_enable().
-//!
-//! \return \b USB_SUCCEED
-//
-//*****************************************************************************
-
+/**
+ * Reset USB-SIE and global variables.
+ */
 uint8_t USB_reset ()
 {
     int16_t i;
@@ -978,17 +860,10 @@ uint8_t USB_reset ()
     return (USB_SUCCEED);
 }
 
-//*****************************************************************************
-//
-//! Makes USB Module Available to Host for Connection.
-//!
-//! Instructs the USB module to make itself available to the host for 
-//! connection, by pulling the D+ signal high using the PUR pin. This call 
-//! should only be made after a call to USB_enable().
-//!
-//! \return \b USB_SUCCEED
-//
-//*****************************************************************************
+
+/*
+ * Instruct USB module to make itself available to the PC for connection, by pulling PUR high.
+ */
 
 uint8_t USB_connect ()
 {
@@ -1002,19 +877,9 @@ uint8_t USB_connect ()
     return (USB_SUCCEED);
 }
 
-//*****************************************************************************
-//
-//! Forces a Disconnect From the USB Host.
-//!
-//! Forces a logical disconnect from the USB host by pulling the PUR pin low, 
-//! removing the pullup on the D+ signal. The USB module and PLL remain enabled.
-//! If the USB is not connected when this call is made, no error is returned -
-//! the call simply exits with success after ensuring PUR is low.
-//!
-//! \return \b USB_SUCCEED
-//
-//*****************************************************************************
-
+/*
+ * Force a disconnect from the PC by pulling PUR low.
+ */
 uint8_t USB_disconnect ()
 {
     USBKEYPID = 0x9628;                                                             //set KEY and PID to 0x9628 -> access to
@@ -1027,22 +892,12 @@ uint8_t USB_disconnect ()
     bFunctionSuspended = FALSE;                                                     //device is not suspended
     return (USB_SUCCEED);
 }
-
-//*****************************************************************************
-//
-//! Remote Wakeup of USB Host.
-//!
-//! Prompts a remote wakeup of the USB host. The user must ensure that the USB 
-//! descriptors had indicated remote wakeup capability (using the Descriptor 
-//! Tool); otherwise the host will ignore the request.
-//! 
-//! If the function returns \b USB_GENERAL_ERROR, it means that the host did not 
-//! grant the device the ability to perform a remote wakeup, when it enumerated 
-//! the device.
-//!
-//! \return \b USB_SUCCEED, \b kUSBgeneralError or \b kUSB_notSuspended.
-//
-//*****************************************************************************
+/*
+ * Force a remote wakeup of the USB host.
+ *     This method can be generated only if device supports
+ *     remote wake-up feature in some of its configurations.
+ *     The method wakes-up the USB bus only if wake-up feature is enabled by the host.
+ */
 
 uint8_t USB_forceRemoteWakeup ()
 {
@@ -1058,25 +913,9 @@ uint8_t USB_forceRemoteWakeup ()
     return (USB_GENERAL_ERROR);
 }
 
-//*****************************************************************************
-//
-//! Gets Connection Info.
-//! 
-//! Returns low-level status information about the USB connection.
-//! 
-//! Because multiple flags can be returned, the possible values can be masked 
-//! together - for example, \b USB_VBUS_PRESENT + \b USB_SUSPENDED.
-//!
-//! \return A single mask that is the all the statuses together and may
-//! 		consist of the following:
-//! 				- \b USB_PUR_HIGH
-//! 				- \b USB_SUSPENDED
-//! 				- \b USB_NOT_SUSPENDED
-//! 				- \b USB_ENUMERATED
-//! 				- \b USB_VBUS_PRESENT
-//
-//*****************************************************************************
-
+/*
+ * Returns the status of the USB connection.
+ */
 uint8_t USB_getConnectionInformation ()
 {
     uint8_t retVal = 0;
@@ -1101,24 +940,12 @@ uint8_t USB_getConnectionInformation ()
     return (retVal);
 }
 
-//*****************************************************************************
-//
-//! Gets State of the USB Connection.
-//!
-//! Returns the state of the USB connection, according to the state diagram 
-//! in Sec. 6 of \e "Programmer's Guide: MSP430 USB API Stack for CDC/PHDC/HID/MSC".
-//! 
-//! \return Any of the following: 
-//! 			- \b ST_USB_DISCONNECTED
-//! 			- \b ST_USB_CONNECTED_NO_ENUM
-//! 			- \b ST_ENUM_IN_PROGRESS
-//! 			- \b ST_ENUM_ACTIVE
-//! 			- \b ST_ENUM_SUSPENDED
-//! 			- \b ST_NOENUM_SUSPENDED,
-//! 			- \b ST_ERROR.
-//
-//*****************************************************************************
-
+/*
+ * Returns the state of the USB connection.
+ */
+/*
+ * Returns the state of the USB connection.
+ */
 uint8_t USB_getConnectionState ()
 {
     //If no VBUS present
@@ -1161,11 +988,6 @@ uint8_t USB_getConnectionState ()
     return (ST_ERROR);
 }
 
-//
-//! \cond
-//
-
-//----------------------------------------------------------------------------
 
 uint8_t USB_suspend (void)
 {
@@ -1343,6 +1165,9 @@ void usbSendZeroLengthPacketOnIEP0 (void)
 uint8_t usbClearEndpointFeature (void)
 {
     uint8_t bEndpointNumber;
+#ifdef _CDC_
+	int8_t i;
+#endif
 
     //EP is from EP1 to EP7 while C language start from 0
     bEndpointNumber = (tSetupPacket.wIndex & EP_DESC_ADDR_EP_NUM);
@@ -1361,12 +1186,27 @@ uint8_t usbClearEndpointFeature (void)
 #ifdef _MSC_
             }
 #endif
-#               ifdef _MSC_
+
+#ifdef _MSC_
                 if (stUsbHandle[MSC0_INTFNUM].edb_Index == bEndpointNumber){
                     MscReadControl.bCurrentBufferXY = 0;    //Set current buffer to X
                     MscState.bMcsCommandSupported = TRUE;
                 }
-#               endif
+#endif
+
+#ifdef _CDC_
+                /* search to EP correspdonding IF */  //bug 16626
+                for(i = 0; i < CDC_NUM_INTERFACES; ++i)
+                {
+                  if(stUsbHandle[i].edb_Index == bEndpointNumber)
+                  {
+                    CdcReadCtrl[i].bCurrentBufferXY = X_BUFFER; //resets the buffer to X
+                    break;
+                  }
+                    
+                }
+#endif
+
             } else {
 #ifdef _MSC_
                 if (!MscState.bMscResetRequired){
@@ -1381,12 +1221,27 @@ uint8_t usbClearEndpointFeature (void)
 #ifdef _MSC_
             }
 #endif
-#               ifdef _MSC_
+
+#ifdef _MSC_
                 if (stUsbHandle[MSC0_INTFNUM].edb_Index == bEndpointNumber){
                     MscWriteControl.bCurrentBufferXY = 0;   //Set current buffer to X
                     MscState.bMcsCommandSupported = TRUE;
                 }
-#               endif
+#endif
+
+#ifdef _CDC_
+                /* search to EP correspdonding IF */
+                for(i = 0; i < CDC_NUM_INTERFACES; ++i)  //bug 16626
+                {
+                  if(stUsbHandle[i].edb_Index == bEndpointNumber)
+                  {
+                    CdcWriteCtrl[i].bCurrentBufferXY = X_BUFFER;
+                    break;
+                  }
+                    
+                }
+#endif
+
             }
             usbSendZeroLengthPacketOnIEP0();
         }
@@ -1721,7 +1576,16 @@ uint8_t usbInvalidRequest (void)
     return (FALSE);
 }
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 typedef uint8_t (*tpF)(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 uint8_t usbDecodeAndProcessUsbRequest (void)
 {
@@ -1846,7 +1710,7 @@ uint16_t USB_determineFreq(void){
     {
         FLLRefFreq = 33;                    // The reference is usually 32.768 kHz.
         if((UCSCTL3_L & SELREF_7) >= 0x50){  // Unless it's XT2 frequency
-            FLLRefFreq = USB_XT_FREQ_VALUE * 1000;
+        	FLLRefFreq = USB_XT2Freq * 1000;
         }
 
         // determine factors N and n
@@ -1882,9 +1746,118 @@ uint16_t USB_determineFreq(void){
     }
     else
     {
-        freq = USB_XT_FREQ_VALUE * 1000;
+        freq = USB_XT2Freq * 1000;
     }
     return freq >> (UCSCTL5_L & DIVM_7);  // Divide by any divider present in DIVM
+}
+
+uint16_t USB_determineXT2Freq(void){
+	uint16_t i, xt2Freq,timerCCR;
+
+#if defined (__MSP430F552x) || defined (__MSP430F550x)
+	GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P5, GPIO_PIN2);
+	GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P5, GPIO_PIN3);
+#elif defined (__MSP430F563x_F663x) || defined (__MSP430F565x_F665x) || defined (__MSP430FG6x2x)
+	GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P7, GPIO_PIN2);
+	GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P7, GPIO_PIN3);
+#endif
+
+    //Switch on XT2 oscillator
+    HWREG16(UCS_BASE + OFS_UCSCTL6) &= ~XT2OFF;
+
+    // Wait until OFIFG flag is cleared
+    while (UCSCTL7 & (DCOFFG + XT2OFFG))
+    {
+        UCSCTL7 &= ~(DCOFFG + XT1LFOFFG + XT2OFFG); // Clear OSC flaut Flags fault flags
+        SFRIFG1 &= ~OFIFG;                  // Clear OFIFG fault flag
+    }
+
+	// Set SMCLK = XT2
+    UCS_initClockSignal(
+    		UCS_SMCLK,
+			UCS_XT2CLK_SELECT,
+            UCS_CLOCK_DIVIDER_1);
+
+	TIMER_CTL = TIMER_CTL_SETTINGS;      	// TA clock = SMCLK (DCO), cont. mode
+	for( i = 300; i > 0; i --)              // this loop causes the "crystal detect"
+	{                                       // to function as a crystal stabilization delay
+		TIMER_CTL |= TIMER_CTL_CLR;
+		TIMER_CCTL = TIMER_CCTL_SETTINGS;    // Rising edge, CCI2A = ACLK, Capture
+		while(!(TIMER_CCTL & TIMER_CCTL_IFG) ){} 		// wait for first capture (unknown time)
+	}
+	TIMER_CCTL &= ~CM_1;
+
+	timerCCR = TIMER_CCR; 					// Using local variable to compare register
+
+	// Set SMCLK = DCO
+    UCS_initClockSignal(
+    		UCS_SMCLK,
+			UCS_DCOCLK_SELECT,
+            UCS_CLOCK_DIVIDER_1);
+
+    // Check if the XT2Freq is greater 24MHz
+	if( timerCCR > (((AUTO_DETECT_XT2_SPEED_1 + AUTO_DETECT_XT2_SPEED_2) / 2)/ REFO_CLK_FREQ) )
+	{
+		// 24MHz
+		xt2Freq = (AUTO_DETECT_XT2_SPEED_1/1000000);
+	}
+	// Check if the XT2Freq is between 16MHz and 24Mhz
+	else if( timerCCR > (((AUTO_DETECT_XT2_SPEED_2 + AUTO_DETECT_XT2_SPEED_3) / 2)/ REFO_CLK_FREQ) )
+	{
+		// 16MHz
+		xt2Freq = (AUTO_DETECT_XT2_SPEED_2/1000000);
+	}
+	// Check if the XT2Freq is between 12MHz and 16Mhz
+	else if( timerCCR > (((AUTO_DETECT_XT2_SPEED_3 + AUTO_DETECT_XT2_SPEED_4) / 2)/ REFO_CLK_FREQ) )
+	{
+		// 12MHz
+		xt2Freq = (AUTO_DETECT_XT2_SPEED_3/1000000);
+	}
+	// Check if the XT2Freq is between 8MHz and 12Mhz
+	else if( timerCCR > (((AUTO_DETECT_XT2_SPEED_4 + AUTO_DETECT_XT2_SPEED_5) / 2)/ REFO_CLK_FREQ) )
+	{
+		// 8MHz
+		xt2Freq = (AUTO_DETECT_XT2_SPEED_4/1000000);
+	}
+	else
+	{
+		// 4MHz
+		xt2Freq = (AUTO_DETECT_XT2_SPEED_5/1000000);
+	}
+
+	return xt2Freq;
+}
+
+uint16_t USB_lookUpPll(uint16_t xt2Freq)
+{
+	uint16_t usbpll;
+
+	switch(xt2Freq)
+	{
+	case 26:
+		usbpll = USBPLL_SETCLK_26_0;
+		break;
+	case 24:
+		usbpll = USBPLL_SETCLK_24_0;
+		break;
+	case 16:
+		usbpll = USBPLL_SETCLK_16_0;
+		break;
+	case 12:
+		usbpll = USBPLL_SETCLK_12_0;
+		break;
+	case 8:
+		usbpll = USBPLL_SETCLK_8_0;
+		break;
+	case 4:
+		usbpll = USBPLL_SETCLK_4_0;
+		break;
+	default:
+		usbpll = USBPLL_SETCLK_4_0;
+		break;
+	}
+
+	return usbpll;
 }
 
 
@@ -1896,4 +1869,5 @@ uint16_t USB_determineFreq(void){
  | End of source file                                                          |
  +----------------------------------------------------------------------------*/
 /*------------------------ Nothing Below This Line --------------------------*/
-//Released_Version_5_00_01
+//Released_Version_5_10_00_19
+//Released_Version_5_20_06_03

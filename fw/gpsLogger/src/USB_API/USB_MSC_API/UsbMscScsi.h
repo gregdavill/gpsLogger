@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -330,6 +330,12 @@ extern REQUEST_SENSE_RESPONSE RequestSenseResponse;
  +----------------------------------------------------------------------------*/
 
 /*SCSI Wrapper functions */
+//*****************************************************************************
+//
+//! \addtogroup msc_state_machine_api
+//! @{
+//
+//******************************************************************************
 uint8_t Scsi_Cmd_Parser (uint8_t opcode);
 uint8_t Scsi_Send_CSW (uint8_t intfNum);
 
@@ -341,10 +347,30 @@ void SET_RequestsenseNotReady(void);
 void SET_RequestsenseMediaNotPresent(void);
 void MscResetCtrlLun(void);
 
+//*****************************************************************************
+//
+//! Returns a pointer to the \b USBMSC_Rwbuf_Info structure instance maintained within the API.
+//!
+//! Returns a pointer to the \b USBMSC_Rwbuf_Info structure instance maintained within the API.
+//! See Sec. 8.3.6 of \e "Programmer's Guide: MSP430 USB API Stack for CDC/PHDC/HID/MSC" for information on using
+//! this structure.
+//! This function should be called prior to USB enumeration; that is, prior to calling USB_connect().
+//!
+//! \return A pointer to an application-allocated instance of \b USBMSC_RWBuf_Info,
+//! which will be used to exchange information related to buffer requests from
+//! the API to the application.
+//
+//*****************************************************************************
 USBMSC_RWbuf_Info* USBMSC_fetchInformationStructure(void);
+//******************************************************************************
+//
+// Close the Doxygen group.
+//! @}
+//
+//******************************************************************************
 #ifdef __cplusplus
 }
 #endif
 #endif  //_MSC_SCSI_H_
 
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

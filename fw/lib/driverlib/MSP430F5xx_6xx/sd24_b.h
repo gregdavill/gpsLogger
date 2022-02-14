@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ extern "C"
 {
 #endif
 
-#include "inc/hw_regaccess.h"
+#include "inc/hw_memmap.h"
 //*****************************************************************************
 //
 //! \brief Used in the SD24_B_init() function as the param parameter.
@@ -333,8 +333,9 @@ typedef struct SD24_B_initConverterAdvancedParam
 // The following are values that can be passed to the converter parameter for
 // functions: SD24_B_setConverterDataFormat(),
 // SD24_B_startConverterConversion(), SD24_B_stopConverterConversion(),
-// SD24_B_setInterruptDelay(), SD24_B_setOversampling(), SD24_B_setGain(),
-// SD24_B_getResults(), SD24_B_getHighWordResults(), SD24_B_enableInterrupt(),
+// SD24_B_setInterruptDelay(), SD24_B_setConversionDelay(),
+// SD24_B_setOversampling(), SD24_B_setGain(), SD24_B_getResults(),
+// SD24_B_getHighWordResults(), SD24_B_enableInterrupt(),
 // SD24_B_disableInterrupt(), SD24_B_clearInterrupt(), and
 // SD24_B_getInterruptStatus(); the param parameter for functions:
 // SD24_B_initConverter(), and SD24_B_initConverterAdvanced().
@@ -718,6 +719,37 @@ extern void SD24_B_setInterruptDelay(uint16_t baseAddress,
 
 //*****************************************************************************
 //
+//! \brief Configures the delay for the conversion start
+//!
+//! This function configures the delay for the specified converter start.
+//! Please note the delay should be written before conversion or after
+//! corresponding conversion is completed. If no delay at start of conversion
+//! is desired, a previously written non-zero value must be changed to zero
+//! before starting the conversion.
+//!
+//! \param baseAddress is the base address of the SD24_B module.
+//! \param converter selects the converter that will be delayed
+//!        Valid values are:
+//!        - \b SD24_B_CONVERTER_0
+//!        - \b SD24_B_CONVERTER_1
+//!        - \b SD24_B_CONVERTER_2
+//!        - \b SD24_B_CONVERTER_3
+//!        - \b SD24_B_CONVERTER_4
+//!        - \b SD24_B_CONVERTER_5
+//!        - \b SD24_B_CONVERTER_6
+//!        - \b SD24_B_CONVERTER_7
+//! \param cycleDelay is the clock cycles to delay ranging from 0 to 1023.
+//!        \n Modified bits are \b SD24PREx of \b SD24BPREx register.
+//!
+//! \return None
+//
+//*****************************************************************************
+extern void SD24_B_setConversionDelay(uint16_t baseAddress,
+                                      uint8_t converter,
+                                      uint16_t cycleDelay);
+
+//*****************************************************************************
+//
 //! \brief Configures the oversampling ratio for a converter
 //!
 //! This function configures the oversampling ratio for a given converter.
@@ -974,4 +1006,4 @@ extern uint16_t SD24_B_getInterruptStatus(uint16_t baseAddress,
 
 #endif
 #endif // __MSP430WARE_SD24_B_H__
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

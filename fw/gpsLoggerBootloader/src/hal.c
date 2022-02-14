@@ -48,6 +48,7 @@ void halInit(void)
 	WDT_A_hold(WDT_A_BASE); // Stop watchdog timer
 
 	PMM_setVCore(PMM_CORE_LEVEL_2);
+	
 	USBHAL_initPorts();				   // Config GPIOS for low-power (output low)
 	USBHAL_initClocks(MCLK_FREQUENCY); // Config clocks. MCLK=SMCLK=FLL=MCLK_FREQUENCY; ACLK=REFO=32kHz
 }
@@ -76,12 +77,14 @@ void USBHAL_initPorts(void)
 	GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2 | GPIO_PIN3 | GPIO_PIN4 | GPIO_PIN5);
 
 	GPIO_setOutputLowOnPin(GPIO_PORT_P3,
-						   GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2 | GPIO_PIN3 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7);
+						   GPIO_PIN1 | GPIO_PIN2 | GPIO_PIN3 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7);
+	GPIO_setOutputHighOnPin(GPIO_PORT_P3, GPIO_PIN0);
 	GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P3, GPIO_PIN4); // GPS RX.
 	GPIO_setAsOutputPin(GPIO_PORT_P3,
 						GPIO_PIN0 | GPIO_PIN1 | GPIO_PIN2 | GPIO_PIN3 | GPIO_PIN5 | GPIO_PIN6 | GPIO_PIN7);
 
-	GPIO_setOutputLowOnPin(GPIO_PORT_P4, GPIO_PIN1 | GPIO_PIN2 | GPIO_PIN6 | GPIO_PIN7);
+	GPIO_setOutputLowOnPin(GPIO_PORT_P4, GPIO_PIN2 | GPIO_PIN6 | GPIO_PIN7);
+	GPIO_setOutputHighOnPin(GPIO_PORT_P4, GPIO_PIN1);
 	GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN1 | GPIO_PIN2 | GPIO_PIN6 | GPIO_PIN7);
 
 	GPIO_setOutputLowOnPin(GPIO_PORT_P5, GPIO_PIN4 | GPIO_PIN5);
@@ -129,7 +132,7 @@ void USBHAL_initClocks(uint32_t mclkFreq)
 
 void hal_sd_pwr_on()
 {
-	GPIO_setOutputHighOnPin(GPIO_PORT_P4, GPIO_PIN1);
+	GPIO_setOutputLowOnPin(GPIO_PORT_P4, GPIO_PIN1);
 	GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN1);
 
 	/* enable IO pins and spi module */
@@ -144,13 +147,13 @@ void hal_sd_pwr_off()
 	/* Set all connected IO pins to pull-down (low outputs?) */
 	SDCard_deinit();
 
-	GPIO_setOutputLowOnPin(GPIO_PORT_P4, GPIO_PIN1);
+	GPIO_setOutputHighOnPin(GPIO_PORT_P4, GPIO_PIN1);
 	GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN1);
 }
 
 void hal_gps_pwr_on()
 {
-	GPIO_setOutputHighOnPin(GPIO_PORT_P3, GPIO_PIN0);
+	GPIO_setOutputLowOnPin(GPIO_PORT_P3, GPIO_PIN0);
 	GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN0);
 
 	GPS_init();
@@ -159,7 +162,7 @@ void hal_gps_pwr_on()
 void hal_gps_pwr_off()
 {
 	/* turn off high side switch */
-	GPIO_setOutputLowOnPin(GPIO_PORT_P3, GPIO_PIN0);
+	GPIO_setOutputHighOnPin(GPIO_PORT_P3, GPIO_PIN0);
 	GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN0);
 
 	GPS_deinit();
@@ -170,7 +173,7 @@ void hal_gps_pwr_off()
 
 void hal_gps_rtc_on()
 {
-	GPIO_setOutputHighOnPin(GPIO_PORT_P2, GPIO_PIN5);
+	GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN5);
 	GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN5);
 }
 

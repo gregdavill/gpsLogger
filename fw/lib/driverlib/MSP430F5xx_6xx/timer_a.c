@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,6 @@
 //
 //*****************************************************************************
 
-#include "inc/hw_regaccess.h"
 #include "inc/hw_memmap.h"
 
 #ifdef __MSP430_HAS_TxA7__
@@ -324,6 +323,15 @@ void Timer_A_setCompareValue(uint16_t baseAddress,
     HWREG16(baseAddress + compareRegister + OFS_TAxR) = compareValue;
 }
 
+void Timer_A_setOutputMode(uint16_t baseAddress,
+                           uint16_t compareRegister,
+                           uint16_t compareOutputMode)
+{
+    uint16_t temp = HWREG16(baseAddress + compareRegister);
+    HWREG16(baseAddress +
+            compareRegister) = temp & ~(OUTMOD_7) | compareOutputMode;
+}
+
 void Timer_A_clearTimerInterrupt(uint16_t baseAddress)
 {
     HWREG16(baseAddress + OFS_TAxCTL) &= ~TAIFG;
@@ -371,4 +379,4 @@ uint16_t Timer_A_getCounterValue(uint16_t baseAddress)
 //! @}
 //
 //*****************************************************************************
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

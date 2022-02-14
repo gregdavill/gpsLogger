@@ -38,8 +38,8 @@
  * It includes an MSP430 port of the open-source "FatFs" software for the FAT 
  * file system.  
  * This example requires hardware with an SD-card interface.  At the time of 
- * writing, the only such hardware TI provdies is the F5529 Experimenter’s 
- * Board, available from TI’s eStore.
+ * writing, the only such hardware TI provdies is the F5529 Experimenterï¿½s 
+ * Board, available from TIï¿½s eStore.
  *
  +----------------------------------------------------------------------------+
  * Please refer to the Examples Guide for more details.
@@ -66,7 +66,7 @@
 #include "hal.h"
 
 /* Placeholder crc value */
-const uint16_t __attribute__ ((section(".crc_val"))) crc_val = 0xABCD;
+volatile uint16_t __attribute__ ((section(".crc_val"))) crc_val;
 
 
 /* Func Prototypes */
@@ -119,12 +119,13 @@ int main (void)
 
     PMM_setVCore(PMM_CORE_LEVEL_2);
 	USBHAL_initPorts();                // Config GPIOS for low-power (output low)
-	USBHAL_initClocks(MCLK_FREQUENCY); // Config clocks. MCLK=SMCLK=FLL=MCLK_FREQUENCY; ACLK=REFO=32kHz
+	//USBHAL_initClocks(MCLK_FREQUENCY); // Config clocks. MCLK=SMCLK=FLL=MCLK_FREQUENCY; ACLK=REFO=32kHz
 
 
-    initTimer();
-    __bis_SR_register(GIE);
-    entry_StateIdle();
+    initTimer();    
+	__bis_SR_register(GIE);
+
+	entry_StateIdle();
 
     // state machine
     while (1)
@@ -361,10 +362,9 @@ void entry_StateUsbConnected(void)
 	hal_sd_pwr_on();
 	delay_ms(100);
 
-	 USB_setup(TRUE, TRUE);      // Init USB & events; if a host is present, connect
+	USB_setup(TRUE, TRUE);      // Init USB & events; if a host is present, connect
 
-	 USBMSC_initMSC();                  // Initialize MSC API, and report media to the host
-
+	USBMSC_initMSC();                  // Initialize MSC API, and report media to the host
 }
 
 
@@ -376,14 +376,7 @@ void entry_StateUsbConnected(void)
 /*  
  * ======== TIMER0_A0_ISR ========
  */
-#if defined(__TI_COMPILER_VERSION__) || (__IAR_SYSTEMS_ICC__)
-#pragma vector=TIMER0_A0_VECTOR
-__interrupt void TIMER0_A0_ISR (void)
-#elif defined(__GNUC__) && (__MSP430__)
 void __attribute__ ((interrupt(TIMER0_A0_VECTOR))) TIMER0_A0_ISR (void)
-#else
-#error Compiler not found!
-#endif
 {
     //Set the flag that will trigger main() to detect the card
    // bDetectCard = 0x01;
@@ -396,14 +389,7 @@ void __attribute__ ((interrupt(TIMER0_A0_VECTOR))) TIMER0_A0_ISR (void)
 /*
  * ======== TIMER0_A0_ISR ========
  */
-#if defined(__TI_COMPILER_VERSION__) || (__IAR_SYSTEMS_ICC__)
-#pragma vector=TIMER1_A0_VECTOR
-__interrupt void TIMER1_A0_ISR (void)
-#elif defined(__GNUC__) && (__MSP430__)
 void __attribute__ ((interrupt(TIMER1_A0_VECTOR))) TIMER1_A0_ISR (void)
-#else
-#error Compiler not found!
-#endif
 {
     //Set the flag that will trigger main() to detect the card
     bDelayDone = 0x01;
@@ -415,14 +401,7 @@ void __attribute__ ((interrupt(TIMER1_A0_VECTOR))) TIMER1_A0_ISR (void)
 /*  
  * ======== UNMI_ISR ========
  */
-#if defined(__TI_COMPILER_VERSION__) || (__IAR_SYSTEMS_ICC__)
-#pragma vector = UNMI_VECTOR
-__interrupt void UNMI_ISR (void)
-#elif defined(__GNUC__) && (__MSP430__)
 void __attribute__ ((interrupt(UNMI_VECTOR))) UNMI_ISR (void)
-#else
-#error Compiler not found!
-#endif
 {
     switch (__even_in_range(SYSUNIV, SYSUNIV_BUSIFG))
     {

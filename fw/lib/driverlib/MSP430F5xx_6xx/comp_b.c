@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,6 @@
 //
 //*****************************************************************************
 
-#include "inc/hw_regaccess.h"
 #include "inc/hw_memmap.h"
 
 #ifdef __MSP430_HAS_COMPB__
@@ -61,6 +60,9 @@ bool Comp_B_init(uint16_t baseAddress,
     //the buffer is re-enabled
     HWREG16(baseAddress + OFS_CBCTL0) &= 0x0000;
     HWREG16(baseAddress + OFS_CBINT) &= 0x0000;
+
+    //Clear reference voltage and reference source
+    HWREG16(baseAddress + OFS_CBCTL2) &= ~(CBRS_3 | CBREFL_3);
 
     //Set the Positive Terminal
     if(COMP_B_VREF != param->positiveTerminalInput)
@@ -234,4 +236,4 @@ uint16_t Comp_B_outputValue(uint16_t baseAddress)
 //! @}
 //
 //*****************************************************************************
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

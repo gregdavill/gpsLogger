@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,6 @@
 //
 //*****************************************************************************
 
-#include "inc/hw_regaccess.h"
 #include "inc/hw_memmap.h"
 
 #ifdef __MSP430_HAS_PORT1_R__
@@ -413,10 +412,12 @@ uint16_t GPIO_getInterruptStatus(uint8_t selectedPort,
     // Shift by 8 if port is even (upper 8-bits)
     if((selectedPort & 1) ^ 1)
     {
-        selectedPins <<= 8;
+        return (HWREG8(baseAddress + OFS_PAIFG_H) & selectedPins);
     }
-
-    return (HWREG16(baseAddress + OFS_PAIFG) & selectedPins);
+    else
+    {
+        return (HWREG16(baseAddress + OFS_PAIFG) & selectedPins);
+    }
 }
 
 void GPIO_clearInterrupt(uint8_t selectedPort,
@@ -502,4 +503,4 @@ void GPIO_setDriveStrength(uint8_t selectedPort,
 //! @}
 //
 //*****************************************************************************
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

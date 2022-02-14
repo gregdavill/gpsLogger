@@ -16,9 +16,9 @@
 </tr>
 </tbody>
 </table>
-<h1>MSP430 DriverLib &nbsp;2.00.00.16</h1>
+<h1>MSP430 DriverLib &nbsp;2.70.00.08</h1>
 <h2>Release Notes&nbsp;</h2>
-Document Revision: 020615.1706<br>
+Document Revision: 032416.1646<br>
 <br>
 <h2><a name="Introduction" id="Introduction">Introduction</a></h2>
 <p>This is the MSP430 Peripheral Driver Library.
@@ -69,26 +69,40 @@ Driver Library API&nbsp;</li>
 Peripheral
 Driver Library User's Guides</li>
 <ul>
-<li><a href="doc/MSP430F5xx_6xx/MSP430F5xx_6xx_DriverLib_Users_Guide-2_00_00_16.pdf">MSP430F5xx_6xx</a></li>
+<li><a href="doc/MSP430F5xx_6xx/MSP430F5xx_6xx_DriverLib_Users_Guide-2_70_00_08.pdf">MSP430F5xx_6xx</a></li>
 </ul>
 <ul>
-<li><a href="doc/MSP430FR57xx/MSP430FR57xx_DriverLib_Users_Guide-2_00_00_16.pdf">MSP430FR57xx</a></li>
+<li><a href="doc/MSP430FR57xx/MSP430FR57xx_DriverLib_Users_Guide-2_70_00_08.pdf">MSP430FR57xx</a></li>
 </ul>
 <ul>
-<li><a href="doc/MSP430FR5xx_6xx/MSP430FR5xx_6xx_DriverLib_Users_Guide-2_00_00_16.pdf">MSP430FR5xx_6xx</a></li><li><a href="doc/MSP430FR2xx_4xx/MSP430FR2xx_4xx_DriverLib_Users_Guide-2_00_00_16.pdf">MSP430FR2xx_4xx</a></li><li><a href="doc/MSP430i2xx/MSP430i2xx_DriverLib_Users_Guide-2_00_00_16.pdf">MSP430i2xx</a></li>
+<li><a href="doc/MSP430FR5xx_6xx/MSP430FR5xx_6xx_DriverLib_Users_Guide-2_70_00_08.pdf">MSP430FR5xx_6xx</a></li><li><a href="doc/MSP430FR2xx_4xx/MSP430FR2xx_4xx_DriverLib_Users_Guide-2_70_00_08.pdf">MSP430FR2xx_4xx</a></li><li><a href="doc/MSP430i2xx/MSP430i2xx_DriverLib_Users_Guide-2_70_00_08.pdf">MSP430i2xx</a></li>
 </ul>
 <li><a href="./manifest.html">Manifest</a></li>
 <li><a href="./license.txt">License</a></li>
 </ul>
 <h2><a name="Whats_New" id="Whats_New">What's&nbsp;New</a></h2>
-<span style="font-weight: bold;">2.00.00.16<br>
-</span><ul><li><span style="color: red;">This is a major release. We
+<span style="font-weight: bold;">2.70.00.08<br>
+</span><br><ul style="color: black;"><li style="color: rgb(0, 0, 238);">Support for MSP430FR5994 has been added</li></ul><h2>Revision
+History</h2><span style="font-weight: bold;">2.60.00.02<br></span><ul style="color: rgb(0, 0, 21);"><li>Support for MSP430FR2311 has been added</li><li>Bugzilla
+issue(14176) fixed -&nbsp; SD24B bit access issue</li><li>Bugzilla
+issue(14574) fixed - Code example eusci_a_uart_ex1_loopbackAdvanced updated</li><li>PMMLPRST
+bit in PMMCTL0 has been removed since the bit has been removed in
+User's guide. PMM_enableLowPowerReset() and PMM_disableLowPowerReset()
+are no longer available &nbsp;in MSP430FR5xx_6xx and MSP430FR2xx_4xx
+families</li><li>Bugzilla
+issue(14176) fixed - msp430_driverlib_x_xx_xx_xx.zip contains
+driverlib_x_xx_xx_xx folder. This should be modified to
+contain&nbsp;msp430_driverlib_x_xx_xx_xx folder to be consistent with
+the zip file name.</li></ul><br><span style="font-weight: bold;">2.10.00.09</span><br><ul style="color: rgb(0, 0, 21);"><li>Bugzilla
+issue(12550) fixed -&nbsp; SD24B does driver lib function does not
+support to set SD24BPREx. SD24_B_setConversionDelay has been added.</li><li>Bugzilla issue(12649) fixed -&nbsp; measureESIOSC() always returns 0</li><li>Bugzilla issue(13023) fixed -&nbsp;CS_bypassHFXTWithTimeout on FR5xx/6xx has typo in description in Driverlib API guide (html)</li><li>CS_turnOnSMCLK() and&nbsp;CS_turnOffSMCLK() are added to MSP430FR5xx_6xx, MSP430FR57xx, MSP430FR2xx_4xx families</li><li>CS_enableVLOAutoOff and CS_disableVLOAutoOff have been added to MSP430FR2xx_4xx family</li></ul><span style="font-weight: bold;">2.10.00.09<br></span><ul style="color: black;"><li>Added support for MSP430FG6626 series of devices</li><li>Bugzilla issue(12411) fixed -&nbsp; Code example lcd_c_ex1_4mux should not go to LPMx.5</li><li>Bugzilla issue(3602) fixed -&nbsp; PWM example doesn't use TIMER_B_generatePWM function</li><li>Bugzilla issue(2063) fixed -&nbsp; CompD to turn off the voltage reference when not needed</li></ul><span style="font-weight: bold;">2.10.00.09<br></span><ul style="color: black;"><li>Bugzilla issue(11314) fixed - &nbsp;USCI_B_I2C_masterSingleReceiveStartWithTimeout</li><li>Bugzilla issue(11780) fixed - &nbsp;wdt_a_ex3_watchdogACLK updated</li><li>Bugzilla issue(11638) fixed - GPIO_getInterruptStatus does not shift result down for even ports</li><li>Bugzilla
+issue(12093) fixed - timer_a_ex4_pwmMultipleUpDown sets
+TIMER_A_CAPTURE_INTERRUPT_ENABLE even though interrupts not used</li><li>Bugzilla issue(12111) fixed&nbsp; - cs_ex2_DCO24MHz updated to run at 16MHz and waitstate added</li><li>User's guide updated with more details on using driverlib with IAR</li></ul><span style="font-weight: bold;">2.00.00.16<br></span><ul><li><span style="color: red;">This is a major release. We
 have removed all APIs that were deprecated in previous releases. We
 have also made some modifications to some of the existing&nbsp;APIs to
-be compliant with the new Texas Instruments coding standards</span>. Please refer&nbsp; <a href="doc/APIS_REMOVED.html">List of APIs Removed</a> for details.</li><li>Bugzilla issue (10587<span style="color: rgb(0, 0, 0); font-family: Helvetica,Arial,Geneva; font-size: 17px; font-style: normal; font-variant: normal; font-weight: bold; letter-spacing: normal; line-height: normal; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: rgb(208, 208, 208);"><span class="Apple-converted-space"></span></span>) fixed - Erroneous comments in rtc_ex1_countmode.c</li><li>Bugzilla issue (5256<span style="color: rgb(0, 0, 0); font-family: Helvetica,Arial,Geneva; font-size: 17px; font-style: normal; font-variant: normal; font-weight: bold; letter-spacing: normal; line-height: normal; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: rgb(208, 208, 208);"><span class="Apple-converted-space"></span></span>) fixed - Comp_e_ex2_outputToggleVcompVsVref25V has invalid comments&nbsp;</li><li>Bugzilla issue (5256<span style="color: rgb(0, 0, 0); font-family: Helvetica,Arial,Geneva; font-size: 17px; font-style: normal; font-variant: normal; font-weight: bold; letter-spacing: normal; line-height: normal; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: rgb(208, 208, 208);"><span class="Apple-converted-space"></span></span>) fixed - Minor comments update to MSP430FR5xx_6xx pmm_Reset_LPMx_5.c</li><li>Bugzilla issue (10347) fixed - Timer_X_stop() functions optimized</li><li>Bugzilla issue (7172) fixed - Updates to source code based on new header files updates for MSP430FR2xx_4xx rtc.c/rtc.h.&nbsp;</li><li>Bugzilla issue (5661) fixed - MSP430FR2xx_4xx RTC_clearInterrupt implementation updated</li><li>Bugzilla
+be compliant with the new Texas Instruments coding standards</span>. Please refer&nbsp; <a href="doc/APIS_REMOVED_IN_RELEASE_2_0_0_16.html">List of APIs Removed</a> for details.</li><li>Bugzilla issue (10587<span style="color: rgb(0, 0, 0); font-family: Helvetica,Arial,Geneva; font-size: 17px; font-style: normal; font-variant: normal; font-weight: bold; letter-spacing: normal; line-height: normal; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: rgb(208, 208, 208);"><span class="Apple-converted-space"></span></span>) fixed - Erroneous comments in rtc_ex1_countmode.c</li><li>Bugzilla issue (5256<span style="color: rgb(0, 0, 0); font-family: Helvetica,Arial,Geneva; font-size: 17px; font-style: normal; font-variant: normal; font-weight: bold; letter-spacing: normal; line-height: normal; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: rgb(208, 208, 208);"><span class="Apple-converted-space"></span></span>) fixed - Comp_e_ex2_outputToggleVcompVsVref25V has invalid comments&nbsp;</li><li>Bugzilla issue (5256<span style="color: rgb(0, 0, 0); font-family: Helvetica,Arial,Geneva; font-size: 17px; font-style: normal; font-variant: normal; font-weight: bold; letter-spacing: normal; line-height: normal; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; word-spacing: 0px; display: inline ! important; float: none; background-color: rgb(208, 208, 208);"><span class="Apple-converted-space"></span></span>) fixed - Minor comments update to MSP430FR5xx_6xx pmm_Reset_LPMx_5.c</li><li>Bugzilla issue (10347) fixed - Timer_X_stop() functions optimized</li><li>Bugzilla issue (7172) fixed - Updates to source code based on new header files updates for MSP430FR2xx_4xx rtc.c/rtc.h.&nbsp;</li><li>Bugzilla issue (5661) fixed - MSP430FR2xx_4xx RTC_clearInterrupt implementation updated</li><li>Bugzilla
 issue (10252) fixed - CS_LFXTClockFrequency/CS_HFXTClockFrequency
-should be prefixed with 'private' and be declared as static&nbsp;</li><li>Bugzilla issue (10385) fixed - Documentation error - FlashCtrl refereed to as FLashCtl in User's guide</li><li>Bugzilla issue (5021) fixed - Need higher resolution screen captures in the Driverlib User's guide</li><li>Bugzilla issue (10383) fixed - Timer_A documentation to be updated with latest APIs instead of deprecated ones</li></ul><h2><a name="Revision_History" id="Whats_New"></a>Revision
-History</h2><span style="font-weight: bold;"><br></span><span style="font-weight: bold;">1.97.00.19</span><br><ul><li>MSP430FR2xx_4xx references to XT2 have been removed.&nbsp;</li><li>MSP430FR2xx_4xx references to UCSSEL__ACLK have been updated to&nbsp;UCSSEL__MODCLK.</li><li>MSP430FR5xx_6xx references to ACCTEIE have been deprecated since this bit is removed from MSP430FR5xx_6xx User's guide.</li><li>The following APIs in MSP430FR5xx_6xx family&nbsp;have been deprecated&nbsp;</li><ul><li>SysCtl_enableBSLProtect</li><li>SysCtl_disableBSLProtect&nbsp;</li><li>SysCtl_disableBSLMemory&nbsp;</li><li>SysCtl_enableBSLMemory</li><li>SysCtl_setRAMAssignedToBSL</li><li>SysCtl_setBSLSize</li></ul></ul><span style="font-weight: bold;">1.95.00.49</span><ul><li>Added support for MSP430FR2xx_4xx family of devices</li><li>Added
+should be prefixed with 'private' and be declared as static&nbsp;</li><li>Bugzilla issue (10385) fixed - Documentation error - FlashCtrl refereed to as FLashCtl in User's guide</li><li>Bugzilla issue (5021) fixed - Need higher resolution screen captures in the Driverlib User's guide</li><li>Bugzilla issue (10383) fixed - Timer_A documentation to be updated with latest APIs instead of deprecated ones</li></ul><br><span style="font-weight: bold;">1.97.00.19</span><br><ul><li>MSP430FR2xx_4xx references to XT2 have been removed.&nbsp;</li><li>MSP430FR2xx_4xx references to UCSSEL__ACLK have been updated to&nbsp;UCSSEL__MODCLK.</li><li>MSP430FR5xx_6xx references to ACCTEIE have been deprecated since this bit is removed from MSP430FR5xx_6xx User's guide.</li><li>The following APIs in MSP430FR5xx_6xx family&nbsp;have been deprecated&nbsp;</li><ul><li>SysCtl_enableBSLProtect</li><li>SysCtl_disableBSLProtect&nbsp;</li><li>SysCtl_disableBSLMemory&nbsp;</li><li>SysCtl_enableBSLMemory</li><li>SysCtl_setRAMAssignedToBSL</li><li>SysCtl_setBSLSize</li></ul></ul><span style="font-weight: bold;">1.95.00.49</span><ul><li>Added support for MSP430FR2xx_4xx family of devices</li><li>Added
 new APIs that are compliant with&nbsp;Texas Instruments new coding
 guidelines. Existing user code will work without modification if it
 includes driverlib.h instead of individual peripheral header files.
@@ -178,7 +192,7 @@ AES256_generateFirstRoundKey,AES256_startGenerateFirstRoundKey. Two new
 API are added - AES_setDecipherKey, AES_startSetDecipherKey&nbsp; </li>
 <li>Fixed Bug 4452 - Need FLASH apis that unlock info memory</li>
 <li>Added version.h&nbsp;to indicate driverlib version no.</li>
-<li>driverlib.h
+<li>driverlC:\ti\msp\msp430_driverlib_2_20_00_06\driverlib_2_20_00_06ib.h
 file is now available in every supported device family. Including this
 one header
 file in applications is sufficient for using any driverlib API call.
@@ -312,7 +326,7 @@ After
 installing MSP430Ware or Driver Library restart Code Composer Studio.
 When opening CCS you will be greeted with a window like that shown
 below:<br>
-<span style="font-weight: bold;">2.00.00.16</span><span style="font-weight: bold;">2.00.00.16</span><img style="width: 691px; height: 543px;" alt="discover" src="doc/images/discover.png"><br>
+<span style="font-weight: bold;">2.70.00.08</span><span style="font-weight: bold;">2.70.00.08</span><img style="width: 691px; height: 543px;" alt="discover" src="doc/images/discover.png"><br>
 <br>
 Accept the new product and approve the content. You will now be able to
 use the RTSC features of driver library. <br>
@@ -351,7 +365,7 @@ Driver Library:<br>
 <h2><a name="Peripheral_Support" id="Known_Issues">Peripheral
 Support</a></h2>
 <h2 style="font-weight: normal;"><small><small>This
-is the 2.00.00.16 release of MSP430 Peripheral Driver
+is the 2.70.00.08 release of MSP430 Peripheral Driver
 Library. &nbsp;The following peripherals are supported in this
 release:</small></small></h2>
 <ul>
@@ -362,7 +376,7 @@ release:</small></small></h2>
 <li>AES</li>
 <li>BATTBAK (Battery Backup System)</li>
 <li>COMP_B</li>
-<li>CRC</li>
+<li>CRC</li><li>CTSD16</li>
 <li>DAC12_A</li>
 <li>DMA</li>
 <li>EUSCI_B_I2C</li>
@@ -374,7 +388,7 @@ release:</small></small></h2>
 <li>SYSCTL</li>
 <li>GPIO</li>
 <li>LDOPWR</li>
-<li>MPY32</li>
+<li>MPY32</li><li>OA</li>
 <li>PMAP</li>
 <li>PMM</li>
 <li>RAM Controller</li>
@@ -440,8 +454,8 @@ release:</small></small></h2>
 <li>EUSCI_A_SPI</li>
 <li>EUSCI_B_SPI</li>
 <li>EUSCI_A_UART</li>
-<li>FRAMCTL</li>
-<li>GPIO</li>
+<li>FRAMCTL</li><li>FRAMCTL_A</li>
+<li>GPIO</li><li>LEA</li><li>LCD_C</li>
 <li>MPU</li>
 <li>MPY32</li>
 <li>PMM</li>
@@ -453,28 +467,28 @@ release:</small></small></h2>
 <li>TIMER_B</li>
 <li>TLV</li>
 <li>WDT_A</li>
-</ul><li>MSP430FR2xx_4xx Devices </li><ul><li>ADC</li><li>CRC</li><li>CS</li><li>EUSCI_B_I2C</li><li>EUSCI_A_SPI</li><li>EUSCI_B_SPI</li><li>EUSCI_A_UART</li><li>FRAMCTL</li><li>GPIO</li><li>LCD_E</li><li>PMM</li><li>RTC</li><li>SFR</li><li>SYSCTL</li><li>TIMER_A</li><li>TLV</li><li>WDT_A</li></ul><li>MSP430i2xx Devices </li><ul><li>CS</li><li>EUSCI_B_I2C</li><li>EUSCI_A_SPI</li><li>EUSCI_B_SPI</li><li>EUSCI_A_UART</li><li>FLASHCTL</li><li>GPIO</li><li>MPY</li><li>PMM</li><li>SD24</li><li>SFR</li><li>TIMER_A</li><li>TLV</li><li>WDT</li></ul>
+</ul><li>MSP430FR2xx_4xx Devices </li><ul><li>ADC</li><li>CRC</li><li>CS</li><li>ECOMP</li><li>EUSCI_B_I2C</li><li>EUSCI_A_SPI</li><li>EUSCI_B_SPI</li><li>EUSCI_A_UART</li><li>FRAMCTL</li><li>GPIO</li><li>LCD_E</li><li>MPY32</li><li>PMM</li><li>RTC</li><li>SAC</li><li>SFR</li><li>SYSCTL</li><li>TIMER_A</li><li>TIMER_B</li><li>TLV</li><li>TRI</li><li>WDT_A</li></ul><li>MSP430i2xx Devices </li><ul><li>CS</li><li>EUSCI_B_I2C</li><li>EUSCI_A_SPI</li><li>EUSCI_B_SPI</li><li>EUSCI_A_UART</li><li>FLASHCTL</li><li>GPIO</li><li>MPY</li><li>PMM</li><li>SD24</li><li>SFR</li><li>TIMER_A</li><li>TLV</li><li>WDT</li></ul>
 </ul>
 <h2><a name="Dependencies" id="Dependencies">Dependencies</a></h2>
 MSP4305xx_6xx devices
 <ul>
-<li>CCS 5.3.0</li>
-<li>IAR 5.20.1</li>
+<li>CCS 6.1.0</li>
+<li>IAR 6.30</li>
 </ul>
 MSP430FR57xx devices
 <ul>
-<li>CCS 5.3.0</li>
-<li>IAR 5.40</li>
+<li>CCS&nbsp;6.1.0</li>
+<li>IAR&nbsp;6.30</li>
 </ul>
 MSP430FR5xx_6xx devices
 <ul>
-<li>CCS 5.5</li>
-<li>IAR 5.60</li>
+<li>CCS&nbsp;6.1.0</li>
+<li>IAR&nbsp;6.30</li>
 </ul>
 MSP430FR2xx_4xx devices
-<ul><li>CCS 6.0.1</li><li>IAR 5.60</li></ul>
+<ul><li>CCS&nbsp;6.1.0</li><li>IAR&nbsp;6.30</li></ul>
 MSP430i2xx devices
-<ul><li>CCS 6.0.0</li><li>IAR 6.10.2</li></ul>
+<ul><li>CCS&nbsp;6.1.0</li><li>IAR&nbsp;6.30</li></ul>
 <h2><a name="Validation" id="Validation">Validation
 Information</a></h2>
 <p>This release is a GA version.</p>
@@ -609,7 +623,7 @@ been removed. If your user code uses these defines please remove them.</li>
 </ul>
 <hr>
 <h2><a name="Versioning" id="Versioning">Versioning</a></h2>
-<p>This is build 2.00.00.16 of&nbsp; MSP430 driver library.</p>
+<p>This is build 2.70.00.08 of&nbsp; MSP430 driver library.</p>
 <h2><a name="Technical_Support" id="Technical_Support">Technical
 Support and Product Updates</a></h2>
 <ul>

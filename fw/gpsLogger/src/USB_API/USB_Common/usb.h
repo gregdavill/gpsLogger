@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,7 @@ extern "C"
  | Constant Definition                                                         |
  +----------------------------------------------------------------------------*/
 #if defined(__TI_COMPILER_VERSION__)  || defined(__GNUC__)
-#define __no_init
+#define __no_init 
 #define __data16
 #endif
 
@@ -355,66 +355,247 @@ void usbClearOEPByteCount(uint8_t);
  * MSP430 USB Module Management functions
  */
 
-/**
- * Init the USB HW interface.
- */
+//*****************************************************************************
+//
+//! \addtogroup usb_api
+//! @{
+//
+//******************************************************************************
+
+
+//*****************************************************************************
+//
+//! Initializes the USB Module.
+//!
+//! 
+//! Initializes the USB module by configuring power and clocks, and configures
+//! pins that are critical for USB. This should be called very soon after the 
+//! beginning of program execution. 
+//! 
+//! Note that this does not enable the USB module (that is, does not set 
+//! USB_EN bit). Rather, it prepares the USB module to detect the application of
+//! power to VBUS, after which the application may choose to enable the module
+//! and connect to USB. Calling this function is necessary to achieve expected 
+//! LPM3 current consumption into DVCC.
+//!
+//! \return \b USB_SUCCEED
+//
+//*****************************************************************************
+
 uint8_t USB_init(void);
 
-/**
- * Init the USB HW interface, enable events and connect
- */
+//*****************************************************************************
+//
+//! Initializes the USB Module. Also enables events and connects.
+//!
+//! 
+//! Initializes the USB module by configuring power and clocks, and configures
+//! pins that are critical for USB. This should be called very soon after the 
+//! beginning of program execution. 
+//!
+//! If connectEnable is TRUE, then this API then enables the USB module, which 
+//! includes activating the PLL and setting the USB_EN bit. AFter enabling the
+//! USB module, this API will connect to the host if VBUS is present.
+//!
+//! If eventsEnable is set to TRUE then all USB events are enabled by this API.
+//!
+//! \param	connectEnable	If TRUE, Connect to host if VBUS is present by 
+//!							pulling the D+ signal high using the PUR pin.
+//! \param  eventsEnable	If TRUE, all USB events handlers are enabled
+//! \return \b USB_SUCCEED
+//
+//*****************************************************************************
 uint8_t USB_setup(uint8_t connectEnable, uint8_t eventsEnable);
 
-/**
- * Init and start the USB PLL.
- */
+//*****************************************************************************
+//
+//! Enables the USB Module.
+//!
+//! Enables the USB module, which includes activating the PLL and setting the 
+//! USB_EN bit. Power consumption increases as a result of this operation (see 
+//! device datasheet for specifics). This call should only be made after an 
+//! earlier call to USB_init(), and prior to any other call except than 
+//! USB_setEnabledEvents(), or USB_getEnabledEvents(). It is usually called just
+//! prior to attempting to connect with a host after a bus connection has 
+//! already been detected.
+//! 
+//! \return \b USB_SUCCEED
+//
+//*****************************************************************************
 uint8_t USB_enable ();
 
 #ifdef USE_TIMER_FOR_RESUME
-/**
- * First phase of enable in the case where a timer is used to stabilize crystal and PLL
- */
+
+//*****************************************************************************
+//
+//! First phase of enabling the USB Module when USE_TIMER_FOR_RESUME is defined
+//!
+//! This functions is only used by USB_resume to reduce the interrupt latency
+//! of the resume interrupt.
+//! This function starts the XT2 crystal and then calls an event handler
+//! USB_handleCrystalStartedEvent() to allow the application to get control. The
+//! application can use a timer or other peripheral to "wait" for the XT2
+//! crystal to stabilize. See the crystal datasheet for typical wait times.
+//! The application then informs the stack of XT2
+//! stabilization by calling USB_enable_PLL().
+//!
+//! \return \b USB_SUCCEED or USB_GENERAL_ERROR
+//
+//*****************************************************************************
 uint8_t USB_enable_crystal (void);
 
-/**
- * Second phase of enable in the case where a timer is used to stabilize crystal and PLL
- */
+//*****************************************************************************
+//
+//! Second phase of enabling the USB Module when USE_TIMER_FOR_RESUME is defined
+//!
+//! This functions is only used by USB_resume to reduce the interrupt latency
+//! of the resume interrupt.
+//! This function starts the PLL and then calls an event handler
+//! USB_handlePLLStartedEvent() to allow the application to get control. The
+//! application can use a timer or other peripheral to "wait" for the USB PLL
+//! to stabilize. See the datasheet for typical PLL wait times.
+//! The application then informs the stack of XT2
+//! stabilization by calling USB_enable_final().
+//!
+//! \return \b USB_SUCCEED or USB_GENERAL_ERROR
+//
+//*****************************************************************************
 void USB_enable_PLL(void);
 
-/**
- * Final phase of enable in the case where a timer is used to stabilize crystal and PLL
- */
+//*****************************************************************************
+//
+//! Final phase of enabling the USB Module when USE_TIMER_FOR_RESUME is defined
+//!
+//! This function is only used by USB_resume to reduce the interrupt latency
+//! of the resume interrupt.
+//! This function gets called by the application when thye USB PLL has stabilized
+//! to allow the resume process to finish.
+//!
+//
+//*****************************************************************************
 void USB_enable_final(void);
 
 #endif
-/**
- * Disables the USB module and PLL.
- */
+
+//*****************************************************************************
+//
+//! Disables the USB Module and PLL.
+//!
+//!
+//! Disables the USB module and PLL. If USB is not enabled when this call is 
+//! made, no error is returned - the call simply exits with success.
+//! 
+//! If a handleVbusOffEvent() occurs, or if USB_getConnectionState() begins 
+//! returning ST_USB_DISCONNECTED, this function should be called (following a 
+//! call to USB_disconnect()), in order to avoid unnecessary current draw.
+//!
+//! \return \b USB_SUCCEED
+//
+//*****************************************************************************
 uint8_t USB_disable(void);
 
-/*
- * Enables/disables various USB events.
- */
+//*****************************************************************************
+//
+//! Enables/Disables the Various USB Events.
+//!
+//! \param events is the mask for what is to be enabled/disabled.
+//!       - Valid values are:
+//!        		- \b USB_CLOCK_FAULT_EVENT
+//!        		- \b USB_VBUS_ON_EVENT
+//!        		- \b USB_VBUS_OFF_EVENT
+//!        		- \b USB_RESET_EVENT
+//!        		- \b USB_SUSPENDED_EVENT
+//!        		- \b USB_RESUME_EVENT
+//!        		- \b USB_DATA_RECEIVED_EVENT
+//!        		- \b USB_SEND_COMPLETED_EVENT
+//!        		- \b USB_RECEIVED_COMPLETED_EVENT
+//!        		- \b USB_ALL_USB_EVENTS
+//!
+//! Enables/disables various USB events. Within the events byte, all bits with
+//! '1' values will be enabled, and all bits with '0' values will be disabled.
+//! (There are no bit-wise operations). By default (that is, prior to any call 
+//! to this function), all events are disabled.
+//! 
+//! The status of event enabling can be read with the USB_getEnabledEvents() 
+//! function. This call can be made at any time after a call to USB_init().
+//! 
+//! USB_setEnabledEvents() can be thought of in a similar fashion to 
+//! setting/clearing interrupt enable bits. The only benefit in keeping an event 
+//! disabled is to save the unnecessary execution cycles incurred from running 
+//! an "empty" event handler.
+//! 
+//! The mask constant \b USB_ALL_USB_EVENTS is used to enable/disable all events 
+//! pertaining to core USB functions; in other words, it enables all those with 
+//! a \b kUSB_ prefix. 
+//! 
+//! See Sec. 10 of \e "Programmer's Guide: MSP430 USB API Stack for CDC/PHDC/HID/MSC" for more information about
+//! events.
+//! 
+//! \return \b USB_SUCCEED
+//
+//*****************************************************************************
 uint8_t USB_setEnabledEvents (uint16_t events);
 
-/*
- * Returns which events are enabled and which are disabled.
- */
+
+//*****************************************************************************
+//
+//! Returns Which Events are Enabled/Disabled.
+//!
+//! Returns which events are enabled and which are disabled. The definition of 
+//! events is the same as for USB_enableEvents() above.
+//! 
+//! If the bit is set, the event is enabled. If cleared, the event is disabled. 
+//! By default (that is, prior to calling USB_setEnabledEvents() ), all events 
+//! are disabled. This call can be made at any time after a call to USB_init().
+//! 
+//! \return \b Events
+//
+//*****************************************************************************
 uint16_t USB_getEnabledEvents ();
 
-/*
- * Instruct USB module to make itself available to the PC for connection, by pulling PUR high.
- */
+//*****************************************************************************
+//
+//! Makes USB Module Available to Host for Connection.
+//!
+//! Instructs the USB module to make itself available to the host for 
+//! connection, by pulling the D+ signal high using the PUR pin. This call 
+//! should only be made after a call to USB_enable().
+//!
+//! \return \b USB_SUCCEED
+//
+//*****************************************************************************
 uint8_t USB_connect ();
 
-/*
- * Force a disconnect from the PC by pulling PUR low.
- */
-uint8_t USB_disconnect ();
 
-/**
- * Reset USB-SIE and global variables.
- */
+
+//*****************************************************************************
+//
+//! Forces a Disconnect From the USB Host.
+//!
+//! Forces a logical disconnect from the USB host by pulling the PUR pin low, 
+//! removing the pullup on the D+ signal. The USB module and PLL remain enabled.
+//! If the USB is not connected when this call is made, no error is returned -
+//! the call simply exits with success after ensuring PUR is low.
+//!
+//! \return \b USB_SUCCEED
+//
+//*****************************************************************************
+uint8_t USB_disconnect ();
+//*****************************************************************************
+//
+//! Resets the USB Module and the Internal State of the API.
+//!
+//! Resets the USB module and also the internal state of the API. The interrupt 
+//! register is cleared to make sure no interrupts are pending. If the device 
+//! had been enumerated, the enumeration is now lost. All open send/receive 
+//! operations are aborted. 
+//! 
+//! This function is most often called immediately before a call to 
+//! USB_connect(). It should not be called prior to USB_enable().
+//!
+//! \return \b USB_SUCCEED
+//
+//*****************************************************************************
 uint8_t USB_reset ();
 
 /**
@@ -427,22 +608,61 @@ uint8_t USB_suspend(void);
  */
 uint8_t USB_resume(void);
 
-/*
- * Force a remote wakeup of the USB host.
- *     This method can be generated only if device supports
- *     remote wake-up feature in some of its configurations.
- *     The method wakes-up the USB bus only if wake-up feature is enabled by the host.
- */
+
+//*****************************************************************************
+//
+//! Remote Wakeup of USB Host.
+//!
+//! Prompts a remote wakeup of the USB host. The user must ensure that the USB 
+//! descriptors had indicated remote wakeup capability (using the Descriptor 
+//! Tool); otherwise the host will ignore the request.
+//! 
+//! If the function returns \b USB_GENERAL_ERROR, it means that the host did not 
+//! grant the device the ability to perform a remote wakeup, when it enumerated 
+//! the device.
+//!
+//! \return \b USB_SUCCEED, \b kUSBgeneralError or \b kUSB_notSuspended.
+//
+//*****************************************************************************
 uint8_t USB_forceRemoteWakeup ();
 
-/*
- * Returns the status of the USB connection.
- */
+//*****************************************************************************
+//
+//! Gets Connection Info.
+//! 
+//! Returns low-level status information about the USB connection.
+//! 
+//! Because multiple flags can be returned, the possible values can be masked 
+//! together - for example, \b USB_VBUS_PRESENT + \b USB_SUSPENDED.
+//!
+//! \return A single mask that is the all the statuses together and may
+//! 		consist of the following:
+//! 				- \b USB_PUR_HIGH
+//! 				- \b USB_SUSPENDED
+//! 				- \b USB_NOT_SUSPENDED
+//! 				- \b USB_ENUMERATED
+//! 				- \b USB_VBUS_PRESENT
+//
+//*****************************************************************************
 uint8_t USB_getConnectionInformation ();
 
-/*
- * Returns the state of the USB connection.
- */
+//*****************************************************************************
+//
+//! Gets State of the USB Connection.
+//!
+//! Returns the state of the USB connection, according to the state diagram 
+//! in Sec. 6 of \e "Programmer's Guide: MSP430 USB API Stack for CDC/PHDC/HID/MSC".
+//! 
+//! \return Any of the following: 
+//! 			- \b ST_USB_DISCONNECTED
+//! 			- \b ST_USB_CONNECTED_NO_ENUM
+//! 			- \b ST_ENUM_IN_PROGRESS
+//! 			- \b ST_ENUM_ACTIVE
+//! 			- \b ST_ENUM_SUSPENDED
+//! 			- \b ST_NOENUM_SUSPENDED,
+//! 			- \b ST_ERROR.
+//
+//*****************************************************************************
 uint8_t USB_getConnectionState ();
 
 #ifdef NON_COMPOSITE_MULTIPLE_INTERFACES
@@ -452,54 +672,154 @@ uint8_t USB_getConnectionState ();
 uint8_t USB_switchInterface(uint8_t interfaceIndex);
 
 #endif
+//******************************************************************************
+//
+// Close the Doxygen group.
+//! @}
+//
+//******************************************************************************
 
 /*
  * Event-Handling routines
  */
 
-/*
- * If this function gets executed, it's a sign that the output of the USB PLL has failed.
- * returns TRUE to keep CPU awake
- */
+//*****************************************************************************
+//
+//! \addtogroup event_handling_api
+//! @{
+//
+//******************************************************************************
+
+
+//******************************************************************************
+//
+//! USB PLL has Failed
+//!
+//! This event signals that the output of the USB PLL has failed. This event may
+//! have occurred because XT2, the source of the PLL's reference clock, has
+//! failed or is unreliable. If this event occurs, the USB connection will 
+//! likely be lost. It is best to handle it by calling USB_disconnect() and
+//! attempting a re-connection.
+//! 
+//! Since this event is associated with a change in state, it's a good
+//! practice to return TRUE so the main loop can adapt.
+//!
+//! \return TRUE to keep CPU awake
+//
+//******************************************************************************
+
 uint8_t USB_handleClockEvent ();
 
-/*
- * If this function gets executed, it indicates that a valid voltage has just been applied to the VBUS pin.
- * returns TRUE to keep CPU awake
- */
+//*****************************************************************************
+//
+//! Valid Voltage Applied to VBUS
+//!
+//! If this function gets executed, it indicates that a valid voltage has been
+//! applied to the VBUS pin; that is, the voltage on VBUS has transitioned from
+//! low to high.
+//! 
+//! This usually means the device has been attached to an active USB host. It is
+//! recommended to attempt a USB connection from this handler, as described in 
+//! Sec. 6.3 of \e "Programmer???s Guide: MSP430 USB API Stack for CDC/PHDC/HID/MSC."
+//! events.
+//! 
+//! Returns TRUE to wake the main loop (if LPM was entered), so that it can
+//! take into account the change in state.
+//!
+//! \return TRUE to keep CPU awake
+//
+//*****************************************************************************
 uint8_t USB_handleVbusOnEvent ();
 
-/*
- * If this function gets executed, it indicates that a valid voltage has just been removed from the VBUS pin.
- * returns TRUE to keep CPU awake
- */
+//*****************************************************************************
+//
+//! Valid Voltage Removed from VBUS
+//!
+//! This event indicates that a valid voltage has just been removed from the 
+//! VBUS pin. That is, the voltage on VBUS has transitioned from high to low.
+//! 
+//! This generally means the device has been removed from an active USB host. It
+//! might also mean the device is still physically attached to the host, but the
+//! host went into a standby mode; or it was attached to a powered hub but the
+//! host upstream from that hub became inactive. The API automatically responds
+//! to a VBUS-off event by powering down the USB module and PLL, which is the
+//! equivalent of calling USB_disable(). It then calls this handling function,
+//! if enabled.
+//! 
+//! Since this event is associated with a change in state, it's a good
+//! practice to return TRUE so the main loop can adapt.
+//!
+//! \return TRUE to keep CPU awake
+//
+//*****************************************************************************
 uint8_t USB_handleVbusOffEvent ();
 
-/*
- * If this function gets executed, it indicates that the USB host has issued a USB reset event to the device.
- * returns TRUE to keep CPU awake
- */
+//*****************************************************************************
+//
+//! USB Host Issued a Reset
+//!
+//! This event indicates that the USB host has issued a reset of this USB
+//! device. The API handles this automatically, and no action is required by the
+//! application to maintain USB operation. After handling the reset, the API
+//! calls this handling function, if enabled. In most cases there is no
+//! significant reason for the application to respond to bus resets.
+//!
+//! \return TRUE
+//
+//*****************************************************************************
 uint8_t USB_handleResetEvent ();
 
-/*
- * If this function gets executed, it indicates that the USB host has chosen to suspend this device after a period of active
- * operation.
- * returns TRUE to keep CPU awake
- */
+//*****************************************************************************
+//
+//! USB Host Suspends USB Device
+//!
+//! This event indicates that the USB host has chosen to suspend this USB device
+//! after a period of active operation. It???s important that a bus-powered,
+//! suspended USB device limit its consumption of power from VBUS during this
+//! time. The API automatically shuts down USB-related circuitry inside the
+//! MSP430???s USB module. However, the application may need to shut down other
+//! circuitry drawing from VBUS. This handler is a good place to do this.
+//! 
+//! See Sec.11.1.3 of \e "Programmer???s Guide:
+//! MSP430 USB API Stack for CDC/PHDC/HID/MSC." for a complete discussion
+//! about handling suspend.
+//! 
+//! \returns TRUE so that the main loop can adapt.
+//
+//*****************************************************************************
 uint8_t USB_handleSuspendEvent ();
 
-/*
- * If this function gets executed, it indicates that the USB host has chosen to resume this device after a period of suspended
- * operation.
- * returns TRUE to keep CPU awake
- */
+//*****************************************************************************
+//
+//! USB Host has Resumed this USB Device
+//!
+//! This event indicates that the USB host has resumed this USB device from
+//! suspend mode. If the device is bus-powered, it is no longer restricted in
+//! the amount of power it can draw from VBUS. The API automatically re-enables
+//! any circuitry in the MSP430???s USB module that was disabled during suspend.
+//! The application can use this handler to re-enable other circuitry as well.
+//! 
+//! Since this event is associated with a change in state, it's a good
+//! practice to return TRUE so the main loop can adapt.
+//!
+//! \return TRUE
+//
+//*****************************************************************************
 uint8_t USB_handleResumeEvent ();
 
-/*
- * If this function gets executed, it indicates that the USB host has enumerated this device :
- * after host assigned the address to the device.
- * returns TRUE to keep CPU awake
- */
+//*****************************************************************************
+//
+//! Device has Become Enumerated
+//! 
+//! This event indicates that the device has just become enumerated. This
+//! corresponds with a state change to ST_ENUM_ACTIVE.
+//! 
+//! Since this event is associated with a change in state, it's a good
+//! practice to return TRUE so the main loop can adapt.
+//!
+//! \return TRUE
+//
+//*****************************************************************************
 uint8_t USB_handleEnumerationCompleteEvent ();
 
 #ifdef USE_TIMER_FOR_RESUME
@@ -522,6 +842,13 @@ void USB_handleCrystalStartedEvent(void);
 void USB_handlePLLStartedEvent(void);
 
 #endif
+
+//******************************************************************************
+//
+// Close the Doxygen group.
+//! @}
+//
+//******************************************************************************
 
 /**
  * Send stall handshake for in- and out-endpoint0 (control pipe)
@@ -610,4 +937,4 @@ void usbRestoreOutEndpointInterrupt(uint16_t state);
          * _USB_H
          *------------------------ Nothing Below This Line --------------------------
          */
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

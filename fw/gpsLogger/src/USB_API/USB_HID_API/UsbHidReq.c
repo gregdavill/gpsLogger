@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +37,7 @@
 /* 
  * ======== UsbHidReq.c ========
  */
+
 #include "../USB_Common/device.h"
 #include "../USB_Common/defMSP430USB.h"
 #include "../USB_Common/usb.h"                              //USB-specific Data Structures
@@ -149,6 +150,9 @@ uint8_t usbGetProtocol (void)
 
 //----------------------------------------------------------------------------
 
+//This function processes the SetIdle command sent by host.  The setIdle
+//request tells the device only to respond to an interrupt IN transaction if a new
+//event occurs.  In this case, a change in PROTOCOL.
 uint8_t usbSetIdle (void)
 {
     if (hidProtocol[INTERFACE_OFFSET(tSetupPacket.wIndex)] ==
@@ -157,7 +161,7 @@ uint8_t usbSetIdle (void)
             tSetupPacket.wValue >> 8;
         usbSendZeroLengthPacketOnIEP0();
     } else {
-        usbInvalidRequest();
+        usbSendZeroLengthPacketOnIEP0();  //bug 15282
     }
 
     return (FALSE);
@@ -172,7 +176,7 @@ uint8_t usbGetIdle (void)
         usbSendDataPacketOnEP0(&hidIdleRate[INTERFACE_OFFSET(tSetupPacket.
                                                 wIndex)]);
     } else {
-        usbInvalidRequest();
+        usbSendZeroLengthPacketOnIEP0();  //bug 15282
     }
 
     return (FALSE);
@@ -191,4 +195,4 @@ uint8_t usbGetIdle (void)
  | End of source file                                                          |
  +----------------------------------------------------------------------------*/
 /*------------------------ Nothing Below This Line --------------------------*/
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

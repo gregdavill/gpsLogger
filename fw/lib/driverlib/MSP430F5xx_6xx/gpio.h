@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -117,6 +117,8 @@ extern "C"
 #define GPIO_PIN13                                                     (0x2000)
 #define GPIO_PIN14                                                     (0x4000)
 #define GPIO_PIN15                                                     (0x8000)
+#define GPIO_PIN_ALL8                                                    (0xFF)
+#define GPIO_PIN_ALL16                                                 (0xFFFF)
 
 //*****************************************************************************
 //
@@ -195,6 +197,8 @@ extern "C"
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
+//!        - \b GPIO_PIN_ALL8
+//!        - \b GPIO_PIN_ALL16
 //!
 //! Modified bits of \b PxDIR register and bits of \b PxSEL register.
 //!
@@ -248,6 +252,8 @@ extern void GPIO_setAsOutputPin(uint8_t selectedPort,
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
+//!        - \b GPIO_PIN_ALL8
+//!        - \b GPIO_PIN_ALL16
 //!
 //! Modified bits of \b PxDIR register, bits of \b PxREN register and bits of
 //! \b PxSEL register.
@@ -306,6 +312,8 @@ extern void GPIO_setAsInputPin(uint8_t selectedPort,
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
+//!        - \b GPIO_PIN_ALL8
+//!        - \b GPIO_PIN_ALL16
 //!
 //! Modified bits of \b PxDIR register and bits of \b PxSEL register.
 //!
@@ -363,6 +371,8 @@ extern void GPIO_setAsPeripheralModuleFunctionOutputPin(uint8_t selectedPort,
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
+//!        - \b GPIO_PIN_ALL8
+//!        - \b GPIO_PIN_ALL16
 //!
 //! Modified bits of \b PxDIR register and bits of \b PxSEL register.
 //!
@@ -416,6 +426,8 @@ extern void GPIO_setAsPeripheralModuleFunctionInputPin(uint8_t selectedPort,
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
+//!        - \b GPIO_PIN_ALL8
+//!        - \b GPIO_PIN_ALL16
 //!
 //! Modified bits of \b PxOUT register.
 //!
@@ -469,6 +481,8 @@ extern void GPIO_setOutputHighOnPin(uint8_t selectedPort,
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
+//!        - \b GPIO_PIN_ALL8
+//!        - \b GPIO_PIN_ALL16
 //!
 //! Modified bits of \b PxOUT register.
 //!
@@ -522,6 +536,8 @@ extern void GPIO_setOutputLowOnPin(uint8_t selectedPort,
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
+//!        - \b GPIO_PIN_ALL8
+//!        - \b GPIO_PIN_ALL16
 //!
 //! Modified bits of \b PxOUT register.
 //!
@@ -576,6 +592,8 @@ extern void GPIO_toggleOutputOnPin(uint8_t selectedPort,
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
+//!        - \b GPIO_PIN_ALL8
+//!        - \b GPIO_PIN_ALL16
 //!
 //! Modified bits of \b PxDIR register, bits of \b PxOUT register and bits of
 //! \b PxREN register.
@@ -631,6 +649,8 @@ extern void GPIO_setAsInputPinWithPullDownResistor(uint8_t selectedPort,
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
+//!        - \b GPIO_PIN_ALL8
+//!        - \b GPIO_PIN_ALL16
 //!
 //! Modified bits of \b PxDIR register, bits of \b PxOUT register and bits of
 //! \b PxREN register.
@@ -685,6 +705,8 @@ extern void GPIO_setAsInputPinWithPullUpResistor(uint8_t selectedPort,
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
+//!        - \b GPIO_PIN_ALL8
+//!        - \b GPIO_PIN_ALL16
 //!
 //! \return One of the following:
 //!         - \b GPIO_INPUT_PIN_HIGH
@@ -740,6 +762,8 @@ extern uint8_t GPIO_getInputPinValue(uint8_t selectedPort,
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
+//!        - \b GPIO_PIN_ALL8
+//!        - \b GPIO_PIN_ALL16
 //!
 //! Modified bits of \b PxIE register.
 //!
@@ -794,6 +818,8 @@ extern void GPIO_enableInterrupt(uint8_t selectedPort,
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
+//!        - \b GPIO_PIN_ALL8
+//!        - \b GPIO_PIN_ALL16
 //!
 //! Modified bits of \b PxIE register.
 //!
@@ -848,6 +874,8 @@ extern void GPIO_disableInterrupt(uint8_t selectedPort,
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
+//!        - \b GPIO_PIN_ALL8
+//!        - \b GPIO_PIN_ALL16
 //!
 //! \return Logical OR of any of the following:
 //!         - \b GPIO_PIN0
@@ -866,6 +894,8 @@ extern void GPIO_disableInterrupt(uint8_t selectedPort,
 //!         - \b GPIO_PIN13
 //!         - \b GPIO_PIN14
 //!         - \b GPIO_PIN15
+//!         - \b GPIO_PIN_ALL8
+//!         - \b GPIO_PIN_ALL16
 //!         \n indicating the interrupt status of the selected pins [Default:
 //!         0]
 //
@@ -918,6 +948,8 @@ extern uint16_t GPIO_getInterruptStatus(uint8_t selectedPort,
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
+//!        - \b GPIO_PIN_ALL8
+//!        - \b GPIO_PIN_ALL16
 //!
 //! Modified bits of \b PxIFG register.
 //!
@@ -975,6 +1007,8 @@ extern void GPIO_clearInterrupt(uint8_t selectedPort,
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
+//!        - \b GPIO_PIN_ALL8
+//!        - \b GPIO_PIN_ALL16
 //! \param edgeSelect specifies what transition sets the interrupt flag
 //!        Valid values are:
 //!        - \b GPIO_HIGH_TO_LOW_TRANSITION
@@ -1035,6 +1069,8 @@ extern void GPIO_selectInterruptEdge(uint8_t selectedPort,
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
+//!        - \b GPIO_PIN_ALL8
+//!        - \b GPIO_PIN_ALL16
 //! \param driveStrength specifies the drive strength of the pin
 //!        Valid values are:
 //!        - \b GPIO_REDUCED_OUTPUT_DRIVE_STRENGTH
@@ -1060,4 +1096,4 @@ extern void GPIO_setDriveStrength(uint8_t selectedPort,
 
 #endif
 #endif // __MSP430WARE_GPIO_H__
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ extern "C"
 {
 #endif
 
-#include "inc/hw_regaccess.h"
+#include "inc/hw_memmap.h"
 //******************************************************************************
 //
 // TLV Data Types
@@ -125,6 +125,7 @@ struct s_Peripheral_Memory_Data
 #define TLV_TAG_ADC12CAL                                           TLV_ADC12CAL
 #define TLV_TAG_ADC10CAL                                           TLV_ADC10CAL
 #define TLV_TAG_REFCAL                                               TLV_REFCAL
+#define TLV_TAG_CTSD16CAL                                                  0x1D
 
 //*****************************************************************************
 //
@@ -245,6 +246,7 @@ struct s_Peripheral_Memory_Data
 //!        - \b TLV_TAG_ADC12CAL
 //!        - \b TLV_TAG_ADC10CAL
 //!        - \b TLV_TAG_REFCAL
+//!        - \b TLV_TAG_CTSD16CAL
 //! \param instance In some cases a specific tag may have more than one
 //!        instance. For example there may be multiple instances of timer
 //!        calibration data present under a single Timer Cal tag. This variable
@@ -437,4 +439,4 @@ extern uint8_t TLV_getInterrupt(uint8_t tag);
 
 #endif
 #endif // __MSP430WARE_TLV_H__
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

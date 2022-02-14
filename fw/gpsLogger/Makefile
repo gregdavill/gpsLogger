@@ -17,7 +17,7 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
 VCS_COMMIT := $(shell git describe --abbrev=4 --dirty --always --tags)
 
-CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -Os -ffunction-sections -fdata-sections -Wl,-gc-sections -D__MSP430F5514__ -D__MSP430__ -std=gnu18 -D_VCS_COMMIT_=$(VCS_COMMIT) 
+CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -O1 -flto -g3 -ffunction-sections -fdata-sections -Wl,--gc-sections -D__MSP430F5514__ -D__MSP430__  -mmcu=msp430f5514  -mhwmult=f5series -DDEPRECATED -D_VCS_COMMIT_=$(VCS_COMMIT) 
 LDFLAGS ?= $(CPPFLAGS) -Wl,--Map=build/out.map -L ./$(LIB_DIR)/headers -T msp430f5514.ld -T src/USB_API/msp430USB.ld $(LIB_DIR)/IQMATHLIB_01_10_00_05/libraries/CCS/MPY32/5xx_6xx/IQmathLib_CCS_MPY32_5xx_6xx_CPUX_small_code_small_data.lib
 
 all: $(BUILD_DIR)/$(TARGET_EXEC).elf $(BUILD_DIR)/$(TARGET_EXEC).bin $(BUILD_DIR)/$(TARGET_EXEC).lst $(BUILD_DIR)/$(TARGET_EXEC).dmp
@@ -25,6 +25,7 @@ all: $(BUILD_DIR)/$(TARGET_EXEC).elf $(BUILD_DIR)/$(TARGET_EXEC).bin $(BUILD_DIR
 $(BUILD_DIR)/$(TARGET_EXEC).elf: $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
 	$(SIZE) $@
+
 
 %.dmp: %.bin
 	xxd -o 0x4400 $< $@
@@ -34,7 +35,9 @@ $(BUILD_DIR)/$(TARGET_EXEC).elf: $(OBJS)
 
 %.bin: %.elf
 	$(OBJCOPY) -O binary $< $@
-	./append_crc.py $@
+	python create_crc.py $<
+	$(OBJCOPY) --update-section .crc_val=$<.crc $<
+	$(OBJCOPY) -O binary $< $@
 
 # assembly
 $(BUILD_DIR)/%.s.o: %.s

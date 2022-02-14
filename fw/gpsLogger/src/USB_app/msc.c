@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,6 @@
  */
 #include <string.h>
 #include <stdint.h>
-#include "driverlib.h"
 #include "USB_API/USB_Common/device.h"
 #include "USB_API/USB_MSC_API/UsbMsc.h"
 #include "USB_config/descriptors.h"
@@ -45,13 +44,8 @@
 #include "FatFs/diskio.h"
 #include "FatFs/mmc.h"
 #include "USB_app/msc.h"
-
-#include "hal.h"
 const uint16_t BYTES_PER_BLOCK = 512;
 
-#ifndef NULL
-#define NULL 0
-#endif
 /*
  * Every application using this MSC API must define an instance of this
  * structure.  It establishes compile-time information about the storage media.
@@ -66,7 +60,6 @@ extern struct config_struct USBMSC_config;
 // In this case each cluster has one block so this buffer is 512 bytes.
 uint8_t RWbuf[512];
 
-uint8_t toggle = 0;
 
 //The API allocates an instance of structure type USBMSC_RWbuf_Info to hold all
 //information describing buffers to be processed.  The structure instance is a
@@ -143,7 +136,6 @@ void USBMSC_processMSCBuffer(void)
 	}
 	__enable_interrupt();
 
-
 	//Verify SD card before attempting to read.  If this condition is not there Windows displays
 	//a message about 'Reformatting the disk' when SD card is not in the drive.
 	if(detectCard()){   //Bug number 6754
@@ -167,7 +159,6 @@ void USBMSC_processMSCBuffer(void)
 
 		while (RWbuf_info->operation == USBMSC_READ)
 		{
-			hal_led_a(GREEN);
 			//A READ operation is underway, and the app has been requested to access
 			//the medium.  So, call file system to read
 			//to do so.  Note this is a low level FatFs call -- we are not
@@ -178,7 +169,6 @@ void USBMSC_processMSCBuffer(void)
 				RWbuf_info->lba,           //First LBA of this buffer operation
 				RWbuf_info->lbCount);      //The number of blocks being requested
 											//as part of this operation
-			hal_led_a(0);
 
 			//The result of the file system call needs to be communicated to the
 			//host.  Different file system software uses
@@ -209,23 +199,18 @@ void USBMSC_processMSCBuffer(void)
 					RWbuf_info->returnCode = USBMSC_RW_LBA_OUT_OF_RANGE;
 					break;
 			}
-			hal_led_a(RED);
 			USBMSC_processBuffer();
-			hal_led_a(0);
 		}
 
 		//Everything in this section is analogous to READs.  Reference the
 		//comments above.
 		while (RWbuf_info->operation == USBMSC_WRITE)
 		{
-			hal_led_a(GREEN);
 			DRESULT dresult = disk_write(0, //Physical drive number (0)
-				RWbuf_info->bufferAddr,    //Pointer to the user buffer
-				RWbuf_info->lba,           //First LBA of this buffer operation
-				RWbuf_info->lbCount);      //The number of blocks being requested
-											//as part of this operation
-			hal_led_a(0);
-
+				RWbuf_info->bufferAddr,     //Pointer to the user buffer
+				RWbuf_info->lba,            //First LBA of this buffer operation
+				RWbuf_info->lbCount);       //The number of blocks being requested
+										//as part of this operation
 			switch (dresult)
 			{
 				case RES_OK:
@@ -247,9 +232,7 @@ void USBMSC_processMSCBuffer(void)
 					RWbuf_info->returnCode = USBMSC_RW_NOT_READY;
 					break;
 			}
-			hal_led_a(RED);
 			USBMSC_processBuffer();
-			hal_led_a(0);
 		}
 	}
 }
@@ -288,4 +271,4 @@ uint8_t USBMSC_checkMSCInsertionRemoval (void)
 
     return ( newCardStatus) ;
 }
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

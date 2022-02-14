@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ extern "C"
 {
 #endif
 
-#include "inc/hw_regaccess.h"
+#include "inc/hw_memmap.h"
 //*****************************************************************************
 //
 //! \brief Used in the ADC12_A_configureMemory() function as the param
@@ -117,8 +117,11 @@ typedef struct ADC12_A_configureMemoryParam
     //! Indicates that the specified memory buffer will be the end of the
     //! sequence if a sequenced conversion mode is selected
     //! \n Valid values are:
-    //! - \b ADC12_A_NOTENDOFSEQUENCE [Default]
-    //! - \b ADC12_A_ENDOFSEQUENCE
+    //! - \b ADC12_A_NOTENDOFSEQUENCE [Default] - The specified memory buffer
+    //!    will NOT be the end of the sequence OR a sequenced conversion mode
+    //!    is not selected.
+    //! - \b ADC12_A_ENDOFSEQUENCE - The specified memory buffer will be the
+    //!    end of the sequence.
     uint8_t endOfSequence;
 } ADC12_A_configureMemoryParam;
 
@@ -1063,4 +1066,4 @@ extern uint16_t ADC12_A_isBusy(uint16_t baseAddress);
 
 #endif
 #endif // __MSP430WARE_ADC12_A_H__
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

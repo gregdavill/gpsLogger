@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -78,13 +78,11 @@ uint8_t USB_handleVbusOnEvent ()
 {
     //TO DO: You can place your code here
 
-	//gps_stop();
-
     //We switch on USB and connect to the BUS
-    //if (USB_enable() == USB_SUCCEED){
-    //    USB_reset();
-    //    USB_connect();  //generate rising edge on DP -> the host enumerates our device as full speed device
-    //}
+    // if (USB_enable() == USB_SUCCEED){
+    //     USB_reset();
+    //     USB_connect();  //generate rising edge on DP -> the host enumerates our device as full speed device
+    // }
     return (TRUE);      //return TRUE to wake the main loop (in the case the CPU slept before interrupt)
 }
 
@@ -95,8 +93,6 @@ uint8_t USB_handleVbusOnEvent ()
 uint8_t USB_handleVbusOffEvent ()
 {
 	UCS_turnOffXT2();
-
-	//gps_start();
 
     return (TRUE);      //return TRUE to wake the main loop (in the case the CPU slept before interrupt)
 }
@@ -392,4 +388,4 @@ uint8_t USBPHDC_handleReceiveCompleted (uint8_t intfNum)
  | End of source file                                                          |
  +----------------------------------------------------------------------------*/
 /*------------------------ Nothing Below This Line --------------------------*/
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +37,7 @@
 #include "battbak.h"
 #include "comp_b.h"
 #include "crc.h"
+#include "ctsd16.h"
 #include "dac12_a.h"
 #include "dma.h"
 #include "eusci_a_spi.h"
@@ -45,8 +46,10 @@
 #include "eusci_b_spi.h"
 #include "flashctl.h"
 #include "gpio.h"
+#include "lcd_b.h"
 #include "ldopwr.h"
 #include "mpy32.h"
+#include "oa.h"
 #include "pmap.h"
 #include "pmm.h"
 #include "ram.h"
@@ -68,4 +71,4 @@
 #include "usci_b_i2c.h"
 #include "usci_b_spi.h"
 #include "wdt_a.h"
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

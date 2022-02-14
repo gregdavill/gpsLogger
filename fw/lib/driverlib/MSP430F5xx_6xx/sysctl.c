@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,6 @@
 //
 //*****************************************************************************
 
-#include "inc/hw_regaccess.h"
 #include "inc/hw_memmap.h"
 
 #ifdef __MSP430_HAS_SYS__
@@ -164,4 +163,4 @@ void SysCtl_setJTAGOutgoingMessage32Bit(uint32_t outgoingMessage)
 //! @}
 //
 //*****************************************************************************
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

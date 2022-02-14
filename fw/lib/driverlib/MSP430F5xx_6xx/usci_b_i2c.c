@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,6 @@
 //
 //*****************************************************************************
 
-#include "inc/hw_regaccess.h"
 #include "inc/hw_memmap.h"
 
 #ifdef __MSP430_HAS_USCI_Bx__
@@ -636,7 +635,7 @@ bool USCI_B_I2C_masterReceiveSingleStartWithTimeout(uint16_t baseAddress,
     HWREG8(baseAddress + OFS_UCBxCTL1) |= UCTXSTT;
 
     //Poll for Start bit to complete
-    while((!(HWREG8(baseAddress + OFS_UCBxIFG) & UCTXSTT)) && --timeout)
+    while(((HWREG8(baseAddress + OFS_UCBxCTL1) & UCTXSTT)) && --timeout)
     {
         ;
     }
@@ -688,4 +687,4 @@ uint32_t USCI_B_I2C_getTransmitBufferAddressForDMA(uint16_t baseAddress)
 //! @}
 //
 //*****************************************************************************
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

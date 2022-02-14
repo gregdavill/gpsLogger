@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,6 @@
  */
 #include <descriptors.h>
 
-#ifdef _MSC_
 
 #include "../USB_Common/device.h"
 #include "../USB_Common/defMSP430USB.h"
@@ -47,6 +46,8 @@
 #include "../USB_MSC_API/UsbMscScsi.h"
 #include "../USB_MSC_API/UsbMscReq.h"
 #include "../USB_MSC_API/UsbMsc.h"
+
+#ifdef _MSC_
 
 extern __no_init tEDB __data16 tInputEndPointDescriptorBlock[];
 extern __no_init tEDB __data16 tOutputEndPointDescriptorBlock[];
@@ -94,4 +95,4 @@ uint8_t Get_MaxLUN (void)
  | End of source file                                                          |
  +----------------------------------------------------------------------------*/
 /*------------------------ Nothing Below This Line --------------------------*/
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ extern "C"
 {
 #endif
 
-#include "inc/hw_regaccess.h"
+#include "inc/hw_memmap.h"
 //*****************************************************************************
 //
 // The following values are the sync characters possible.
@@ -69,7 +69,8 @@ extern "C"
 //*****************************************************************************
 typedef struct EUSCI_A_UART_initParam
 {
-    //! Selects Clock source.
+    //! Selects Clock source. Refer to device specific datasheet for available
+    //! options.
     //! \n Valid values are:
     //! - \b EUSCI_A_UART_CLOCKSOURCE_SMCLK
     //! - \b EUSCI_A_UART_CLOCKSOURCE_ACLK
@@ -262,7 +263,10 @@ extern bool EUSCI_A_UART_init(uint16_t baseAddress,
 
 //*****************************************************************************
 //
-//! \brief Transmits a byte from the UART Module.
+//! \brief Transmits a byte from the UART Module.Please note that if TX
+//! interrupt is disabled, this function manually polls the TX IFG flag waiting
+//! for an indication that it is safe to write to the transmit buffer and does
+//! not time-out
 //!
 //! This function will place the supplied data into UART transmit data register
 //! to start transmission
@@ -599,4 +603,4 @@ extern void EUSCI_A_UART_selectDeglitchTime(uint16_t baseAddress,
 
 #endif
 #endif // __MSP430WARE_EUSCI_A_UART_H__
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

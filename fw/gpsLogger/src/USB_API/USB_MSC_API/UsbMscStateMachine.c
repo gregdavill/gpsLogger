@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,14 +32,12 @@
 /** @file UsbMscStateMachine.c
  *  @brief Contains APIs related to MSC task Management.
  */
-//
-//! \cond
-//
 
 /* 
  * ======== UsbMscStateMachine.c ========
  */
 /*File includes */
+
 #include "../USB_Common/device.h"
 #include "../USB_Common/defMSP430USB.h"
 #include "../USB_MSC_API/UsbMscScsi.h"
@@ -47,7 +45,6 @@
 #include "../USB_Common/usb.h"
 #include <descriptors.h>
 #include <string.h>
-
 #ifdef _MSC_
 
 /*Macros to indicate data direction */
@@ -83,34 +80,8 @@ void Msc_ResetStateMachine (void)
 /*This is the core function called by application to handle the MSC SCSI state
 * machine */
 
-//
-//! \endcond
-//
 
-//*****************************************************************************
-//
-//! Checks to See if a SCSI Command has Been Received.
-//!
-//! Checks to see if a SCSI command has been received. If so, it handles it. If not, it returns
-//! having taken no action.
-//! The return values of this function are intended to be used with entry of low-power modes. If the
-//! function returns \b USBMSC_OK_TO_SLEEP, then no further application action is required; that is,
-//! either no SCSI command was received; one was received but immediately handled; or one was
-//! received but the handling will be completed in the background by the API as it automatically
-//! services USB interrupts.
-//! If instead the function returns \b USBMSC_PROCESS_BUFFER, then the API is currently servicing a
-//! SCSI READ or WRITE command, and the API requires the application to process a buffer. (See
-//! Sec. 8.3.6 of \e "Programmer's Guide: MSP430 USB API Stack for CDC/PHDC/HID/MSC" for a discussion of buffer
-//! processing.)
-//! Note that even if the function returns these values, the values could potentially be outdated by
-//! the time the application evaluates them. For this reason, it's important to disable interrupts prior
-//! to calling this function. See Sec. 8.3.5 of \e "Programmer's Guide: MSP430 USB API Stack for CDC/PHDC/HID/MSC"
-//! for more information.
-//!
-//! \return \b USBMSC_OK_TO_SLEEP or \b USBMSC_PROCESS_BUFFER
-//
-//*****************************************************************************
-
+/*Function to handle the MSC SCSI state machine */
 uint8_t USBMSC_pollCommand ()
 {
 	uint16_t state;
@@ -196,18 +167,11 @@ uint8_t USBMSC_pollCommand ()
                                                     //bWriteProcessing = true.
 }
 
-//
-//! \cond
-//
-
 #endif //_MSC_
 
-//
-//! \endcond
-//
 
 /*----------------------------------------------------------------------------+
  | End of source file                                                          |
  +----------------------------------------------------------------------------*/
 /*------------------------ Nothing Below This Line --------------------------*/
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

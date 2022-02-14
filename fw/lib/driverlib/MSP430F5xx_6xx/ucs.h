@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@
 
 #include "inc/hw_memmap.h"
 
-#ifdef __MSP430_HAS_UCS__
+#if defined(__MSP430_HAS_UCS__) || defined(__MSP430_HAS_UCS_RF__)
 
 //*****************************************************************************
 //
@@ -281,7 +281,7 @@ extern void UCS_turnOnLFXT1(uint16_t xt1drive,
 
 //*****************************************************************************
 //
-//! \brief Initializes the XT1 crystal oscillator in low frequency mode
+//! \brief Initializes the XT1 crystal oscillator in high frequency mode
 //!
 //! Initializes the XT1 crystal oscillator in high frequency mode. Loops until
 //! all oscillator fault flags are cleared, with no timeout. See the device-
@@ -753,4 +753,4 @@ extern uint16_t UCS_clearAllOscFlagsWithTimeout(uint16_t timeout);
 
 #endif
 #endif // __MSP430WARE_UCS_H__
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ extern "C"
 {
 #endif
 
-#include "inc/hw_regaccess.h"
+#include "inc/hw_memmap.h"
 //*****************************************************************************
 //
 //! \brief Used in the USCI_B_SPI_initMaster() function as the param parameter.
@@ -467,4 +467,4 @@ extern uint8_t USCI_B_SPI_isBusy(uint16_t baseAddress);
 
 #endif
 #endif // __MSP430WARE_USCI_B_SPI_H__
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ extern "C"
 {
 #endif
 
-#include "inc/hw_regaccess.h"
+#include "inc/hw_memmap.h"
 //*****************************************************************************
 //
 // The following is a parameter used for Timer_B_getCounterValue that
@@ -498,7 +498,8 @@ typedef struct Timer_B_initCompareModeParam
 
 //*****************************************************************************
 //
-// The following are values that can be passed to the param parameter for
+// The following are values that can be passed to the compareOutputMode
+// parameter for functions: Timer_B_setOutputMode(); the param parameter for
 // functions: Timer_B_initCaptureMode(), Timer_B_initCompareMode(), and
 // Timer_B_outputPWM().
 //
@@ -515,9 +516,10 @@ typedef struct Timer_B_initCompareModeParam
 //*****************************************************************************
 //
 // The following are values that can be passed to the compareRegister parameter
-// for functions: Timer_B_setCompareValue(), and
-// Timer_B_initCompareLatchLoadEvent(); the captureCompareRegister parameter
-// for functions: Timer_B_enableCaptureCompareInterrupt(),
+// for functions: Timer_B_setCompareValue(),
+// Timer_B_initCompareLatchLoadEvent(), and Timer_B_setOutputMode(); the
+// captureCompareRegister parameter for functions:
+// Timer_B_enableCaptureCompareInterrupt(),
 // Timer_B_disableCaptureCompareInterrupt(),
 // Timer_B_getCaptureCompareInterruptStatus(),
 // Timer_B_getSynchronizedCaptureCompareInput(),
@@ -649,8 +651,7 @@ typedef struct Timer_B_initCompareModeParam
 //! \brief Starts Timer_B counter
 //!
 //! This function assumes that the timer has been previously configured using
-//! Timer_B_configureContinuousMode, Timer_B_configureUpMode or
-//! Timer_B_configureUpDownMode.
+//! Timer_B_initContinuousMode, Timer_B_initUpMode or Timer_B_initUpDownMode.
 //!
 //! \param baseAddress is the base address of the TIMER_B module.
 //! \param timerMode selects the mode of the timer
@@ -1181,6 +1182,42 @@ extern uint16_t Timer_B_getCounterValue(uint16_t baseAddress);
 
 //*****************************************************************************
 //
+//! \brief Sets the output mode
+//!
+//! Sets the output mode for the timer even the timer is already running.
+//!
+//! \param baseAddress is the base address of the TIMER_B module.
+//! \param compareRegister selects the compare register being used.
+//!        Valid values are:
+//!        - \b TIMER_B_CAPTURECOMPARE_REGISTER_0
+//!        - \b TIMER_B_CAPTURECOMPARE_REGISTER_1
+//!        - \b TIMER_B_CAPTURECOMPARE_REGISTER_2
+//!        - \b TIMER_B_CAPTURECOMPARE_REGISTER_3
+//!        - \b TIMER_B_CAPTURECOMPARE_REGISTER_4
+//!        - \b TIMER_B_CAPTURECOMPARE_REGISTER_5
+//!        - \b TIMER_B_CAPTURECOMPARE_REGISTER_6
+//! \param compareOutputMode specifies the output mode.
+//!        Valid values are:
+//!        - \b TIMER_B_OUTPUTMODE_OUTBITVALUE [Default]
+//!        - \b TIMER_B_OUTPUTMODE_SET
+//!        - \b TIMER_B_OUTPUTMODE_TOGGLE_RESET
+//!        - \b TIMER_B_OUTPUTMODE_SET_RESET
+//!        - \b TIMER_B_OUTPUTMODE_TOGGLE
+//!        - \b TIMER_B_OUTPUTMODE_RESET
+//!        - \b TIMER_B_OUTPUTMODE_TOGGLE_SET
+//!        - \b TIMER_B_OUTPUTMODE_RESET_SET
+//!
+//! Modified bits are \b OUTMOD of \b TBxCCTLn register.
+//!
+//! \return None
+//
+//*****************************************************************************
+extern void Timer_B_setOutputMode(uint16_t baseAddress,
+                                  uint16_t compareRegister,
+                                  uint16_t compareOutputMode);
+
+//*****************************************************************************
+//
 // Mark the end of the C bindings section for C++ compilers.
 //
 //*****************************************************************************
@@ -1190,4 +1227,4 @@ extern uint16_t Timer_B_getCounterValue(uint16_t baseAddress);
 
 #endif
 #endif // __MSP430WARE_TIMER_B_H__
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

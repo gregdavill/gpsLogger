@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,15 +42,21 @@
 /*----------------------------------------------------------------------------+
  | Includes                                                                    |
  +----------------------------------------------------------------------------*/
+
 #include "../USB_Common/device.h"
 #include "../USB_Common/defMSP430USB.h"
 #include "../USB_Common/usb.h"
 #include "../USB_MSC_API/UsbMscScsi.h"
 #include "../USB_MSC_API/UsbMsc.h"
+#include "../hal.h"
 #include <descriptors.h>
 #include <string.h>
 
 #ifdef _MSC_
+
+#ifdef _MSC_HARDWARE_
+#include "../USB_app/FatFs/diskio.h"
+#endif
 
 /*----------------------------------------------------------------------------+
  | Internal Definitions                                                        |
@@ -111,6 +117,8 @@ void usbStallEndpoint (uint8_t);
 uint8_t Scsi_Verify_CBW ();
 
 extern struct config_struct USBMSC_config;
+
+struct USBMSC_mediaInfoStr mediaInfoUpdate;
 
 extern void *(*USB_TX_memcpy)(void * dest, const void * source, size_t count);
 extern void *(*USB_RX_memcpy)(void * dest, const void * source, size_t count);
@@ -826,8 +834,16 @@ uint8_t Scsi_Cmd_Parser (uint8_t intfNum)
             Scsi_Write10(intfNum);
             break;
 
-        case START_STOP_UNIT:
-        case PREVENT_ALLW_MDM:
+        case START_STOP_UNIT:  //bug 16066
+			//Eject feature is only applicable to MSC devices with actual hardware and not to file system emulation that uses
+			//internal hardware memory for storage.
+#ifdef _MSC_HARDWARE_  
+			deselect();  //Power down SD card and release SPI - this is what 'Eject' does
+        	mediaInfoUpdate.mediaPresent = USBMSC_MEDIA_NOT_PRESENT;
+        	USBMSC_updateMediaInformation(0, &mediaInfoUpdate);
+			break;
+#endif
+		case PREVENT_ALLW_MDM:
         case SCSI_MODE_SELECT_10:
         case SCSI_MODE_SELECT_6:
         case SCSI_TEST_UNIT_READY:
@@ -1474,26 +1490,6 @@ int16_t MSCFromHostToBuffer ()
     return (bWakeUp);
 }
 
-//
-//! \endcond
-//
-
-//*****************************************************************************
-//
-//! This function should be called by the application after it has processed a buffer request.
-//!
-//! \param USBMSC_Rwbuf_Info*RWBufInfo Pass the value received from USBMSC_fetchInformationStructure().
-//!
-//! This function should be called by the application after it has processed a buffer request. It
-//! indicates to the API that the application has fulfilled the request.
-//! Prior to calling this function, the application needs to write a return code to rwInfo.returnCode.
-//! This code should reflect the result of the operation. The value may come from the file system
-//! software, depending on the application. See Sec. 8.3.6 of
-//! \e "Programmer's Guide: MSP430 USB API Stack for CDC/PHDC/HID/MSC" for a list of valid return codes.
-//!
-//! \return \b USB_SUCCEED
-//
-//*****************************************************************************
 
 uint8_t USBMSC_processBuffer ()
 {
@@ -1710,9 +1706,6 @@ uint8_t USBMSC_processBuffer ()
     return (USB_SUCCEED);
 }
 
-//
-//! \cond
-//
 
 //-------------------------------------------------------------------------------------------
 void Msc_ResetFlags ()
@@ -1778,35 +1771,6 @@ uint8_t USBMSC_getState ()
     return (state);
 }
 
-//
-//! \endcond
-//
-
-//*****************************************************************************
-//
-//! Informs the API of the Current State of the Media on LUN \b lun.
-//!
-//! \param lun is the logical unit (LUN) on which the operation is taking place. Zero-based. (This version of the API
-//! 	only supports a single LUN.)
-//! \param info is a structure that communicates the most recent information about the medium.
-//!
-//! Informs the API of the current state of the media on LUN \b lun. It does this using an instance \b info
-//! of the API-defined structure USBMSC_mediaInfoStr. The API uses the information in the most
-//! recent call to this function in automatically handling certain requests from the host.
-//! In LUNs that are marked as not removable in USBMSC_CONFIG, this function should be called
-//! once at the beginning of execution, prior to attachment to the USB host. It then no longer needs
-//! to be called.
-//! 
-//! In LUNS that are marked as removable, the media information is dynamic. The function should
-//! still be called at the beginning of execution to indicate the initial state of the media, and then it
-//! should also be called every time the media changes.
-//! 
-//! See Sec. 8.3.4 of \e "Programmer's Guide: MSP430 USB API Stack for CDC/PHDC/HID/MSC" for more about informing
-//! the API of media changes.
-//!
-//! \return \b USB_SUCCEED
-//
-//*****************************************************************************
 
 uint8_t USBMSC_updateMediaInformation ( uint8_t lun,  struct USBMSC_mediaInfoStr *info)
 {
@@ -1867,45 +1831,6 @@ uint8_t USBMSC_updateMediaInformation ( uint8_t lun,  struct USBMSC_mediaInfoStr
     return (USB_SUCCEED);
 }
 
-//*****************************************************************************
-//
-//! Gives the API a Buffer to Use for READ/WRITE Data Transfer.
-//!
-//! \param lun is the Lun number.
-//! \param *RWbuf_x is the address of an X-buffer. If null, then both buffers are de-activated.
-//! \param *RWbuf_y is the address of an Y-buffer. (Double-buffering is not supported in this version of the API.)
-//! \param size is the size, in bytes, of the buffers.
-//!
-//! Gives the API a buffer to use for READ/WRITE data transfer. \b size indicates the size of the
-//! buffer, in bytes.
-//! 
-//! \b NOTE: Currently, only single-buffering is supported, so \b RWbuf_y should be set to null.
-//! If the application intends to allocate the buffer statically, then this function needs only to be
-//! called once, prior to any READ/WRITE commands being received from the host. Most likely this
-//! would happen during the application's initialization functions.
-//! 
-//! \b NOTE: This API has to be called after the call to USBMSC_updateMediaInformation() at the beginning
-//! of execution.
-//! 
-//! However, this function optionally enables dynamic buffer management. That is, it can activate
-//! and de-activate the buffer, by alternately assigning a null and valid address in \b RWbuf_x. This is
-//! useful because the buffer uses a significant portion of the RAM resources (typically 512 bytes).
-//! This memory is not needed when USB is not attached or suspended.
-//! 
-//! If doing this, it's important that the application re-activate the buffer when USB becomes active
-//! again, by issuing another call to the function, this time using valid buffer information. If the API
-//! needs the buffer and doesn't have it, it will begin failing READ/WRITE commands from the host.
-//! The re-activation can take place within USB_handleVbusOffEvent().
-//! 
-//! \b size must be a multiple of a block size - for FAT, a block size is typically 512 bytes. Thus
-//! values of 512, 1024, 1536, etc. are valid. Non-multiples are not valid.
-//! 
-//! The function returns \b USB_SUCCEED every time. It is up to the application to ensure that the
-//! buffers are valid.
-//!
-//! \return \b USB_SUCCEED
-//
-//*****************************************************************************
 
 uint8_t USBMSC_registerBufferInformation (uint8_t lun, uint8_t *RWbuf_x, uint8_t *RWbuf_y, uint16_t size)
 {
@@ -1926,10 +1851,6 @@ uint8_t USBMSC_registerBufferInformation (uint8_t lun, uint8_t *RWbuf_x, uint8_t
     MscControl[lun].yBufferAddr = RWbuf_y;
     return (USB_SUCCEED);
 }
-
-//
-//! \cond
-//
 
 //-------------------------------------------------------------------------------------------
 void SET_RequestsenseNotReady ()
@@ -1995,33 +1916,10 @@ void usbStallOutEndpoint (uint8_t intfNum)
 	MscState.stallEndpoint = TRUE;
 }
 
-//
-//! \endcond
-//
-
-//*****************************************************************************
-//
-//! Returns a pointer to the \b USBMSC_Rwbuf_Info structure instance maintained within the API.
-//!
-//! Returns a pointer to the \b USBMSC_Rwbuf_Info structure instance maintained within the API.
-//! See Sec. 8.3.6 of \e "Programmer's Guide: MSP430 USB API Stack for CDC/PHDC/HID/MSC" for information on using
-//! this structure.
-//! This function should be called prior to USB enumeration; that is, prior to calling USB_connect().
-//!
-//! \return A pointer to an application-allocated instance of \b USBMSC_RWBuf_Info,
-//! which will be used to exchange information related to buffer requests from
-//! the API to the application.
-//
-//*****************************************************************************
-
 USBMSC_RWbuf_Info* USBMSC_fetchInformationStructure (void)
 {
     return (&sRwbuf);
 }
-
-//
-//! \cond
-//
 
 #ifdef CDROM_SUPPORT
 //----------------------------------------------------------------------------
@@ -2087,12 +1985,9 @@ void Scsi_Read_Disc_Information(uint8_t intfNum) {
 
 #endif  //_MSC_
 
-//
-//! \endcond
-//
 
 /*----------------------------------------------------------------------------+
  | End of source file                                                          |
  +----------------------------------------------------------------------------*/
 /*------------------------ Nothing Below This Line --------------------------*/
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

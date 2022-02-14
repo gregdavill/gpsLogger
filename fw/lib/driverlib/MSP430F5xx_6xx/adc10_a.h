@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -626,8 +626,8 @@ extern void ADC10_A_clearInterrupt(uint16_t baseAddress,
 //! \return The current interrupt flag status for the corresponding mask.
 //
 //*****************************************************************************
-extern uint8_t ADC10_A_getInterruptStatus(uint16_t baseAddress,
-                                          uint8_t interruptFlagMask);
+extern uint16_t ADC10_A_getInterruptStatus(uint16_t baseAddress,
+                                           uint8_t interruptFlagMask);
 
 //*****************************************************************************
 //
@@ -911,4 +911,4 @@ extern uint16_t ADC10_A_isBusy(uint16_t baseAddress);
 
 #endif
 #endif // __MSP430WARE_ADC10_A_H__
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

@@ -40,7 +40,7 @@ ENTRY(_start)
 MEMORY {
   SFR              : ORIGIN = 0x0000, LENGTH = 0x0010 /* END=0x0010, size 16 */
   BSL              : ORIGIN = 0x1000, LENGTH = 0x0800
-  RAM              : ORIGIN = 0x2400, LENGTH = 0x1000 /* END=0x33FF, size 4096 */
+  RAM              : ORIGIN = 0x2400, LENGTH = 0x0980 /* END=0x33FF, size 4096 */
   USBRAM           : ORIGIN = 0x1C00, LENGTH = 0x0800
   INFOMEM          : ORIGIN = 0x1800, LENGTH = 0x0200 /* END=0x19FF, size 512 as 4 128-byte segments */
   INFOA            : ORIGIN = 0x1980, LENGTH = 0x0080 /* END=0x19FF, size 128 */

@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,6 @@
 //
 //*****************************************************************************
 
-#include "inc/hw_regaccess.h"
 #include "inc/hw_memmap.h"
 
 #ifdef __MSP430_HAS_SD24_B__
@@ -97,7 +96,7 @@ void SD24_B_initConverterAdvanced(uint16_t baseAddress,
 
     // Clearing previous settings for configuration
     HWREG16(address) &=
-        ~(SD24ALGN | SD24SNGL | SD24DF_1 | SD24DF_0 | SD24SCS__GROUP3);
+        ~(SD24ALGN | SD24SNGL | SD24DF1 | SD24DF0 | SD24SCS__GROUP3);
 
     HWREG16(address) |=
         (param->alignment | param->startSelect | param->dataFormat |
@@ -200,8 +199,8 @@ void SD24_B_configureDMATrigger(uint16_t baseAddress,
                                 uint16_t interruptFlag)
 {
     // Clearing previous settings
-    HWREG16(baseAddress + OFS_SD24BCTL1) &= ~(SD24DMA_3 | SD24DMA_2 |
-                                              SD24DMA_1 | SD24DMA_0);
+    HWREG16(baseAddress + OFS_SD24BCTL1) &= ~(SD24DMA3 | SD24DMA2 |
+                                              SD24DMA1 | SD24DMA0);
 
     HWREG16(baseAddress + OFS_SD24BCTL1) |= interruptFlag;
 }
@@ -216,6 +215,18 @@ void SD24_B_setInterruptDelay(uint16_t baseAddress,
     HWREG16(address) &= ~(SD24INTDLY_3);
 
     HWREG16(address) |= sampleDelay;
+}
+
+void SD24_B_setConversionDelay(uint16_t baseAddress,
+                               uint8_t converter,
+                               uint16_t cycleDelay)
+{
+    uint16_t address = baseAddress + (OFS_SD24BPRE0 + (converter * 0x08));
+
+    // Clear previous settings
+    HWREG16(address) &= ~(0x3FF);
+
+    HWREG16(address) |= cycleDelay;
 }
 
 void SD24_B_setOversampling(uint16_t baseAddress,
@@ -306,4 +317,4 @@ uint16_t SD24_B_getInterruptStatus(uint16_t baseAddress,
 //! @}
 //
 //*****************************************************************************
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -107,8 +107,6 @@ extern "C"
 // For running higher frequencies the Vcore voltage adjustment may required.
 // Please refer to Data Sheet of the MSP430 device you use
 #define USB_PLL_XT        2                  // Defines which XT is used by the PLL (1=XT1, 2=XT2)
-#define USB_XT_FREQ_VALUE       4.0   // Indicates the freq of the crystal on the oscillator indicated by USB_PLL_XT
-#define USB_XT_FREQ       USBPLL_SETCLK_4_0  // Indicates the freq of the crystal on the oscillator indicated by USB_PLL_XT
 #define USB_DISABLE_XT_SUSPEND 1             // If non-zero, then USB_suspend() will disable the oscillator
                                              // that is designated by USB_PLL_XT; if zero, USB_suspend won't
                                              // affect the oscillator
@@ -377,4 +375,4 @@ extern const tDEVICE_REQUEST_COMPARE tUsbRequestList[];
 
 /*------------------------ Nothing Below This Line --------------------------*/
 
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

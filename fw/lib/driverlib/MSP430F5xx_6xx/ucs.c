@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,10 +42,9 @@
 //
 //*****************************************************************************
 
-#include "inc/hw_regaccess.h"
 #include "inc/hw_memmap.h"
 
-#ifdef __MSP430_HAS_UCS__
+#if defined(__MSP430_HAS_UCS__) || defined(__MSP430_HAS_UCS_RF__)
 #include "ucs.h"
 
 #include <assert.h>
@@ -61,6 +60,35 @@
      })
 
 #endif
+
+#define CC430_DEVICE (defined (__CC430F5133__) || defined(__CC430F5135__) || \
+                      defined(__CC430F5137__) || \
+                      defined(__CC430F6125__) || defined(__CC430F6126__) || \
+                      defined(__CC430F6127__) || \
+                      defined(__CC430F6135__) || defined(__CC430F6137__) || \
+                      defined(__CC430F5123__) || \
+                      defined(__CC430F5125__) || defined(__CC430F5143__) || \
+                      defined(__CC430F5145__) || \
+                      defined(__CC430F5147__) || defined(__CC430F6143__) || \
+                      defined(__CC430F6145__) || \
+                      defined(__CC430F6147__))
+
+#define NOT_CC430_DEVICE (!defined (__CC430F5133__) && \
+                          !defined(__CC430F5135__) && \
+                          !defined(__CC430F5137__) && \
+                          !defined(__CC430F6125__) && \
+                          !defined(__CC430F6126__) && \
+                          !defined(__CC430F6127__) && \
+                          !defined(__CC430F6135__) && \
+                          !defined(__CC430F6137__) && \
+                          !defined(__CC430F5123__) && \
+                          !defined(__CC430F5125__) && \
+                          !defined(__CC430F5143__) && \
+                          !defined(__CC430F5145__) && \
+                          !defined(__CC430F5147__) && \
+                          !defined(__CC430F6143__) && \
+                          !defined(__CC430F6145__) && \
+                          !defined(__CC430F6147__))
 //******************************************************************************
 //
 // The XT1 crystal frequency. Should be set with
@@ -293,6 +321,7 @@ void UCS_initClockSignal(uint8_t selectedClockSignal,
         (UCS_CLOCK_DIVIDER_32 == clockSourceDivider)
         );
 
+    uint16_t temp = HWREG16(UCS_BASE + OFS_UCSCTL5);
     switch(selectedClockSignal)
     {
     case UCS_ACLK:
@@ -300,25 +329,22 @@ void UCS_initClockSignal(uint8_t selectedClockSignal,
         clockSource = clockSource << 8;
         HWREG16(UCS_BASE + OFS_UCSCTL4) |= (clockSource);
 
-        HWREG16(UCS_BASE + OFS_UCSCTL5) &= ~(DIVA_7);
         clockSourceDivider = clockSourceDivider << 8;
-        HWREG16(UCS_BASE + OFS_UCSCTL5) |= clockSourceDivider;
+        HWREG16(UCS_BASE + OFS_UCSCTL5) = temp & ~(DIVA_7) | clockSourceDivider;
         break;
     case UCS_SMCLK:
         HWREG16(UCS_BASE + OFS_UCSCTL4) &= ~(SELS_7);
         clockSource = clockSource << 4;
         HWREG16(UCS_BASE + OFS_UCSCTL4) |= (clockSource);
 
-        HWREG16(UCS_BASE + OFS_UCSCTL5) &= ~(DIVS_7);
         clockSourceDivider = clockSourceDivider << 4;
-        HWREG16(UCS_BASE + OFS_UCSCTL5) |= clockSourceDivider;
+        HWREG16(UCS_BASE + OFS_UCSCTL5) = temp & ~(DIVS_7) | clockSourceDivider;
         break;
     case UCS_MCLK:
         HWREG16(UCS_BASE + OFS_UCSCTL4) &= ~(SELM_7);
         HWREG16(UCS_BASE + OFS_UCSCTL4) |= (clockSource);
 
-        HWREG16(UCS_BASE + OFS_UCSCTL5) &= ~(DIVM_7);
-        HWREG16(UCS_BASE + OFS_UCSCTL5) |= clockSourceDivider;
+        HWREG16(UCS_BASE + OFS_UCSCTL5) = temp & ~(DIVM_7) | clockSourceDivider;
         break;
     case UCS_FLLREF:
         assert(clockSource <= SELA_5);
@@ -327,19 +353,22 @@ void UCS_initClockSignal(uint8_t selectedClockSignal,
         clockSource = clockSource << 4;
         HWREG8(UCS_BASE + OFS_UCSCTL3) |= (clockSource);
 
-        HWREG8(UCS_BASE + OFS_UCSCTL3) &= ~(FLLREFDIV_7);
+        temp = HWREG8(UCS_BASE + OFS_UCSCTL3) & 0x00FF;
         //Note that dividers for FLLREF are slightly different
         //Hence handled differently from other CLK signals
         switch(clockSourceDivider)
         {
         case UCS_CLOCK_DIVIDER_12:
-            HWREG8(UCS_BASE + OFS_UCSCTL3) |= FLLREFDIV__12;
+            HWREG8(UCS_BASE +
+                   OFS_UCSCTL3) = temp & ~(FLLREFDIV_7) | FLLREFDIV__12;
             break;
         case UCS_CLOCK_DIVIDER_16:
-            HWREG8(UCS_BASE + OFS_UCSCTL3) |= FLLREFDIV__16;
+            HWREG8(UCS_BASE +
+                   OFS_UCSCTL3) = temp & ~(FLLREFDIV_7) | FLLREFDIV__16;
             break;
         default:
-            HWREG8(UCS_BASE + OFS_UCSCTL3) |= clockSourceDivider;
+            HWREG8(UCS_BASE +
+                   OFS_UCSCTL3) = temp & ~(FLLREFDIV_7) | clockSourceDivider;
             break;
         }
 
@@ -621,12 +650,7 @@ void UCS_turnOffXT1(void)
 
 void UCS_turnOnXT2(uint16_t xt2drive)
 {
-#if !defined (__CC430F5133__) || (__CC430F5135__) || (__CC430F5137__) || \
-    (__CC430F6125__) || (__CC430F6126__) || (__CC430F6127__) || \
-    (__CC430F6135__) || (__CC430F6137__) || (__CC430F5123__) || \
-    (__CC430F5125__) || (__CC430F5143__) || (__CC430F5145__) || \
-    (__CC430F5147__) || (__CC430F6143__) || (__CC430F6145__) || \
-    (__CC430F6147__)
+#if NOT_CC430_DEVICE
 
     //Check if drive value is the expected one
     if((HWREG16(UCS_BASE + OFS_UCSCTL6) & XT2DRIVE_3) != xt2drive)
@@ -637,10 +661,11 @@ void UCS_turnOnXT2(uint16_t xt2drive)
         //Set requested value
         HWREG16(UCS_BASE + OFS_UCSCTL6) |= xt2drive;
     }
+
+    HWREG16(UCS_BASE + OFS_UCSCTL6) &= ~XT2BYPASS;
 #endif
 
     //Enable XT2 and Switch on XT2 oscillator
-    HWREG16(UCS_BASE + OFS_UCSCTL6) &= ~XT2BYPASS;
     HWREG16(UCS_BASE + OFS_UCSCTL6) &= ~XT2OFF;
 
     while(HWREG8(UCS_BASE + OFS_UCSCTL7) & XT2OFFG)
@@ -648,12 +673,7 @@ void UCS_turnOnXT2(uint16_t xt2drive)
         //Clear OSC flaut Flags
         HWREG8(UCS_BASE + OFS_UCSCTL7) &= ~(XT2OFFG);
 
-#if defined (__CC430F5133__) || (__CC430F5135__) || (__CC430F5137__) || \
-        (__CC430F6125__) || (__CC430F6126__) || (__CC430F6127__) || \
-        (__CC430F6135__) || (__CC430F6137__) || (__CC430F5123__) || \
-        (__CC430F5125__) || (__CC430F5143__) || (__CC430F5145__) || \
-        (__CC430F5147__) || (__CC430F6143__) || (__CC430F6145__) || \
-        (__CC430F6147__)
+#if CC430_DEVICE
         // CC430 uses a different fault mechanism. It requires 3 VLO clock
         // cycles delay.If 20MHz CPU, 5000 clock cycles are required in worst
         // case.
@@ -668,19 +688,17 @@ void UCS_turnOnXT2(uint16_t xt2drive)
 void UCS_bypassXT2(void)
 {
     //Switch on XT2 oscillator
-    HWREG16(UCS_BASE + OFS_UCSCTL6) |= (XT2BYPASS + XT2OFF);
+#if NOT_CC430_DEVICE
+    HWREG16(UCS_BASE + OFS_UCSCTL6) |= XT2BYPASS;
+#endif
+    HWREG16(UCS_BASE + OFS_UCSCTL6) |= XT2OFF;
 
     while(HWREG8(UCS_BASE + OFS_UCSCTL7) & XT2OFFG)
     {
         //Clear OSC flaut Flags
         HWREG8(UCS_BASE + OFS_UCSCTL7) &= ~(XT2OFFG);
 
-#if defined (__CC430F5133__) || (__CC430F5135__) || (__CC430F5137__) || \
-        (__CC430F6125__) || (__CC430F6126__) || (__CC430F6127__) || \
-        (__CC430F6135__) || (__CC430F6137__) || (__CC430F5123__) || \
-        (__CC430F5125__) || (__CC430F5143__) || (__CC430F5145__) || \
-        (__CC430F5147__) || (__CC430F6143__) || (__CC430F6145__) || \
-        (__CC430F6147__)
+#if CC430_DEVICE
         // CC430 uses a different fault mechanism. It requires 3 VLO clock
         // cycles delay.If 20MHz CPU, 5000 clock cycles are required in worst
         // case.
@@ -697,12 +715,7 @@ bool UCS_turnOnXT2WithTimeout(uint16_t xt2drive,
 {
     assert(timeout > 0);
 
-#if !defined (__CC430F5133__) || (__CC430F5135__) || (__CC430F5137__) || \
-    (__CC430F6125__) || (__CC430F6126__) || (__CC430F6127__) || \
-    (__CC430F6135__) || (__CC430F6137__) || (__CC430F5123__) || \
-    (__CC430F5125__) || (__CC430F5143__) || (__CC430F5145__) || \
-    (__CC430F5147__) || (__CC430F6143__) || (__CC430F6145__) || \
-    (__CC430F6147__)
+#if NOT_CC430_DEVICE
     //Check if drive value is the expected one
     if((HWREG16(UCS_BASE + OFS_UCSCTL6) & XT2DRIVE_3) != xt2drive)
     {
@@ -713,9 +726,8 @@ bool UCS_turnOnXT2WithTimeout(uint16_t xt2drive,
         HWREG16(UCS_BASE + OFS_UCSCTL6) |= xt2drive;
     }
 
-#endif
-
     HWREG16(UCS_BASE + OFS_UCSCTL6) &= ~XT2BYPASS;
+#endif
 
     //Switch on XT2 oscillator
     HWREG16(UCS_BASE + OFS_UCSCTL6) &= ~XT2OFF;
@@ -725,12 +737,7 @@ bool UCS_turnOnXT2WithTimeout(uint16_t xt2drive,
         //Clear OSC flaut Flags
         HWREG8(UCS_BASE + OFS_UCSCTL7) &= ~(XT2OFFG);
 
-#if defined (__CC430F5133__) || (__CC430F5135__) || (__CC430F5137__) || \
-        (__CC430F6125__) || (__CC430F6126__) || (__CC430F6127__) || \
-        (__CC430F6135__) || (__CC430F6137__) || (__CC430F5123__) || \
-        (__CC430F5125__) || (__CC430F5143__) || (__CC430F5145__) || \
-        (__CC430F5147__) || (__CC430F6143__) || (__CC430F6145__) || \
-        (__CC430F6147__)
+#if CC430_DEVICE
         // CC430 uses a different fault mechanism. It requires 3 VLO clock
         // cycles delay.If 20MHz CPU, 5000 clock cycles are required in worst
         // case.
@@ -757,19 +764,17 @@ bool UCS_bypassXT2WithTimeout(uint16_t timeout)
     assert(timeout > 0);
 
     //Switch off XT2 oscillator and enable BYPASS mode
-    HWREG16(UCS_BASE + OFS_UCSCTL6) |= (XT2BYPASS + XT2OFF);
+#if NOT_CC430_DEVICE
+    HWREG16(UCS_BASE + OFS_UCSCTL6) |= XT2BYPASS;
+#endif
+    HWREG16(UCS_BASE + OFS_UCSCTL6) |= XT2OFF;
 
     do
     {
         //Clear OSC flaut Flags
         HWREG8(UCS_BASE + OFS_UCSCTL7) &= ~(XT2OFFG);
 
-#if defined (__CC430F5133__) || (__CC430F5135__) || (__CC430F5137__) || \
-        (__CC430F6125__) || (__CC430F6126__) || (__CC430F6127__) || \
-        (__CC430F6135__) || (__CC430F6137__) || (__CC430F5123__) || \
-        (__CC430F5125__) || (__CC430F5143__) || (__CC430F5145__) || \
-        (__CC430F5147__) || (__CC430F6143__) || (__CC430F6145__) || \
-        (__CC430F6147__)
+#if CC430_DEVICE
         // CC430 uses a different fault mechanism. It requires 3 VLO clock
         // cycles delay.If 20MHz CPU, 5000 clock cycles are required in worst
         // case.
@@ -1006,12 +1011,7 @@ uint16_t UCS_clearAllOscFlagsWithTimeout(uint16_t timeout)
                                             XT2OFFG
                                             );
 
-#if defined (__CC430F5133__) || (__CC430F5135__) || (__CC430F5137__) || \
-        (__CC430F6125__) || (__CC430F6126__) || (__CC430F6127__) || \
-        (__CC430F6135__) || (__CC430F6137__) || (__CC430F5123__) || \
-        (__CC430F5125__) || (__CC430F5143__) || (__CC430F5145__) || \
-        (__CC430F5147__) || (__CC430F6143__) || (__CC430F6145__) || \
-        (__CC430F6147__)
+#if CC430_DEVICE
         // CC430 uses a different fault mechanism. It requires 3 VLO clock
         // cycles delay.If 20MHz CPU, 5000 clock cycles are required in worst
         // case.
@@ -1039,4 +1039,4 @@ uint16_t UCS_clearAllOscFlagsWithTimeout(uint16_t timeout)
 //! @}
 //
 //*****************************************************************************
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

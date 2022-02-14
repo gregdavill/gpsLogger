@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ extern "C"
 {
 #endif
 
-#include "inc/hw_regaccess.h"
+#include "inc/hw_memmap.h"
 //*****************************************************************************
 //
 //! \brief Used in the DAC12_A_init() function as the param parameter.
@@ -73,9 +73,12 @@ typedef struct DAC12_A_initParam
     uint16_t outputSelect;
     //! Is the upper limit voltage that the data can be converted in to.
     //! \n Valid values are:
-    //! - \b DAC12_A_VREF_AVCC [Default]
-    //! - \b DAC12_A_VREF_INT
-    //! - \b DAC12_A_VREF_EXT
+    //! - \b DAC12_A_VREF_INT [Default]
+    //! - \b DAC12_A_VREF_AVCC
+    //! - \b DAC12_A_VREF_EXT - For devices with CTSD16, use Ref module
+    //!    Ref_enableReferenceVoltageOutput/Ref__disableReferenceVoltageOutput
+    //!    to select VeREF(external reference signal) or VREFBG(internally
+    //!    generated reference signal)
     uint16_t positiveReferenceVoltage;
     //! Is the multiplier of the Vout voltage.
     //! \n Valid values are:
@@ -86,21 +89,43 @@ typedef struct DAC12_A_initParam
     //! Is the setting of the settling speed and current of the Vref+ and the
     //! Vout buffer.
     //! \n Valid values are:
-    //! - \b DAC12_A_AMP_OFF_PINOUTHIGHZ [Default]
-    //! - \b DAC12_A_AMP_OFF_PINOUTLOW
-    //! - \b DAC12_A_AMP_LOWIN_LOWOUT
-    //! - \b DAC12_A_AMP_LOWIN_MEDOUT
-    //! - \b DAC12_A_AMP_LOWIN_HIGHOUT
-    //! - \b DAC12_A_AMP_MEDIN_MEDOUT
-    //! - \b DAC12_A_AMP_MEDIN_HIGHOUT
-    //! - \b DAC12_A_AMP_HIGHIN_HIGHOUT
+    //! - \b DAC12_A_AMP_OFF_PINOUTHIGHZ [Default] - Initialize the DAC12_A
+    //!    Module with settings, but do not turn it on.
+    //! - \b DAC12_A_AMP_OFF_PINOUTLOW - Initialize the DAC12_A Module with
+    //!    settings, and allow it to take control of the selected output pin to
+    //!    pull it low (Note: this takes control away port mapping module).
+    //! - \b DAC12_A_AMP_LOWIN_LOWOUT - Select a slow settling speed and
+    //!    current for Vref+ input buffer and for Vout output buffer.
+    //! - \b DAC12_A_AMP_LOWIN_MEDOUT - Select a slow settling speed and
+    //!    current for Vref+ input buffer and a medium settling speed and
+    //!    current for Vout output buffer.
+    //! - \b DAC12_A_AMP_LOWIN_HIGHOUT - Select a slow settling speed and
+    //!    current for Vref+ input buffer and a high settling speed and current
+    //!    for Vout output buffer.
+    //! - \b DAC12_A_AMP_MEDIN_MEDOUT - Select a medium settling speed and
+    //!    current for Vref+ input buffer and for Vout output buffer.
+    //! - \b DAC12_A_AMP_MEDIN_HIGHOUT - Select a medium settling speed and
+    //!    current for Vref+ input buffer and a high settling speed and current
+    //!    for Vout output buffer.
+    //! - \b DAC12_A_AMP_HIGHIN_HIGHOUT - Select a high settling speed and
+    //!    current for Vref+ input buffer and for Vout output buffer.
     uint8_t amplifierSetting;
     //! Selects the trigger that will start a conversion.
     //! \n Valid values are:
-    //! - \b DAC12_A_TRIGGER_ENCBYPASS [Default]
-    //! - \b DAC12_A_TRIGGER_ENC
-    //! - \b DAC12_A_TRIGGER_TA
-    //! - \b DAC12_A_TRIGGER_TB
+    //! - \b DAC12_A_TRIGGER_ENCBYPASS [Default] - Automatically converts data
+    //!    as soon as it is written into the data buffer. (Note: Do not use
+    //!    this selection if grouping DAC's).
+    //! - \b DAC12_A_TRIGGER_ENC - Requires a call to enableConversions() to
+    //!    allow a conversion, but starts a conversion as soon as data is
+    //!    written to the data buffer (Note: with DAC12_A module's grouped,
+    //!    data has to be set in BOTH DAC12_A data buffers to start a
+    //!    conversion).
+    //! - \b DAC12_A_TRIGGER_TA - Requires a call to enableConversions() to
+    //!    allow a conversion, and a rising edge of Timer_A's Out1 (TA1) to
+    //!    start a conversion.
+    //! - \b DAC12_A_TRIGGER_TB - Requires a call to enableConversions() to
+    //!    allow a conversion, and a rising edge of Timer_B's Out2 (TB2) to
+    //!    start a conversion.
     uint16_t conversionTriggerSelect;
 } DAC12_A_initParam;
 
@@ -111,8 +136,8 @@ typedef struct DAC12_A_initParam
 // DAC12_A_init().
 //
 //*****************************************************************************
-#define DAC12_A_VREF_AVCC                                         (DAC12SREF_1)
 #define DAC12_A_VREF_INT                                          (DAC12SREF_0)
+#define DAC12_A_VREF_AVCC                                         (DAC12SREF_1)
 #define DAC12_A_VREF_EXT                                          (DAC12SREF_2)
 
 //*****************************************************************************
@@ -352,7 +377,7 @@ extern void DAC12_A_disableGrouping(uint16_t baseAddress);
 //! interrupt when the data buffer is available for new data to be set. Only
 //! the sources that are enabled can be reflected to the processor interrupt;
 //! disabled sources have no effect on the processor. Note that an interrupt is
-//! not thrown when DAC12_A_TRIGGER_AUTO has been set for the parameter
+//! not thrown when DAC12_A_TRIGGER_ENCBYPASS has been set for the parameter
 //! conversionTriggerSelect in initialization. Does not clear interrupt flags.
 //!
 //! \param baseAddress is the base address of the DAC12_A module.
@@ -392,8 +417,8 @@ extern void DAC12_A_disableInterrupt(uint16_t baseAddress,
 //! \brief Returns the status of the DAC12_A module interrupt flag.
 //!
 //! This function returns the status of the DAC12_A module interrupt flag. Note
-//! that an interrupt is not thrown when DAC12_A_TRIGGER_AUTO has been set for
-//! the conversionTriggerSelect parameter in initialization.
+//! that an interrupt is not thrown when DAC12_A_TRIGGER_ENCBYPASS has been set
+//! for the conversionTriggerSelect parameter in initialization.
 //!
 //! \param baseAddress is the base address of the DAC12_A module.
 //! \param submoduleSelect decides which DAC12_A sub-module to configure.
@@ -415,8 +440,8 @@ extern uint16_t DAC12_A_getInterruptStatus(uint16_t baseAddress,
 //! \brief Clears the DAC12_A module interrupt flag.
 //!
 //! The DAC12_A module interrupt flag is cleared, so that it no longer asserts.
-//! Note that an interrupt is not thrown when DAC12_A_TRIGGER_AUTO has been set
-//! for the parameter conversionTriggerSelect in initialization.
+//! Note that an interrupt is not thrown when DAC12_A_TRIGGER_ENCBYPASS has
+//! been set for the parameter conversionTriggerSelect in initialization.
 //!
 //! \param baseAddress is the base address of the DAC12_A module.
 //! \param submoduleSelect decides which DAC12_A sub-module to configure.
@@ -509,8 +534,8 @@ extern void DAC12_A_setCalibrationOffset(uint16_t baseAddress,
 //! \brief Enables triggers to start conversions.
 //!
 //! This function is used to allow triggers to start a conversion. Note that
-//! this function does not need to be used if DAC12_A_TRIGGER_AUTO was set for
-//! the conversionTriggerSelect parameter during initialization. If DAC
+//! this function does not need to be used if DAC12_A_TRIGGER_ENCBYPASS was set
+//! for the conversionTriggerSelect parameter during initialization. If DAC
 //! grouping is enabled, this has to be called for both DAC's.
 //!
 //! \param baseAddress is the base address of the DAC12_A module.
@@ -533,10 +558,10 @@ extern void DAC12_A_enableConversions(uint16_t baseAddress,
 //!
 //! This function is used to set the given data into the data buffer of the
 //! DAC12_A module. The data given should be in the format set (12-bit
-//! Unsigned, Right-justified by default). Note if DAC12_A_TRIGGER_AUTO was set
-//! for the conversionTriggerSelect during initialization then using this
-//! function will set the data and automatically trigger a conversion. If any
-//! other trigger was set during initialization, then the
+//! Unsigned, Right-justified by default). Note if DAC12_A_TRIGGER_ENCBYPASS
+//! was set for the conversionTriggerSelect during initialization then using
+//! this function will set the data and automatically trigger a conversion. If
+//! any other trigger was set during initialization, then the
 //! DAC12_A_enableConversions() function needs to be called before a conversion
 //! can be started. If grouping DAC's and DAC12_A_TRIGGER_ENC was set during
 //! initialization, then both data buffers must be set before a conversion will
@@ -565,8 +590,8 @@ extern void DAC12_A_setData(uint16_t baseAddress,
 //! \brief Disables triggers to start conversions.
 //!
 //! This function is used to disallow triggers to start a conversion. Note that
-//! this function does not have any affect if DAC12_A_TRIGGER_AUTO was set for
-//! the conversionTriggerSelect parameter during initialization.
+//! this function does not have any affect if DAC12_A_TRIGGER_ENCBYPASS was set
+//! for the conversionTriggerSelect parameter during initialization.
 //!
 //! \param baseAddress is the base address of the DAC12_A module.
 //! \param submoduleSelect decides which DAC12_A sub-module to configure.
@@ -669,4 +694,4 @@ extern uint32_t DAC12_A_getDataBufferMemoryAddressForDMA(uint16_t baseAddress,
 
 #endif
 #endif // __MSP430WARE_DAC12_A_H__
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

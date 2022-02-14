@@ -149,6 +149,7 @@ void bootCrcCompute()
 
 uint16_t bootValidateApp(void)
 {
+	return 1;
 
 	bootCrcCompute();
 
@@ -237,8 +238,10 @@ void bootLaunchApp()
 int main(void)
 {
 	while (1) {
+		
 		halInit();
 
+		hal_led_a(GREEN);
 		hal_sd_pwr_on();
 
 		hal_led_a(GREEN);

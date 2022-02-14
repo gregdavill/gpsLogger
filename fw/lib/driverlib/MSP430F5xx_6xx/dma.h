@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ extern "C"
 {
 #endif
 
-#include "inc/hw_regaccess.h"
+#include "inc/hw_memmap.h"
 //*****************************************************************************
 //
 //! \brief Used in the DMA_init() function as the param parameter.
@@ -74,12 +74,18 @@ typedef struct DMA_initParam
     uint8_t channelSelect;
     //! Is the transfer mode of the selected channel.
     //! \n Valid values are:
-    //! - \b DMA_TRANSFER_SINGLE [Default]
-    //! - \b DMA_TRANSFER_BLOCK
-    //! - \b DMA_TRANSFER_BURSTBLOCK
-    //! - \b DMA_TRANSFER_REPEATED_SINGLE
-    //! - \b DMA_TRANSFER_REPEATED_BLOCK
-    //! - \b DMA_TRANSFER_REPEATED_BURSTBLOCK
+    //! - \b DMA_TRANSFER_SINGLE [Default] - Single transfer, transfers
+    //!    disabled after transferAmount of transfers.
+    //! - \b DMA_TRANSFER_BLOCK - Multiple transfers of transferAmount,
+    //!    transfers disabled once finished.
+    //! - \b DMA_TRANSFER_BURSTBLOCK - Multiple transfers of transferAmount
+    //!    interleaved with CPU activity, transfers disabled once finished.
+    //! - \b DMA_TRANSFER_REPEATED_SINGLE - Repeated single transfer by
+    //!    trigger.
+    //! - \b DMA_TRANSFER_REPEATED_BLOCK - Multiple transfers of transferAmount
+    //!    by trigger.
+    //! - \b DMA_TRANSFER_REPEATED_BURSTBLOCK - Multiple transfers of
+    //!    transferAmount by trigger interleaved with CPU activity.
     uint16_t transferModeSelect;
     //! Is the amount of transfers to complete in a block transfer mode, as
     //! well as how many transfers to complete before the interrupt flag is
@@ -132,7 +138,9 @@ typedef struct DMA_initParam
     //! transfer.
     //! \n Valid values are:
     //! - \b DMA_TRIGGER_RISINGEDGE [Default]
-    //! - \b DMA_TRIGGER_HIGH
+    //! - \b DMA_TRIGGER_HIGH - A trigger would be a high signal from the
+    //!    trigger source, to be held high through the length of the
+    //!    transfer(s).
     uint8_t triggerTypeSelect;
 } DMA_initParam;
 
@@ -736,4 +744,4 @@ extern void DMA_disableNMIAbort(void);
 
 #endif
 #endif // __MSP430WARE_DMA_H__
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03

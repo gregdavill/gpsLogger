@@ -1,5 +1,5 @@
 /* --COPYRIGHT--,BSD
- * Copyright (c) 2014, Texas Instruments Incorporated
+ * Copyright (c) 2016, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -167,8 +167,13 @@ extern void Ref_enableTempSensor(uint16_t baseAddress);
 //! output pin. Please note, the output pin is device specific. Please note,
 //! that giving ADC12 module control over the Ref module, the state of the
 //! reference voltage as an output to a pin is dependent on the controls of the
-//! ADC12 module. Please note, if the Ref_isRefGenBusy() returns Ref_BUSY, this
-//! function will have no effect.
+//! ADC12 module. If ADC12_A reference burst is disabled or DAC12_A is enabled,
+//! this output is available continuously. If ADC12_A reference burst is
+//! enabled, this output is available only during an ADC12_A conversion. For
+//! devices with CTSD16, Ref_enableReferenceVoltage() needs to be invoked to
+//! get VREFBG available continuously. Otherwise, VREFBG is only available
+//! externally when a module requests it. Please note, if the
+//! Ref_isRefGenBusy() returns Ref_BUSY, this function will have no effect.
 //!
 //! \param baseAddress is the base address of the REF module.
 //!
@@ -203,8 +208,9 @@ extern void Ref_disableReferenceVoltageOutput(uint16_t baseAddress);
 //! This function is used to enable the generated reference voltage to be used
 //! other peripherals or by an output pin, if enabled. Please note, that giving
 //! ADC12 module control over the Ref module, the state of the reference
-//! voltage is dependent on the controls of the ADC12 module. Please note, if
-//! the Ref_isRefGenBusy() returns Ref_BUSY, this function will have no effect.
+//! voltage is dependent on the controls of the ADC12 module. Please note,
+//! ADC10_A does not support the reference request. If the Ref_isRefGenBusy()
+//! returns Ref_BUSY, this function will have no effect.
 //!
 //! \param baseAddress is the base address of the REF module.
 //!
@@ -322,4 +328,4 @@ extern bool Ref_isRefGenActive(uint16_t baseAddress);
 
 #endif
 #endif // __MSP430WARE_REF_H__
-//Released_Version_5_00_01
+//Released_Version_5_20_06_03
