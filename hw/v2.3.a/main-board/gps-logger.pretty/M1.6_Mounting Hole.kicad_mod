@@ -1,0 +1,13 @@
+(footprint "M1.6_Mounting Hole" (version 20210925) (generator pcbnew) (layer "F.Cu")
+  (tedit 5C270FE6)
+  (attr through_hole)
+  (fp_text reference "REF**" (at -0.1 -1.3) (layer "F.SilkS") hide
+    (effects (font (size 0 0) (thickness 0.15)))
+    (tstamp 1513f040-8eb4-41a1-b241-8a44c9d495d2)
+  )
+  (fp_text value "M1.6_Mounting Hole" (at 0 0.1) (layer "F.Fab") hide
+    (effects (font (size 0 0) (thickness 0.15)))
+    (tstamp 5191d103-a9ec-4576-9c39-18aed0c68c6e)
+  )
+  (pad "" np_thru_hole circle locked (at 0 0) (size 1.75 1.75) (drill 1.75) (layers *.Cu *.Mask) (tstamp 85c95320-4e65-48cc-b1e6-afbc8350436e))
+)
