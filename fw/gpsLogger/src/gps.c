@@ -268,6 +268,8 @@ void gps_do()
 	if (fifo_available()) /* process the data. */
 	{
 		if (init_gps == 1) {
+			hal_led_a(CYAN);
+
 			gps_puts("$PMTK300,500,0,0,0,0*28\r\n");
 			gps_puts("$PMTK220,500*2B\r\n");
 
@@ -360,7 +362,7 @@ void gps_start()
 	FRESULT rc;
 	/* we want to store logs into nma folder, ensure it exists */
 	rc = f_mkdir("NMEA");
-	if (rc != FR_EXIST && rc != FR_OK)
+	if ((rc != FR_EXIST) && (rc != FR_OK))
 		hal_led_a(RED);
 
 	/* determine the next log file number. */

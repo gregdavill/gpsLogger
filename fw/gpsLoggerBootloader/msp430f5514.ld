@@ -125,7 +125,7 @@ SECTIONS
   .upper.rodata :
   {
     *(.upper.rodata.* .upper.rodata)
-  } > HIROM
+  } > ROM
 
   .data :
   {
@@ -258,7 +258,7 @@ SECTIONS
   {
     . = ALIGN(2);
     *(.upper.text.* .upper.text)
-  } > HIROM
+  } > ROM
 
   .infoA     : {} > INFOA              /* MSP430 INFO FLASH MEMORY SEGMENTS */
   .infoB     : {} > INFOB
@@ -271,7 +271,7 @@ SECTIONS
     *(.upper.bss.* .upper.bss)
     *(.upper.data.* .upper.data)
     ASSERT (SIZEOF(.upper) == 0, "This MCU does not support placing read/write data into high memory");
-  } > HIROM
+  } > ROM
 
   /* The rest are all not normally part of the runtime image.  */
 
