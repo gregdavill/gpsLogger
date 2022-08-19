@@ -37,3 +37,9 @@ jobs:
           pushd fw/gpsLoggerBootloader
           make -j8
           popd
+
+      - name: Upload firmware artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: firmware.bin
+          path: ${{ github.workspace }}/fw/gpsLogger/build/gpslogger.bin
